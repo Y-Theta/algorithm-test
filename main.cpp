@@ -1,12 +1,12 @@
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
+#include <vector>
+#include <unordered_set>
+#include <unordered_map>
+#include <common.h>
+
 using namespace std;
 
 int main() {
-    std::cout << "sss";
-    int x = 2;
-    int y = 3;
-    cout << endl << y;
-    return y;
 }

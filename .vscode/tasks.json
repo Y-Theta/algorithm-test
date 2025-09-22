@@ -12,7 +12,7 @@
                 "${fileDirname}\\Debug\\${fileBasenameNoExtension}.exe"
             ],
             "options": {
-                "cwd": "c:/msys64/mingw64/bin"
+                "cwd": "${env:MSYS64}/mingw64/bin"
             },
             "problemMatcher": [
                 "$gcc"
