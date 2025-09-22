@@ -1,0 +1,13 @@
+{
+    "files.associations": {
+        "*.(xcfg|vstheme)": "xml",
+        "*.wxml": "html",
+        "*.wxss": "css",
+        "*.vuerc": "json",
+        "*.sql": "sql",
+        "*.xcs": "ini",
+        "CMakeLists.txt": "cmake",
+        "*.h": "cpp",
+        "ostream": "cpp"
+    }
+}
