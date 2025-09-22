@@ -6,7 +6,7 @@
                 "${workspaceFolder}/**",
                 "${env:MSYS64}/mingw64/include/**",
             ],
-            "compilerPath": "${env:MSYS64}/mingw64/bin/g++.exe",
+            "compilerPath": "g++.exe",
             "cStandard": "c17",
             "cppStandard": "c++17",
             "intelliSenseMode": "windows-gcc-x64"

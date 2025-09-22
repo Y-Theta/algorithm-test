@@ -10,12 +10,11 @@
             "request": "launch",
             "program": "${fileDirname}\\Debug\\${fileBasenameNoExtension}.exe",
             "args": [],
-            "stopAtEntry": true,
+            "stopAtEntry": false,
             "cwd": "${fileDirname}",
-            "environment": [],
             "externalConsole": false,
             "MIMode": "gdb",
-            "miDebuggerPath": "${env:MSYS64}/mingw64/bin/gdb.exe", // Ensure this path is correct or gdb.exe is in PATH
+            "miDebuggerPath": "gdb.exe", // Ensure this path is correct or gdb.exe is in PATH
             "setupCommands": [
                 {
                     "description": "Enable pretty printing for gdb",
