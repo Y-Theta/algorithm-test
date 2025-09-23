@@ -1,13 +1,6 @@
-#include <common.h>
-#include <iostream>
-#include <stdlib.h>
-#include <unordered_map>
-#include <unordered_set>
-#include <vector>
+#include "common.h"
 
-using namespace std;
-
-class Solution {
+class Solution2 {
 public:
     ListNode *addTwoNumbers(ListNode *l1, ListNode *l2) {
         ListNode *l1cur = l1;

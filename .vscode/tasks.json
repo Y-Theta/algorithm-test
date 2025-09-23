@@ -7,7 +7,8 @@
             "args": [
                 "-fdiagnostics-color=always",
                 "-g",
-                "${file}",
+                "${workspaceFolder}/cppResolve/**.cpp",
+                "${workspaceFolder}/main.cpp",
                 "-o",
                 "${fileDirname}\\Debug\\${fileBasenameNoExtension}.exe"
             ],

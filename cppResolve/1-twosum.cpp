@@ -1,13 +1,6 @@
-#include <iostream>
-#include <stdio.h>
-#include <stdlib.h>
-#include <vector>
-#include <unordered_set>
-#include <unordered_map>
+#include "common.h"
 
-using namespace std;
-
-class Solution {
+class Solution1 {
 public:
     vector<int> twoSum(vector<int> &nums, int target) {
         unordered_map<int,int> dic;
