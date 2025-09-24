@@ -4,10 +4,10 @@
             {
                 "name": "Debug",
                 "displayName": "Debug Build",
-                "generator": "Unix Makefiles",
+                "generator": "Ninja",
                 "binaryDir": "${sourceDir}/build",
                 "cacheVariables": {
-                    "CMAKE_MAKE_PROGRAM": "C:/msys64/ucrt64/bin/mingw32-make.exe",
+                    "CMAKE_MAKE_PROGRAM": "C:/msys64/ucrt64/bin/ninja.exe",
                     "CMAKE_BUILD_TYPE": "Debug"
                 }
             }
