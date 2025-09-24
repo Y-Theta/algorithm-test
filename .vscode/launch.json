@@ -5,13 +5,13 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "g++.exe build and debug active file",
+            "name": "CMake and Debug",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${fileDirname}\\build\\algorithm.exe",
+            "program": "${workspaceFolder}\\build\\algorithm.exe",
             "args": [],
             "stopAtEntry": false,
-            "cwd": "${fileDirname}",
+            "cwd": "${workspaceFolder}",
             "externalConsole": false,
             "MIMode": "gdb",
             "miDebuggerPath": "gdb.exe", // Ensure this path is correct or gdb.exe is in PATH
