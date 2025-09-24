@@ -1,0 +1,20 @@
+    {
+        "version": 4,
+        "configurePresets": [
+            {
+                "name": "Debug",
+                "generator": "Unix Makefiles",
+                "displayName": "Debug Build",
+                "binaryDir": "${sourceDir}/build",
+                "cacheVariables": {
+                    "CMAKE_MAKE_PROGRAM": "C:/msys64/ucrt64/bin/mingw32-make.exe"
+                }
+            }
+        ],
+        "buildPresets": [
+            {
+                "name": "Debug",
+                "configurePreset": "Debug"
+            }
+        ]
+    }

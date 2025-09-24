@@ -4,7 +4,7 @@
             "name": "MinGW",
             "includePath": [
                 "${workspaceFolder}/**",
-                "${env:MSYS64}/mingw64/include/**",
+                "${env:MSYS64}/ucrt64/include/**",
             ],
             "compilerPath": "g++.exe",
             "cStandard": "c17",

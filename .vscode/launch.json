@@ -8,7 +8,7 @@
             "name": "g++.exe build and debug active file",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${fileDirname}\\Debug\\${fileBasenameNoExtension}.exe",
+            "program": "${fileDirname}\\build\\algorithm.exe",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
@@ -22,7 +22,7 @@
                     "ignoreFailures": true
                 }
             ],
-            "preLaunchTask": "C/C++: g++.exe build active file" // Matches the label in tasks.json
+            "preLaunchTask": "CMake Build" // Matches the label in tasks.json
         }
     ]
 }
