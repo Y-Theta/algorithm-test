@@ -27,3 +27,18 @@ class Solution128 {
 public:
     int longestConsecutive(vector<int>& nums);
 };
+
+class Solution322 {
+public:
+    int coinChange(vector<int> &coins, int amount);
+};
+
+class Solution139{
+public:
+bool wordBreak(string s, vector<string> &wordDict);
+};
+
+class Solution279{
+public:
+int numSquares(int n);
+};
