@@ -9,5 +9,7 @@
 using namespace std;
 
 int main() {
-   
+   Solution152 s;
+   vector<int> nums = {2,-5,-2,-4,3};
+   s.maxProduct(nums);
 }

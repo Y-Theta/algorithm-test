@@ -1,11 +1,12 @@
+#include <algorithm>
 #include <iostream>
+#include <stack>
 #include <stdlib.h>
 #include <string.h>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
-#include <algorithm>
 
 using std::string;
 using namespace std;
@@ -25,7 +26,7 @@ public:
 
 class Solution128 {
 public:
-    int longestConsecutive(vector<int>& nums);
+    int longestConsecutive(vector<int> &nums);
 };
 
 class Solution322 {
@@ -33,12 +34,22 @@ public:
     int coinChange(vector<int> &coins, int amount);
 };
 
-class Solution139{
+class Solution139 {
 public:
-bool wordBreak(string s, vector<string> &wordDict);
+    bool wordBreak(string s, vector<string> &wordDict);
 };
 
-class Solution279{
+class Solution279 {
 public:
-int numSquares(int n);
+    int numSquares(int n);
+};
+
+class Solution300 {
+public:
+    int lengthOfLIS(vector<int> &nums);
+};
+
+class Solution152 {
+public:
+    int maxProduct(vector<int> &nums);
 };
