@@ -76,7 +76,8 @@
         "__tree": "cpp",
         "map": "cpp",
         "memory": "cpp",
-        "set": "cpp"
+        "set": "cpp",
+        "random": "cpp"
     },
     "CMakeTools.generator": "MinGW Makefiles",
     "CMakeTools.configureSettings": {

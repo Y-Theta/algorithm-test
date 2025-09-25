@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
+#include <algorithm>
 
 using std::string;
 using namespace std;
@@ -20,4 +21,9 @@ struct ListNode {
 class Solution3 {
 public:
     int lengthOfLongestSubstring(string s);
+};
+
+class Solution128 {
+public:
+    int longestConsecutive(vector<int>& nums);
 };

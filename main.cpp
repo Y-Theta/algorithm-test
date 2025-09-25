@@ -9,6 +9,7 @@
 using namespace std;
 
 int main() {
-    Solution3 sln3;
-    sln3.lengthOfLongestSubstring("au");
+    Solution128 sln3;
+    auto val = vector<int>{100, 4, 200, 1, 3, 2};
+    sln3.longestConsecutive(val);
 }
