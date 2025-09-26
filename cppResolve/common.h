@@ -53,3 +53,13 @@ class Solution152 {
 public:
     int maxProduct(vector<int> &nums);
 };
+
+class Solution416 {
+public:
+    bool canPartition(vector<int> &nums);
+};
+
+class Solution560{
+public:
+    int subarraySum(vector<int> &nums, int k);
+};

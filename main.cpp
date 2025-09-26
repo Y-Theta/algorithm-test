@@ -9,7 +9,14 @@
 using namespace std;
 
 int main() {
-   Solution152 s;
-   vector<int> nums = {2,-5,-2,-4,3};
-   s.maxProduct(nums);
+    // unordered_set<int> set;
+    // set.insert(1);
+    // set.insert(1);
+    // for (int i : set) {
+    //     cout << i << " ";
+    // }
+
+    Solution560 s;
+    vector<int> nums = {1, 1, 1};
+    s.subarraySum(nums, 2);
 }

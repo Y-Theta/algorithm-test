@@ -1,0 +1,5 @@
+{
+	"disabled": [
+		"vscjava.vscode-java-debug",
+	]
+}
