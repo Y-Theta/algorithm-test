@@ -8,6 +8,14 @@
 
 using namespace std;
 
+struct test {
+    int a = 1;
+};
+
+const test* testfunc(test* x) {
+    return new test();
+}
+
 int main() {
     // unordered_set<int> set;
     // set.insert(1);
@@ -15,8 +23,12 @@ int main() {
     // for (int i : set) {
     //     cout << i << " ";
     // }
+    test t;
+    test *p = &t;
+    auto x = testfunc(p);
+    x = new test();
 
-    Solution560 s;
-    vector<int> nums = {1, 1, 1};
-    s.subarraySum(nums, 2);
+    Solution48 sln;
+    vector<vector<int>> vector = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+    sln.rotate(vector);
 }

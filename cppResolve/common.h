@@ -7,13 +7,21 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
+#include <bitset>
+#include <tuple>
 
+#ifndef USINGCOMMON
+#define USINGCOMMON
+
+#endif
 using std::string;
 using namespace std;
 
 struct ListNode {
     int val;
-    ListNode *next;
+    int key;
+    ListNode *next = nullptr;
+    ListNode *pre = nullptr;
     ListNode() : val(0), next(nullptr) {}
     ListNode(int x) : val(x), next(nullptr) {}
     ListNode(int x, ListNode *next) : val(x), next(next) {}
@@ -59,7 +67,27 @@ public:
     bool canPartition(vector<int> &nums);
 };
 
-class Solution560{
+class Solution560 {
 public:
     int subarraySum(vector<int> &nums, int k);
+};
+
+class Solution11 {
+public:
+    int maxArea(vector<int> &height);
+};
+
+class Solution239 {
+public:
+    vector<int> maxSlidingWindow(vector<int> &height, int k);
+};
+
+class Solution73 {
+public:
+    void setZeroes(vector<vector<int>> &matrix);
+};
+
+class Solution48 {
+public:
+    void rotate(vector<vector<int>> &matrix);
 };
