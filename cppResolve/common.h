@@ -1,14 +1,14 @@
 #include <algorithm>
+#include <bitset>
 #include <iostream>
 #include <stack>
 #include <stdlib.h>
 #include <string.h>
 #include <string>
+#include <tuple>
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
-#include <bitset>
-#include <tuple>
 
 #ifndef USINGCOMMON
 #define USINGCOMMON
@@ -36,6 +36,10 @@ struct TreeNode {
     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
 };
 
+class TestSolution {
+public:
+    void Test() ;
+};
 
 class Solution3 {
 public:

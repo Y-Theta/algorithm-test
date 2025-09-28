@@ -28,6 +28,9 @@ int main() {
     auto x = testfunc(p);
     x = new test();
 
+    TestSolution test;
+    test.Test();
+
     Solution48 sln;
     vector<vector<int>> vector = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
     sln.rotate(vector);
