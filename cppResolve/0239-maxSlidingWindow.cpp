@@ -29,21 +29,3 @@ vector<int> Solution239::maxSlidingWindow(vector<int> &nums, int k) {
 
     return newv;
 };
-
-// vector<int> Solution239::maxSlidingWindow(vector<int> &nums, int k) {
-//     if (k == 1 || nums.size() == 1)
-//         return nums;
-
-//     vector<int> newv(nums.size() - k + 1, -100001);
-//     for (int i = 0; i < nums.size(); i++) {
-//         int max = std::min((int)newv.size() - 1, i);
-//         int min = std::max(0, i - k + 1);
-//         for (int j = max; j >= min; j--) {
-//             if (nums[i] > newv[j]) {
-//                 newv[j] = nums[i];
-//             }
-//         }
-//     }
-
-//     return newv;
-// };
