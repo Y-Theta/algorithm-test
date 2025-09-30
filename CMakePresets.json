@@ -6,10 +6,12 @@
                 "displayName": "Debug Build",
                 "generator": "Ninja",
                 "binaryDir": "${sourceDir}/build",
-                "cacheVariables": {
-                    "CMAKE_MAKE_PROGRAM": "C:/msys64/ucrt64/bin/ninja.exe",
-                    "CMAKE_BUILD_TYPE": "Debug"
-                }
+              "cacheVariables": {
+                "CMAKE_MAKE_PROGRAM": "C:/msys64/ucrt64/bin/ninja.exe",
+                "CMAKE_BUILD_TYPE": "Debug",
+                "CMAKE_CXX_COMPILER": "g++",
+                "CMAKE_C_COMPILER": "gcc"
+              }
             }
         ],
         "buildPresets": [

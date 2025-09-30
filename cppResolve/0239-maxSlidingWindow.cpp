@@ -1,10 +1,5 @@
 #include "common.h"
 
-typedef struct posval {
-    int val;
-    int pos;
-};
-
 vector<int> Solution239::maxSlidingWindow(vector<int> &nums, int k) {
     if (k == 1 || nums.size() == 1)
         return nums;
