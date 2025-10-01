@@ -1,6 +1,6 @@
-#include "common.h"
+#include "0-common.h"
 
-int Solution322::coinChange(vector<int> &coins, int amount) {
+int SolutionTest1::coinChange(vector<int> &coins, int amount) {
     // dp[i] = i % k == 0? i / k :math.min(i / k + dp[i % k], (i/ k - 1) + dp[k + i % k]);
     if (amount == 0)
         return 0;

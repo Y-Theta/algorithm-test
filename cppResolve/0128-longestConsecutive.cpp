@@ -1,6 +1,6 @@
-#include "common.h"
+#include "0-common.h"
 
-int Solution128::longestConsecutive(vector<int> &nums) {
+int SolutionTest1::longestConsecutive(vector<int> &nums) {
     if (nums.size() == 0)
         return 0;
     if (nums.size() == 1)

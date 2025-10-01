@@ -1,6 +1,6 @@
-#include "common.h"
+#include "0-common.h"
 
-int Solution300::lengthOfLIS(vector<int> &nums) {
+int SolutionTest1::lengthOfLIS(vector<int> &nums) {
     // 10 11 12 13 14 2 3 4 5 6 7 8 9
     int max = 1;
     vector<int> dp(nums.size(), 1);

@@ -38,70 +38,22 @@ struct TreeNode {
 
 class TestSolution {
 public:
-    void Test() ;
+    void Test();
 };
 
-class Solution3 {
+class SolutionTest1 {
 public:
     int lengthOfLongestSubstring(string s);
-};
-
-class Solution128 {
-public:
-    int longestConsecutive(vector<int> &nums);
-};
-
-class Solution322 {
-public:
-    int coinChange(vector<int> &coins, int amount);
-};
-
-class Solution139 {
-public:
-    bool wordBreak(string s, vector<string> &wordDict);
-};
-
-class Solution279 {
-public:
-    int numSquares(int n);
-};
-
-class Solution300 {
-public:
-    int lengthOfLIS(vector<int> &nums);
-};
-
-class Solution152 {
-public:
-    int maxProduct(vector<int> &nums);
-};
-
-class Solution416 {
-public:
-    bool canPartition(vector<int> &nums);
-};
-
-class Solution560 {
-public:
-    int subarraySum(vector<int> &nums, int k);
-};
-
-class Solution11 {
-public:
     int maxArea(vector<int> &height);
-};
-
-class Solution239 {
-public:
-    vector<int> maxSlidingWindow(vector<int> &height, int k);
-};
-
-class Solution73 {
-public:
-    void setZeroes(vector<vector<int>> &matrix);
-};
-
-class Solution48 {
-public:
     void rotate(vector<vector<int>> &matrix);
+    void setZeroes(vector<vector<int>> &matrix);
+    int longestConsecutive(vector<int> &nums);
+    bool wordBreak(string s, vector<string> &wordDict);
+    int maxProduct(vector<int> &nums);
+    vector<int> maxSlidingWindow(vector<int> &nums, int k);
+    int numSquares(int n);
+    int lengthOfLIS(vector<int> &nums);
+    int coinChange(vector<int> &coins, int amount) ;
+    bool canPartition(vector<int> &nums);
+    int subarraySum(vector<int> &nums, int k);
 };

@@ -1,6 +1,6 @@
-#include "common.h"
+#include "0-common.h"
 
-bool Solution139::wordBreak(string s, vector<string> &wordDict) {
+bool SolutionTest1::wordBreak(string s, vector<string> &wordDict) {
     vector<int> dp(s.length() + 1, 0);
     // dp[i] = 1 only if dp[i - s.length] == 1 && s.substr(i - s.length, s.length) in wordDict
     dp[0] = 1;

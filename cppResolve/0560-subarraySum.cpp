@@ -1,6 +1,6 @@
-#include "common.h"
+#include "0-common.h"
 
-int Solution560::subarraySum(vector<int> &nums, int k) {
+int SolutionTest1::subarraySum(vector<int> &nums, int k) {
     // dp[i] = dp[i-1] + count(substr end with i)
     long sum[nums.size()];
     sum[0] = nums[0];

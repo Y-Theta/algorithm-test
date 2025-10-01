@@ -1,6 +1,6 @@
-#include "common.h"
+#include "0-common.h"
 
-vector<int> Solution239::maxSlidingWindow(vector<int> &nums, int k) {
+vector<int> SolutionTest1::maxSlidingWindow(vector<int> &nums, int k) {
     if (k == 1 || nums.size() == 1)
         return nums;
     vector<int> newv;

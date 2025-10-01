@@ -1,6 +1,6 @@
-#include "common.h"
+#include "0-common.h"
 
-int Solution279::numSquares(int n) {
+int SolutionTest1::numSquares(int n) {
     vector<int> nums;
     for (int i = 1; i * i <= n; ++i) {
         nums.push_back(i * i);

@@ -1,6 +1,6 @@
-#include "common.h"
+#include "0-common.h"
 
-int Solution11::maxArea(vector<int> &height) {
+int SolutionTest1::maxArea(vector<int> &height) {
     // val[i,j] = min(i,j) * (j - i)
     // left height right height
     if (height.size() == 1)

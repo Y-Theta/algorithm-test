@@ -1,11 +1,11 @@
-#include "common.h"
+#include "0-common.h"
 
 typedef struct numinfo {
     int num1;
     int num2;
 };
 
-int Solution152::maxProduct(vector<int> &nums) {
+int SolutionTest1::maxProduct(vector<int> &nums) {
     int summax = 0;
     numinfo numsinfo[nums.size()];
     numsinfo[0].num1 =

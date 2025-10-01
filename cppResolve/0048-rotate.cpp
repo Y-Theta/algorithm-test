@@ -1,4 +1,4 @@
-#include "common.h"
+#include "0-common.h"
 
 struct pt {
     int x;
@@ -20,7 +20,7 @@ pt rotateitem(int x, int y, int offset, int half) {
     return pt(nx, ny);
 }
 
-void Solution48::rotate(vector<vector<int>> &matrix) {
+void SolutionTest1::rotate(vector<vector<int>> &matrix) {
     if (matrix.size() == 1)
         return;
 

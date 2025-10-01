@@ -1,6 +1,6 @@
-#include "../cppResolve/common.h"
+#include "0-common.h"
 
-int Solution3::lengthOfLongestSubstring(string s) {
+int SolutionTest1::lengthOfLongestSubstring(string s) {
     int windowStart = -1;
     int windowEnd = 0;
     int max = 1;

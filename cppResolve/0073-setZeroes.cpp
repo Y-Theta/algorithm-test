@@ -1,6 +1,6 @@
-#include "common.h"
+#include "0-common.h"
 
-void Solution73::setZeroes(vector<vector<int>> &matrix) {
+void SolutionTest1::setZeroes(vector<vector<int>> &matrix) {
     int m = matrix.size();
     int n = matrix[0].size();
 

@@ -1,6 +1,6 @@
-#include "common.h"
+#include "0-common.h"
 
-bool Solution416::canPartition(vector<int> &nums) {
+bool SolutionTest1::canPartition(vector<int> &nums) {
     if (nums.size() == 1)
         return 0;
     vector<int> numscount(101, 0);
