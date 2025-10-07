@@ -9,6 +9,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
+#include <queue>
 
 #ifndef USINGCOMMON
 #define USINGCOMMON
@@ -58,4 +59,5 @@ public:
     int subarraySum(vector<int> &nums, int k);
     string longestPalindrome(string s);
     int trap(vector<int> &height);
+    int longestCommonSubsequence(string text1, string text2);
 };
