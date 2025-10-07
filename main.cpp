@@ -15,5 +15,8 @@ int main() {
     // for (int i : set) {
     //     cout << i << " ";
     // }
-  
+
+    SolutionTest1 test;
+    vector<int> vec = {1,7,5};
+    cout << test.trap(vec) << endl;
 }

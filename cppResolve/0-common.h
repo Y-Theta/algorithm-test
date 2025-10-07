@@ -56,4 +56,6 @@ public:
     int coinChange(vector<int> &coins, int amount) ;
     bool canPartition(vector<int> &nums);
     int subarraySum(vector<int> &nums, int k);
+    string longestPalindrome(string s);
+    int trap(vector<int> &height);
 };
