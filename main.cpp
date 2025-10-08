@@ -17,6 +17,7 @@ int main() {
     // }
 
     SolutionTest1 test;
-    vector<int> vec = {1,7,5};
-    cout << test.trap(vec) << endl;
+    vector<int> vec = {3,1,2};
+    vector<int> vec1 = {8,5,8};
+    test.successfulPairs(vec, vec1, 16);
 }

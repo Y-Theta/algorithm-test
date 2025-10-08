@@ -60,4 +60,5 @@ public:
     string longestPalindrome(string s);
     int trap(vector<int> &height);
     int longestCommonSubsequence(string text1, string text2);
+    vector<int> successfulPairs(vector<int>& spells, vector<int>& potions, long long success);
 };
