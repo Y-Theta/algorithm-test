@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <bitset>
 #include <iostream>
+#include <queue>
 #include <stack>
 #include <stdlib.h>
 #include <string.h>
@@ -9,7 +10,6 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
-#include <queue>
 
 #ifndef USINGCOMMON
 #define USINGCOMMON
@@ -42,6 +42,21 @@ public:
     void Test();
 };
 
+namespace commonutils {
+static int quickfind(vector<int> array, int aim, int start, int end) {
+    while (start != end) {
+        int mid = (start + end) / 2;
+        if (array[mid] >= aim) {
+            end = mid;
+        } else {
+            start = mid + 1;
+        }
+    }
+
+    return start;
+};
+} // namespace commonutils
+
 class SolutionTest1 {
 public:
     int lengthOfLongestSubstring(string s);
@@ -54,11 +69,11 @@ public:
     vector<int> maxSlidingWindow(vector<int> &nums, int k);
     int numSquares(int n);
     int lengthOfLIS(vector<int> &nums);
-    int coinChange(vector<int> &coins, int amount) ;
+    int coinChange(vector<int> &coins, int amount);
     bool canPartition(vector<int> &nums);
     int subarraySum(vector<int> &nums, int k);
     string longestPalindrome(string s);
     int trap(vector<int> &height);
     int longestCommonSubsequence(string text1, string text2);
-    vector<int> successfulPairs(vector<int>& spells, vector<int>& potions, long long success);
+    vector<int> successfulPairs(vector<int> &spells, vector<int> &potions, long long success);
 };
