@@ -16,11 +16,8 @@ int main() {
     //     cout << i << " ";
     // }
 
-    vector<int> vec2 = {2, 2, 2, 4, 4, 4, 4, 4};
-    int index = commonutils::quickfind(vec2, 3, 0, vec2.size() - 1);
-
     SolutionTest1 test;
     vector<int> vec = {3, 1, 2};
     vector<int> vec1 = {8, 5, 8};
-    test.successfulPairs(vec, vec1, 16);
+    test.isPalindrome(23333322);
 }

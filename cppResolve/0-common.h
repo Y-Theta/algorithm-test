@@ -10,6 +10,9 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
+#include <math.h>
+#include <functional>
+#include <thread>
 
 #ifndef USINGCOMMON
 #define USINGCOMMON
@@ -59,6 +62,7 @@ static int quickfind(vector<int> array, int aim, int start, int end) {
 
 class SolutionTest1 {
 public:
+    bool isPalindrome(int x);
     int lengthOfLongestSubstring(string s);
     int maxArea(vector<int> &height);
     void rotate(vector<vector<int>> &matrix);
