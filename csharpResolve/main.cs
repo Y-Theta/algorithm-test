@@ -1,3 +1,5 @@
+using main.csharpResolve;
+
 using System;
 
 namespace leetcode
@@ -6,7 +8,8 @@ namespace leetcode
     {
         public static void Main(string[] args)
         {
-            Console.WriteLine("hello ");
+            ResolveClass1 clas = new ResolveClass1();
+            clas.RemoveDuplicates_0026(new int[] {1,2});
         }
     }
 }
