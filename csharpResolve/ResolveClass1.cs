@@ -102,5 +102,126 @@ namespace main.csharpResolve
 
             return offset ;
         }
+
+        public int MaximumEnergy_3147(int[] energy, int k)
+        {
+            // dp[i] = max (e[i],e[i] + e[i-k])
+            int max = int.MinValue;
+            int[] dp = new int[energy.Length];
+            for (int i = 0; i < energy.Length; i++)
+            {
+                dp[i] = energy[i];
+                if (i - k >= 0)
+                {
+                    dp[i] = Math.Max(dp[i], dp[i - k] + energy[i]);
+                }
+            }
+
+            for (int j = energy.Length - 1; j >= energy.Length - k; j--)
+            {
+                max = Math.Max(max, dp[j]);
+            }
+
+            return max;
+        }
+
+        public int LengthOfLastWord_0058(string s)
+        {
+            int max = 0;
+            bool flag = true;
+            for (int i = 0; i < s.Length; i++)
+            {
+                if (s[i] == ' ')
+                {
+                    flag = true;
+                }
+                else
+                {
+                    if (flag)
+                    {
+                        flag = false;
+                        max = 0;
+                    }
+                    max++;
+                }
+            }
+            return max;
+        }
+
+        public int MySqrt_0069(int x)
+        {
+            if (x == 0)
+                return 0;
+
+            int s = x;
+            double sqrts(double x)
+            {
+                double res = (x + s / x) / 2;
+                if (res == x)
+                {
+                    return x;
+                }
+                else
+                {
+                    return sqrts(res);
+                }
+            }
+
+            return ((int)(sqrts(x)));
+        }
+
+        public bool IsSymmetric_0101(TreeNode root)
+        {
+            Queue<TreeNode> layer = new Queue<TreeNode>();
+            layer.Enqueue(root);
+
+            List<TreeNode> child = new List<TreeNode>();
+            while (layer.Count > 0)
+            {
+                child.Clear();
+                bool allnull = true;
+                while (layer.Count > 0)
+                {
+                    var node = layer.Dequeue();
+                    if (node != null)
+                    {
+                        child.Add(node.left);
+                        child.Add(node.right);
+                        allnull = false;
+                    }
+                    else
+                    {
+                        child.Add(null);
+                        child.Add(null);
+                    }
+                }
+
+                if (allnull)
+                    break;
+
+                for (int i = 0; i < child.Count - 1 - i; i++)
+                {
+                    if (child[i] == null && child[child.Count - 1 - i] == null)
+                    {
+                        continue;
+                    }
+                    if (child[i] != null && child[child.Count - 1 - i] != null &&
+                        child[i].val == child[child.Count - 1 - i].val)
+                    {
+                        continue;
+                    }
+
+                    return false;
+                }
+
+                for (int i = 0; i < child.Count; i++)
+                {
+                    layer.Enqueue(child[i]);
+                }
+            }
+    
+
+            return true;
+        }
     }
 }
