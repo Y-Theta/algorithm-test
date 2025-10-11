@@ -1,6 +1,7 @@
 using main.csharpResolve;
 
 using System;
+using System.Collections.Generic;
 
 namespace leetcode
 {
@@ -9,11 +10,13 @@ namespace leetcode
         public static void Main(string[] args)
         {
             ResolveClass1 clas = new ResolveClass1();
-            TreeNode root = new TreeNode();
-            root.val = 1;
-            root.left = new TreeNode { left = new TreeNode() { val = 3 },right = new TreeNode { val = 4},val = 2 };
-            root.right = new TreeNode { left = new TreeNode() { val = 4 },right = new TreeNode { val = 3 },val = 2 };
-            clas.IsSymmetric_0101(root);
+            List< ListNode> nodes = new List< ListNode>();
+            nodes.Add(ListNode.ToLinkList(new int[] { -6, -3, -1, 1, 2, 2, 2 }));
+            nodes.Add(ListNode.ToLinkList(new int[] { -10, -8, -6, -2, 4 }));
+            nodes.Add(ListNode.ToLinkList(new int[] { -2 }));
+            nodes.Add(ListNode.ToLinkList(new int[] { -8, -4, -3, -3, -2, -1, 1, 2, 3 }));
+            nodes.Add(ListNode.ToLinkList(new int[] { -8, -6, -5, -4, -2, -2, 2, 4 }));
+            clas.MaximumTotalDamage_3186(new int[] { 5, 9, 2, 10, 2, 7, 10, 9, 3, 8 });
         }
     }
 }

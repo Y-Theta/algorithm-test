@@ -15,7 +15,7 @@ namespace main.csharpResolve
             lasttime[0] = skill[0] * mana[0];
             for (int i = 1; i < skill.Length; i++)
             {
-                lasttime[i] = lasttime[i-1] + (skill[i] * mana[0]);
+                lasttime[i] = lasttime[i - 1] + (skill[i] * mana[0]);
             }
             long nextstart = 0;
             for (int i = 1; i < mana.Length; i++)
@@ -37,7 +37,7 @@ namespace main.csharpResolve
                 lasttime[0] = nextstart + current * skill[0];
                 for (int k = 1; k < lasttime.Length; k++)
                 {
-                    lasttime[k] = lasttime[k-1] + (current * skill[k]);
+                    lasttime[k] = lasttime[k - 1] + (current * skill[k]);
                 }
                 nextstart = 0;
             }
@@ -100,7 +100,7 @@ namespace main.csharpResolve
                 nums[offset] = nums[i];
             }
 
-            return offset ;
+            return offset;
         }
 
         public int MaximumEnergy_3147(int[] energy, int k)
@@ -219,9 +219,170 @@ namespace main.csharpResolve
                     layer.Enqueue(child[i]);
                 }
             }
-    
+
 
             return true;
+        }
+
+        public ListNode MergeKLists_0023(ListNode[] lists)
+        {
+            if (lists.Length == 0)
+                return null;
+
+            var heap = new Heap<ListNode>(new ListNodeComparer(), lists);
+            if (heap.Count == 0)
+                return null;
+
+            ListNode newhead = new ListNode();
+            ListNode current = newhead;
+            while (heap.Count > 0 && heap.Peek() != null)
+            {
+                current.val = heap.Peek().val;
+                if (heap.Peek().next != null)
+                {
+                    heap.Pop(heap.Peek().next);
+                }
+                else
+                {
+                    heap.RemoveTop();
+                }
+
+                if (heap.Count > 0)
+                {
+                    current.next = new ListNode();
+                    current = current.next;
+                }
+            }
+
+            return newhead;
+        }
+
+        public int HammingWeight_0191(int n)
+        {
+            if (n == 0)
+                return 0;
+            return (n & 0x1) + HammingWeight_0191(n >> 1);
+        }
+
+        private int quickPick(int[] nums, int start, int end, int k)
+        {
+            if (start >= end)
+                return nums[end];
+
+            var pk = nums[start];
+            var tempstart = start;
+            var tempend = end;
+
+            int same = 0;
+            while (tempstart < tempend)
+            {
+                if (nums[tempstart] > pk)
+                {
+                    tempstart++;
+                    continue;
+                }
+
+                if (nums[tempend] <= pk)
+                {
+                    if (nums[tempend] == pk)
+                    {
+                        same++;
+                    }
+                    tempend--;
+                    continue;
+                }
+
+                var c = nums[tempend];
+                nums[tempend] = nums[tempstart];
+                nums[tempstart] = c;
+            }
+
+            if (tempstart > k)
+            {
+                return quickPick(nums, start, tempstart - 1, k);
+            }
+            else if (tempstart < k)
+            {
+                if (tempstart + same < k)
+                {
+                    return pk;
+                }
+                return quickPick(nums, tempstart == start ? (tempstart + 1) : tempstart, end, k);
+            }
+            else
+            {
+                return pk;
+            }
+        }
+
+        public int FindKthLargest_0215(int[] nums, int k)
+        {
+            if (nums.Length == 1)
+                return nums[0];
+
+            int pk = quickPick(nums, 0, nums.Length - 1, k - 1);
+            return pk;
+        }
+
+        public struct PowerInfo
+        {
+            public long power;
+            public int count;
+            public long sum;
+        }
+
+        public long MaximumTotalDamage_3186(int[] power)
+        {
+            long max = 0;
+            Dictionary<long, int> countdic = new Dictionary<long, int>();
+            for (int i = 0; i < power.Length; i++)
+            {
+                if (!countdic.ContainsKey(power[i]))
+                {
+                    countdic[power[i]] = 0;
+                }
+                countdic[power[i]] += 1;
+            }
+
+            var kvs = countdic.OrderBy(kv => kv.Key).ToList();
+            PowerInfo[] dp = new PowerInfo[countdic.Count];
+            for (int i = 0; i < countdic.Count; i++)
+            {
+                var kv = kvs[i];
+                dp[i] = new PowerInfo { power = kv.Key, count = kv.Value, sum = kv.Key * kv.Value };
+                if (i - 1 >= 0)
+                {
+                    if (kv.Key - dp[i - 1].power > 2)
+                    {
+                        dp[i].sum += dp[i - 1].sum;
+                    }
+                    else
+                    {
+                        dp[i].sum = Math.Max(dp[i].sum, dp[i - 1].sum);
+                    }
+                }
+
+                if (i - 2 >= 0)
+                {
+                    if (kv.Key - dp[i - 2].power > 2)
+                    {
+                        dp[i].sum = Math.Max(dp[i].sum, kv.Key * kv.Value + dp[i - 2].sum);
+                    }
+                    else
+                    {
+                        dp[i].sum = Math.Max(dp[i].sum, dp[i - 2].sum);
+                    }
+                }
+                
+                if (i - 3 >= 0 && kv.Key - dp[i - 3].power > 2)
+                {
+                    dp[i].sum = Math.Max(dp[i].sum, kv.Key * kv.Value + dp[i - 3].sum);
+                }
+
+                max = Math.Max(max, dp[i].sum);
+            }
+
+            return max;
         }
     }
 }
