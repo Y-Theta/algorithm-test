@@ -51,19 +51,25 @@ namespace main.csharpResolve
         public T Pop(T toadd = null)
         {
             var c = __list[0];
-            __list[0] = toadd;
-            Alter(0);
+            if (toadd != null)
+            {
+                __list[0] = toadd;
+            }
+            else
+            {
+                __list[0] = __list[__list.Count - 1];
+                __list.RemoveAt(__list.Count - 1);
+            }
+            if (__list.Count > 0)
+            {
+                Alter(0);
+            }
             return c;
         }
 
         public void RemoveTop()
         {
-            __list[0] = __list[__list.Count - 1];
-            __list.RemoveAt(__list.Count - 1);
-            if (__list.Count > 0)
-            {
-                Alter(0);
-            }
+            Pop();
         }
 
         private void InitAlter()

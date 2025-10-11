@@ -16,7 +16,15 @@ namespace leetcode
             nodes.Add(ListNode.ToLinkList(new int[] { -2 }));
             nodes.Add(ListNode.ToLinkList(new int[] { -8, -4, -3, -3, -2, -1, 1, 2, 3 }));
             nodes.Add(ListNode.ToLinkList(new int[] { -8, -6, -5, -4, -2, -2, 2, 4 }));
-            clas.MaximumTotalDamage_3186(new int[] { 5, 9, 2, 10, 2, 7, 10, 9, 3, 8 });
+            clas.HasPathSum_0112(new TreeNode
+            {
+                val = 1,
+                left = new TreeNode
+                {
+                    val = 2,
+             
+                },
+            },1);
         }
     }
 }

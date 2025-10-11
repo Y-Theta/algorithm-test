@@ -324,6 +324,7 @@ namespace main.csharpResolve
             return pk;
         }
 
+        #region   
         public struct PowerInfo
         {
             public long power;
@@ -373,7 +374,7 @@ namespace main.csharpResolve
                         dp[i].sum = Math.Max(dp[i].sum, dp[i - 2].sum);
                     }
                 }
-                
+
                 if (i - 3 >= 0 && kv.Key - dp[i - 3].power > 2)
                 {
                     dp[i].sum = Math.Max(dp[i].sum, kv.Key * kv.Value + dp[i - 3].sum);
@@ -384,5 +385,62 @@ namespace main.csharpResolve
 
             return max;
         }
+        #endregion
+
+        public int IntegerBreak_0343(int n)
+        {
+            int[] dp = new int[n + 4];
+            dp[0] = 0;
+            dp[1] = 1;
+            dp[2] = 1;
+            dp[3] = 2;
+            // n >= 5 可分
+            for (int i = 4; i <= n; i++)
+            {
+                //var k = i / 4;
+                //var last = i % 4;
+                dp[i] = Math.Max(dp[i - 3] * 3, (i / 2) * (i - (i / 2)));
+            }
+
+            return dp[n];
+        }
+
+        private bool LeftTraversal(TreeNode root, int targetSum, int aim)
+        {
+            if (root.right != null || root.left != null)
+            {
+                if (root.left != null)
+                {
+                    if (LeftTraversal(root.left, targetSum + root.val, aim))
+                    {
+                        return true;
+                    }
+                }
+                if (root.right != null)
+                {
+                    if (LeftTraversal(root.right, targetSum + root.val, aim))
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+            else
+            {
+                if (targetSum + root.val == aim)
+                    return true;
+
+                return false;
+            }
+        }
+
+        public bool HasPathSum_0112(TreeNode root, int targetSum)
+        {
+            if (root == null)
+                return false;
+            return LeftTraversal(root, 0, targetSum);
+        }
+
+
     }
 }
