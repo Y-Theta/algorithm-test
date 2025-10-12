@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -441,6 +442,192 @@ namespace main.csharpResolve
             return LeftTraversal(root, 0, targetSum);
         }
 
+        public bool IsSameTree_0100(TreeNode p, TreeNode q)
+        {
+            if (p == null && q != null || p != null && q == null)
+                return false;
+
+            if (p == null && q == null)
+                return true;
+
+            if (p.val != q.val)
+                return false;
+
+            return IsSameTree_0100(p.left, q.left) && IsSameTree_0100(p.right, q.right);
+        }
+
+        public TreeNode SortedArrayToBST_0108(int[] nums)
+        {
+            TreeNode root = null;
+            for (int i = 0; i < nums.Length; i++)
+            {
+                var num = nums[i];
+                if (root == null)
+                {
+                    root = new TreeNode(num);
+                }
+                else
+                {
+
+                }
+            }
+            return default;
+        }
+
+        static double Factorial(int num)
+        {
+            if (num <= 1)
+            {
+                return 1;
+            }
+            return num * Factorial(num - 1);
+        }
+
+        static double Factorial(int[] nums, int i)
+        {
+            if (i == 0)
+            {
+                return nums[i];
+            }
+            return nums[i] * Factorial(nums, i - 1);
+        }
+
+        public static void DFS_3539(int[] nums, int start, int k, long currentsum, List<long> sum)
+        {
+            if (start >= nums.Length)
+                return;
+
+            currentsum *= nums[start];
+            if (k == 0)
+            {
+                sum.Add(currentsum);
+                return;
+            }
+            while (start < nums.Length)
+            {
+                DFS_3539(nums, start + 1, k - 1, currentsum, sum);
+                start++;
+            }
+        }
+
+        public int MagicalSum_3539(int m, int k, int[] nums)
+        {
+            // DP [][][]
+            // 
+            // DFS 
+            if (m == nums.Length)
+                return (int)(Factorial(m) * Factorial(nums, nums.Length - 1) % (1000000000 + 7));
+
+            if (m == k)
+            {
+                double factor = Factorial(m);
+                double sum = 0;
+                List<long> sums = new List<long>();
+                for (int i = 0; i <= nums.Length - m; i++)
+                {
+                    sums.Clear();
+                    DFS_3539(nums, i, k - 1, 1, sums);
+                    sum += sums.Sum();
+                }
+                return (int)((sum * factor) % (1000000000 + 7));
+            }
+            else
+            {
+
+            }
+
+            return default;
+
+        }
+
+        private int ReverseBits(int n, int offset)
+        {
+            if (n == 0)
+                return 0;
+            return (int)((n & 0x80000000) >> offset) + ReverseBits(n << 1, offset - 1);
+        }
+
+        public int ReverseBits_0190(int n)
+        {
+            return ReverseBits(n, 31);
+        }
+
+        public string IsNiceSubstring(string s, int length, HashSet<char> cset)
+        {
+            if (length == 0)
+                return "";
+
+            for (int i = 0; i <= s.Length - length; i++)
+            {
+                var sub = s.Substring(i, length);
+                cset.Clear();
+                cset.UnionWith(sub);
+                bool flag = false;
+                if (cset.Count % 2 == 0)
+                {
+                    flag = true;
+                    foreach (var c in cset)
+                    {
+                        if (c < 'a')
+                        {
+                            if (!cset.Contains((char)(c + ('a' - 'A'))))
+                            {
+                                flag = false;
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            if (!cset.Contains((char)(c + ('A' - 'a'))))
+                            {
+                                flag = false;
+                                break;
+                            }
+                        }
+                    }
+                }
+                if (flag)
+                    return sub;
+            }
+
+            return IsNiceSubstring(s, length - 1, cset);
+        }
+
+        public string LongestNiceSubstring_1763(string s)
+        {
+            HashSet<char> sd = new HashSet<char>();
+            return IsNiceSubstring(s, s.Length, sd);
+        }
+
+        public int[] InventoryManagement_0159(int[] stock, int cnt)
+        {
+            if (stock == null || cnt == 0)
+                return new int[0];
+
+            Dictionary<int, int> list = new Dictionary<int, int>();
+            for (int i = 0; i < stock.Length; i++)
+            {
+                if (!list.ContainsKey(stock[i]))
+                {
+                    list[stock[i]] = 0;
+                }
+                list[stock[i]]++;
+            }
+
+            List<int> finaldata = new List<int>();
+            var odlist = list.OrderBy(kv => kv.Key).ToList();
+            foreach (var item in odlist)
+            {
+                for (int i = 0; i < item.Value; i++)
+                {
+                    finaldata.Add(item.Key);
+                    if (finaldata.Count == cnt)
+                        return finaldata.ToArray();
+                }
+            }
+
+            return default;
+        }
 
     }
 }

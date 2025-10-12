@@ -13,6 +13,11 @@ namespace main.csharpResolve
         {
             return default;
         }
+
+        public static void FullSeq(int[] nums,int k)
+        {
+
+        }
     }
 
     public class Heap<T> where T : class
@@ -187,6 +192,27 @@ namespace main.csharpResolve
             {
                 RightTraversal(root.left, list);
             }
+        }
+
+        public static TreeNode ToTree(int?[] nodes, int index = 0)
+        {
+            if (index >= nodes.Length)
+                return null;
+
+            if (nodes is null || !nodes.Any())
+                return null;
+
+            var val = nodes[index];
+            if (val.HasValue)
+            {
+                TreeNode node = new TreeNode();
+                node.val = val.Value;
+                node.left = ToTree(nodes, (index + 1) * 2 - 1);
+                node.right = ToTree(nodes, (index + 1) * 2);
+                return node;
+            }
+
+            return null;
         }
     }
 }
