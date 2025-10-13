@@ -629,5 +629,63 @@ namespace main.csharpResolve
             return default;
         }
 
+        public IList<string> RemoveAnagrams_2273(string[] words)
+        {
+            List<string> newwords = new List<string>();
+            List<char> key = null;
+            for (int i = 0; i < words.Length; i++)
+            {
+                if (key == null)
+                {
+                    key = words[i].ToList();
+                    key.Sort();
+                    newwords.Add(words[i]);
+                }
+                else
+                {
+                    var current = words[i].ToList();
+                    current.Sort();
+                    if (current.SequenceEqual(key))
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        key = current;
+                        newwords.Add(words[i]);
+                    }
+                }
+            }
+
+            return newwords;
+        }
+
+        public int[] TopKFrequent_0347(int[] nums, int k)
+        {
+            if (nums.Length == 1)
+                return nums;
+
+            return default;
+        }
+
+        public int GetPow(int x,int n)
+        {
+            int res = 1;
+            while (n != 0)
+            {
+                if (n % 2 != 0)
+                {
+                    res = (int)((long)res * x /*% MOD*/);
+                }
+                x = (int)((long)x * x /*% MOD*/);
+                n /= 2;
+            }
+            return res;
+        }
+
+        public int SuperPow_0372(int a, int[] b)
+        {
+            return default;
+        }
     }
 }
