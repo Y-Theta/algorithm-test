@@ -668,24 +668,111 @@ namespace main.csharpResolve
             return default;
         }
 
-        public int GetPow(int x,int n)
-        {
-            int res = 1;
-            while (n != 0)
-            {
-                if (n % 2 != 0)
-                {
-                    res = (int)((long)res * x /*% MOD*/);
-                }
-                x = (int)((long)x * x /*% MOD*/);
-                n /= 2;
-            }
-            return res;
-        }
-
         public int SuperPow_0372(int a, int[] b)
         {
             return default;
+        }
+
+        public bool HasIncreasingSubarrays_3349(IList<int> nums, int k)
+        {
+            if (k == 1)
+                return true;
+
+            int start = 0, end = 0;
+            List<(int e, int s)> decse = new List<(int e, int s)>();
+            for (int i = 0; i < nums.Count; i++)
+            {
+                if (nums[i] > nums[end])
+                {
+                    if (i - start > 1)
+                    {
+                        decse.Add((start, end));
+                    }
+                    start = i;
+                }
+                end = i;
+            }
+
+            if (start != nums.Count - 1)
+            {
+                decse.Add((start, nums.Count - 1));
+            }
+
+            if (decse.Count > 0)
+            {
+                int prestart = 0;
+                int prelen = 0;
+                for (int i = 0; i < decse.Count; i++)
+                {
+                    if (i - 1 >= 0 && decse[i - 1].s - decse[i - 1].e == 1)
+                    {
+                        if (prelen >= k && decse[i].e - prestart + 1 >= k)
+                        {
+                            return true;
+                        }
+                    }
+                    prelen = decse[i].e - prestart + 1;
+                    if (prelen >= 2 * k)
+                        return true;
+                    prestart = decse[i].s;
+                }
+
+                if (decse[decse.Count - 1].e != nums.Count - 1)
+                {
+                    if (nums.Count - prestart >= 2 * k)
+                        return true;
+                    if (decse[decse.Count - 1].s - decse[decse.Count - 1].e == 1)
+                    {
+                        if (prelen >= k && nums.Count - prestart >= k)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                return nums.Count >= 2 * k;
+            }
+
+                return false;
+        }
+
+
+        private TreeNode BuildTree(int[] preorder, ref int current, int[] inorder, int start, int end)
+        {
+            if (current >= preorder.Length)
+                return null;
+            TreeNode root = new TreeNode { val = preorder[current] };
+
+            int i = start;
+            for (; i < end; i++)
+            {
+                if (inorder[i] == root.val)
+                {
+                    break;
+                }
+            }
+
+            if (i - start > 0)
+            {
+                current++;
+                root.left = BuildTree(preorder, ref current, inorder, start, i - 1);
+            }
+            if (end - i > 0)
+            {
+                current++;
+                root.right = BuildTree(preorder, ref current, inorder, i + 1, end);
+            }
+            return root;
+        }
+
+        public TreeNode BuildTree_0105(int[] preorder, int[] inorder)
+        {
+            if (preorder == null || inorder == null || preorder.Length == 0 || inorder.Length == 0)
+                return null;
+            int current = 0;
+            return BuildTree(preorder, ref current, inorder, 0, inorder.Length);
         }
     }
 }

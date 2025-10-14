@@ -18,6 +18,23 @@ namespace main.csharpResolve
         {
 
         }
+
+
+        public static int GetPow(int x, int n)
+        {
+            int res = 1;
+            while (n != 0)
+            {
+                if (n % 2 != 0)
+                {
+                    res = (int)((long)res * x /*% MOD*/);
+                }
+                x = (int)((long)x * x /*% MOD*/);
+                n /= 2;
+            }
+            return res;
+        }
+
     }
 
     public class Heap<T> where T : class
