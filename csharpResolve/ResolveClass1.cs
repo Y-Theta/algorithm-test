@@ -776,6 +776,34 @@ namespace main.csharpResolve
             return BuildTree(preorder, ref current, inorder, 0, inorder.Length);
         }
 
+        public int FindSmallestInteger_2598(int[] nums, int value)
+        {
+            var numsdic = new int[value];
+      
+            foreach (var item in nums)
+            {
+                var num = (item % value);
+                if (num < 0)
+                {
+                    num += value;
+                }
+                numsdic[num]++;
+            }
+
+            int min = int.MaxValue;
+            int minnum = 0;
+            for (int i = 0; i < value; i++)
+            {
+                if (numsdic[i] < min)
+                {
+                    min = numsdic[i];
+                    minnum = i;
+                }
+            }
+
+            return value * min + minnum;
+        }
+
         public int MaxIncreasingSubarrays_3350(IList<int> nums)
         {
             List<(int e, int s)> descs = new List<(int e, int s)>();
