@@ -11,7 +11,7 @@ namespace leetcode
         {
             ResolveClass1 clas = new ResolveClass1();
             List<long> sum = new List<long>();
-            var s = clas.BuildTree_0105(new int[] { 3, 9, 20, 15, 7 }, new int[] { 9, 3, 15, 20, 7 });
+            clas.MaxIncreasingSubarrays_3350(new List<int> { 8, -4, -1, 16, 20 });
         }
     }
 }

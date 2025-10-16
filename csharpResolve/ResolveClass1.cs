@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -735,7 +736,7 @@ namespace main.csharpResolve
                 return nums.Count >= 2 * k;
             }
 
-                return false;
+            return false;
         }
 
 
@@ -773,6 +774,75 @@ namespace main.csharpResolve
                 return null;
             int current = 0;
             return BuildTree(preorder, ref current, inorder, 0, inorder.Length);
+        }
+
+        public int MaxIncreasingSubarrays_3350(IList<int> nums)
+        {
+            List<(int e, int s)> descs = new List<(int e, int s)>();
+            int start = 0, end = 0;
+            for (int i = 0; i < nums.Count; i++)
+            {
+                if (nums[i] > nums[end])
+                {
+                    if (start != end)
+                    {
+                        descs.Add((start, end));
+                    }
+                    start = i;
+                }
+                end = i;
+            }
+            if (start != end)
+            {
+                descs.Add((start, end));
+            }
+
+            if (descs.Count == 0)
+            {
+                return nums.Count / 2;
+            }
+
+            int maxlen = 1;
+            for (int i = 0; i < descs.Count; i++)
+            {
+                if (descs[i].s - descs[i].e == 1)
+                {
+                    int length = 0;
+                    if (i - 1 >= 0)
+                    {
+                        length = descs[i].e - descs[i - 1].s + 1;
+                    }
+                    else
+                    {
+                        length = descs[i].e - 0 + 1;
+                    }
+                    if (i + 1 < descs.Count)
+                    {
+                        length = Math.Min(length, descs[i + 1].e - descs[i].s + 1);
+                    }
+                    else
+                    {
+                        length = Math.Min(length, nums.Count - descs[i].s);
+                    }
+                    maxlen = Math.Max(maxlen, length);
+                }
+
+                if (i - 1 >= 0)
+                {
+                    maxlen = Math.Max(maxlen, (descs[i].e - descs[i - 1].s + 1) / 2);
+                }
+                else
+                {
+                    maxlen = Math.Max(maxlen, (descs[i].e + 1) / 2);
+                }
+            }
+
+            if (descs[descs.Count - 1].s != nums.Count - 1)
+            {
+                maxlen = Math.Max(maxlen, (nums.Count - descs[descs.Count - 1].s) / 2);
+            }
+
+            return maxlen ;
         }
     }
 }
