@@ -10,8 +10,9 @@ namespace leetcode
         public static void Main(string[] args)
         {
             ResolveClass1 clas = new ResolveClass1();
-            List<long> sum = new List<long>();
-            clas.MaxIncreasingSubarrays_3350(new List<int> { 8, -4, -1, 16, 20 });
+            string solution = "3003";
+            typeof(ResolveClass1).GetMethod($"Solution_{solution}")
+                .Invoke(clas, new object[] { "qertyuiopasdfghjklzxcvbnmqertyuiopasdfghjklzxcvbnmw", 25 });
         }
     }
 }

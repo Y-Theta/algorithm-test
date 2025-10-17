@@ -135,6 +135,38 @@ namespace main.csharpResolve
         }
     }
 
+    public class UnionFind
+    {
+        private readonly int[] _unionFind;
+
+        public UnionFind(int size)
+        {
+            _unionFind = Enumerable.Range(0, size + 1).ToArray();
+        }
+
+        public void Union(int a, int b)
+        {
+            var ap = Find(a);
+            var bp = Find(b);
+
+            if (ap != bp)
+            {
+                _unionFind[ap] = bp;
+            }
+        }
+
+        public int Find(int obj)
+        {
+            while (obj != _unionFind[obj])
+            {
+                _unionFind[obj] = _unionFind[_unionFind[obj]];
+                obj = _unionFind[obj];
+            }
+
+            return _unionFind[obj];
+        }
+    }
+
     public class ListNodeComparer : IComparer<ListNode>
     {
         public int Compare(ListNode x, ListNode y)

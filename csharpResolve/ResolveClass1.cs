@@ -11,7 +11,8 @@ namespace main.csharpResolve
 {
     internal class ResolveClass1
     {
-        public long MinTime_3494(int[] skill, int[] mana)
+        #region   Solution 3494
+        public long Solution_3494(int[] skill, int[] mana)
         {
             long[] lasttime = new long[skill.Length];
             lasttime[0] = skill[0] * mana[0];
@@ -46,8 +47,10 @@ namespace main.csharpResolve
 
             return lasttime.Last();
         }
+        #endregion
 
-        public bool IsValid_0020(string s)
+        #region   Solution 20
+        public bool Solution_0020(string s)
         {
             Stack<char> a = new Stack<char>();
             Dictionary<char, char> pairmap = new Dictionary<char, char>();
@@ -80,8 +83,10 @@ namespace main.csharpResolve
             }
             return a.Count == 0;
         }
+        #endregion
 
-        public int RemoveDuplicates_0026(int[] nums)
+        #region   Solution 26
+        public int Solution_0026(int[] nums)
         {
             int offset = 0;
             for (int i = 0; ;)
@@ -104,8 +109,10 @@ namespace main.csharpResolve
 
             return offset;
         }
+        #endregion
 
-        public int MaximumEnergy_3147(int[] energy, int k)
+        #region   Solution 3147
+        public int Solution_3147(int[] energy, int k)
         {
             // dp[i] = max (e[i],e[i] + e[i-k])
             int max = int.MinValue;
@@ -126,8 +133,10 @@ namespace main.csharpResolve
 
             return max;
         }
+        #endregion
 
-        public int LengthOfLastWord_0058(string s)
+        #region   Solution 58
+        public int Solution_0058(string s)
         {
             int max = 0;
             bool flag = true;
@@ -149,8 +158,10 @@ namespace main.csharpResolve
             }
             return max;
         }
+        #endregion
 
-        public int MySqrt_0069(int x)
+        #region   Solution 69
+        public int Solution_0069(int x)
         {
             if (x == 0)
                 return 0;
@@ -171,8 +182,10 @@ namespace main.csharpResolve
 
             return ((int)(sqrts(x)));
         }
+        #endregion
 
-        public bool IsSymmetric_0101(TreeNode root)
+        #region   Solution 101
+        public bool Solution_0101(TreeNode root)
         {
             Queue<TreeNode> layer = new Queue<TreeNode>();
             layer.Enqueue(root);
@@ -225,8 +238,10 @@ namespace main.csharpResolve
 
             return true;
         }
+        #endregion
 
-        public ListNode MergeKLists_0023(ListNode[] lists)
+        #region   Solution 23
+        public ListNode Solution_0023(ListNode[] lists)
         {
             if (lists.Length == 0)
                 return null;
@@ -258,15 +273,19 @@ namespace main.csharpResolve
 
             return newhead;
         }
+        #endregion
 
-        public int HammingWeight_0191(int n)
+        #region   Solution 191
+        public int Solution_0191(int n)
         {
             if (n == 0)
                 return 0;
-            return (n & 0x1) + HammingWeight_0191(n >> 1);
+            return (n & 0x1) + Solution_0191(n >> 1);
         }
+        #endregion
 
-        private int quickPick(int[] nums, int start, int end, int k)
+        #region   Solution 215
+        private int QuickPick(int[] nums, int start, int end, int k)
         {
             if (start >= end)
                 return nums[end];
@@ -301,7 +320,7 @@ namespace main.csharpResolve
 
             if (tempstart > k)
             {
-                return quickPick(nums, start, tempstart - 1, k);
+                return QuickPick(nums, start, tempstart - 1, k);
             }
             else if (tempstart < k)
             {
@@ -309,7 +328,7 @@ namespace main.csharpResolve
                 {
                     return pk;
                 }
-                return quickPick(nums, tempstart == start ? (tempstart + 1) : tempstart, end, k);
+                return QuickPick(nums, tempstart == start ? (tempstart + 1) : tempstart, end, k);
             }
             else
             {
@@ -317,16 +336,17 @@ namespace main.csharpResolve
             }
         }
 
-        public int FindKthLargest_0215(int[] nums, int k)
+        public int Solution_0215(int[] nums, int k)
         {
             if (nums.Length == 1)
                 return nums[0];
 
-            int pk = quickPick(nums, 0, nums.Length - 1, k - 1);
+            int pk = QuickPick(nums, 0, nums.Length - 1, k - 1);
             return pk;
         }
+        #endregion
 
-        #region   
+        #region   Solution 3186
         public struct PowerInfo
         {
             public long power;
@@ -334,7 +354,7 @@ namespace main.csharpResolve
             public long sum;
         }
 
-        public long MaximumTotalDamage_3186(int[] power)
+        public long Solution_3186(int[] power)
         {
             long max = 0;
             Dictionary<long, int> countdic = new Dictionary<long, int>();
@@ -389,7 +409,8 @@ namespace main.csharpResolve
         }
         #endregion
 
-        public int IntegerBreak_0343(int n)
+        #region   Solution 343
+        public int Solution_0343(int n)
         {
             int[] dp = new int[n + 4];
             dp[0] = 0;
@@ -406,7 +427,9 @@ namespace main.csharpResolve
 
             return dp[n];
         }
+        #endregion
 
+        #region   Solution 112
         private bool LeftTraversal(TreeNode root, int targetSum, int aim)
         {
             if (root.right != null || root.left != null)
@@ -436,14 +459,16 @@ namespace main.csharpResolve
             }
         }
 
-        public bool HasPathSum_0112(TreeNode root, int targetSum)
+        public bool Solution_0112(TreeNode root, int targetSum)
         {
             if (root == null)
                 return false;
             return LeftTraversal(root, 0, targetSum);
         }
+        #endregion
 
-        public bool IsSameTree_0100(TreeNode p, TreeNode q)
+        #region   Solution 100
+        public bool Solution_0100(TreeNode p, TreeNode q)
         {
             if (p == null && q != null || p != null && q == null)
                 return false;
@@ -454,10 +479,12 @@ namespace main.csharpResolve
             if (p.val != q.val)
                 return false;
 
-            return IsSameTree_0100(p.left, q.left) && IsSameTree_0100(p.right, q.right);
+            return Solution_0100(p.left, q.left) && Solution_0100(p.right, q.right);
         }
+        #endregion
 
-        public TreeNode SortedArrayToBST_0108(int[] nums)
+        #region   Solution 108
+        public TreeNode Solution_0108(int[] nums)
         {
             TreeNode root = null;
             for (int i = 0; i < nums.Length; i++)
@@ -474,7 +501,9 @@ namespace main.csharpResolve
             }
             return default;
         }
+        #endregion
 
+        #region   Solution 3539
         static double Factorial(int num)
         {
             if (num <= 1)
@@ -493,7 +522,7 @@ namespace main.csharpResolve
             return nums[i] * Factorial(nums, i - 1);
         }
 
-        public static void DFS_3539(int[] nums, int start, int k, long currentsum, List<long> sum)
+        public static void Solution_3539(int[] nums, int start, int k, long currentsum, List<long> sum)
         {
             if (start >= nums.Length)
                 return;
@@ -506,12 +535,12 @@ namespace main.csharpResolve
             }
             while (start < nums.Length)
             {
-                DFS_3539(nums, start + 1, k - 1, currentsum, sum);
+                Solution_3539(nums, start + 1, k - 1, currentsum, sum);
                 start++;
             }
         }
 
-        public int MagicalSum_3539(int m, int k, int[] nums)
+        public int Solution_3539(int m, int k, int[] nums)
         {
             // DP [][][]
             // 
@@ -527,7 +556,7 @@ namespace main.csharpResolve
                 for (int i = 0; i <= nums.Length - m; i++)
                 {
                     sums.Clear();
-                    DFS_3539(nums, i, k - 1, 1, sums);
+                    Solution_3539(nums, i, k - 1, 1, sums);
                     sum += sums.Sum();
                 }
                 return (int)((sum * factor) % (1000000000 + 7));
@@ -540,7 +569,9 @@ namespace main.csharpResolve
             return default;
 
         }
+        #endregion
 
+        #region   Solution 190
         private int ReverseBits(int n, int offset)
         {
             if (n == 0)
@@ -548,11 +579,13 @@ namespace main.csharpResolve
             return (int)((n & 0x80000000) >> offset) + ReverseBits(n << 1, offset - 1);
         }
 
-        public int ReverseBits_0190(int n)
+        public int Solution_0190(int n)
         {
             return ReverseBits(n, 31);
         }
+        #endregion
 
+        #region   Solution 1763
         public string IsNiceSubstring(string s, int length, HashSet<char> cset)
         {
             if (length == 0)
@@ -594,13 +627,15 @@ namespace main.csharpResolve
             return IsNiceSubstring(s, length - 1, cset);
         }
 
-        public string LongestNiceSubstring_1763(string s)
+        public string Solution_1763(string s)
         {
             HashSet<char> sd = new HashSet<char>();
             return IsNiceSubstring(s, s.Length, sd);
         }
+        #endregion
 
-        public int[] InventoryManagement_0159(int[] stock, int cnt)
+        #region   Solution 159
+        public int[] Solution_0159(int[] stock, int cnt)
         {
             if (stock == null || cnt == 0)
                 return new int[0];
@@ -629,8 +664,10 @@ namespace main.csharpResolve
 
             return default;
         }
+        #endregion
 
-        public IList<string> RemoveAnagrams_2273(string[] words)
+        #region   Solution 2273
+        public IList<string> Solution_2273(string[] words)
         {
             List<string> newwords = new List<string>();
             List<char> key = null;
@@ -660,21 +697,27 @@ namespace main.csharpResolve
 
             return newwords;
         }
+        #endregion
 
-        public int[] TopKFrequent_0347(int[] nums, int k)
+        #region   Solution 347
+        public int[] Solution_0347(int[] nums, int k)
         {
             if (nums.Length == 1)
                 return nums;
 
             return default;
         }
+        #endregion
 
-        public int SuperPow_0372(int a, int[] b)
+        #region   Solution 372
+        public int Solution_0372(int a, int[] b)
         {
             return default;
         }
+        #endregion
 
-        public bool HasIncreasingSubarrays_3349(IList<int> nums, int k)
+        #region   Solution 3349
+        public bool Solution_3349(IList<int> nums, int k)
         {
             if (k == 1)
                 return true;
@@ -738,8 +781,9 @@ namespace main.csharpResolve
 
             return false;
         }
+        #endregion
 
-
+        #region   Solution 105
         private TreeNode BuildTree(int[] preorder, ref int current, int[] inorder, int start, int end)
         {
             if (current >= preorder.Length)
@@ -768,18 +812,20 @@ namespace main.csharpResolve
             return root;
         }
 
-        public TreeNode BuildTree_0105(int[] preorder, int[] inorder)
+        public TreeNode Solution_0105(int[] preorder, int[] inorder)
         {
             if (preorder == null || inorder == null || preorder.Length == 0 || inorder.Length == 0)
                 return null;
             int current = 0;
             return BuildTree(preorder, ref current, inorder, 0, inorder.Length);
         }
+        #endregion
 
-        public int FindSmallestInteger_2598(int[] nums, int value)
+        #region   Solution 2598
+        public int Solution_2598(int[] nums, int value)
         {
             var numsdic = new int[value];
-      
+
             foreach (var item in nums)
             {
                 var num = (item % value);
@@ -803,8 +849,10 @@ namespace main.csharpResolve
 
             return value * min + minnum;
         }
+        #endregion
 
-        public int MaxIncreasingSubarrays_3350(IList<int> nums)
+        #region   Solution 3350
+        public int Solution_3350(IList<int> nums)
         {
             List<(int e, int s)> descs = new List<(int e, int s)>();
             int start = 0, end = 0;
@@ -870,7 +918,568 @@ namespace main.csharpResolve
                 maxlen = Math.Max(maxlen, (nums.Count - descs[descs.Count - 1].s) / 2);
             }
 
-            return maxlen ;
+            return maxlen;
         }
+        #endregion
+
+        #region   Solution 7
+        public int Solution_0007(int x)
+        {
+            int[] xmax = new int[] { 2, 1, 4, 7, 4, 8, 3, 6, 4, 7 };
+            int[] xmin = new int[] { 2, 1, 4, 7, 4, 8, 3, 6, 4, 8 };
+
+            int digit = 0;
+            int zeroend = 0;
+            bool flag = true;
+            bool positive = x >= 0;
+
+            List<int> digits = new List<int>();
+            x = positive ? x : -x;
+            while (x > 0)
+            {
+                var current = x % 10;
+                if (current == 0 && flag)
+                {
+                    zeroend++;
+                }
+                else
+                {
+                    flag = false;
+                }
+                if (!flag)
+                {
+                    digits.Add(current);
+                }
+                x = x / 10;
+                digit++;
+            }
+
+            int rev = 0;
+            if (digits.Count == 10)
+            {
+                bool flag1 = true;
+                for (int i = 0; i < digits.Count; i++)
+                {
+                    if (positive)
+                    {
+                        if (digits[i] > xmax[i] && flag1)
+                        {
+                            return 0;
+                        }
+                        else if (digits[i] < xmax[i])
+                        {
+                            flag1 = false;
+                        }
+                    }
+                    else
+                    {
+                        if (digits[i] > xmin[i] && flag1)
+                        {
+                            return 0;
+                        }
+                        else if (digits[i] < xmin[i])
+                        {
+                            flag1 = false;
+                        }
+                    }
+                    rev += digits[i] * (int)Math.Pow(10, digits.Count - (i + 1));
+                }
+            }
+            else
+            {
+                for (int i = 0; i < digits.Count; i++)
+                {
+                    rev += digits[i] * (int)Math.Pow(10, digits.Count - (i + 1));
+                }
+            }
+
+            return rev * (positive ? 1 : -1);
+        }
+        #endregion
+
+        #region   Solution 1135
+        public struct CostI
+        {
+            public CostI(int x, int y, int cost)
+            {
+                X = x;
+                Y = y;
+                COST = cost;
+            }
+
+            public int X { get; set; }
+            public int Y { get; set; }
+            public int COST { get; set; }
+        }
+
+        public int Solution_1135(int n, int[][] connections)
+        {
+            if (connections.Length < n - 1)
+                return -1;
+
+            List<CostI> costs = new List<CostI>();
+            for (int i = 0; i < connections.Length; i++)
+            {
+                int xi = Math.Min(connections[i][0], connections[i][1]);
+                int yi = Math.Max(connections[i][0], connections[i][1]);
+                int costi = connections[i][2];
+
+                costs.Add(new CostI(xi, yi, costi));
+            }
+
+            costs.Sort((a, b) => a.COST - b.COST);
+            int sum = 0;
+            UnionFind uf = new UnionFind(n);
+            int edge = 0;
+            for (int i = 0; i <= costs.Count; i++)
+            {
+                if (edge == n - 1)
+                    return sum;
+                if (i == costs.Count)
+                    continue;
+
+                var xp = uf.Find(costs[i].X);
+                var yp = uf.Find(costs[i].Y);
+                if (xp == yp)
+                {
+                    continue;
+                }
+                sum += costs[i].COST;
+                uf.Union(costs[i].X, costs[i].Y);
+                edge++;
+            }
+
+            return -1;
+        }
+        #endregion
+
+        #region   Solution 10
+        public bool Solution_10(string s, int start, List<string> elements, bool endwithstart)
+        {
+            if (elements.Count == 0)
+                return start == s.Length;
+
+            var element = elements.First();
+            int index = 0;
+            int i = start;
+            while (i < s.Length && index < element.Length)
+            {
+                if (index == element.Length - 1 && elements.Count > 1)
+                {
+                    elements.RemoveAt(0);
+                    if (Solution_10(s, i, elements.ToList(), endwithstart))
+                    {
+                        return true;
+                    }
+                    elements.Insert(0, element);
+                }
+
+                if (element[index] == '.' || s[i] == element[index])
+                {
+                    index++;
+                    i++;
+                }
+                else if (s[i] != element[index])
+                {
+                    return false;
+                }
+            }
+
+            if (i == s.Length && index < element.Length - 1)
+            {
+                return false;
+            }
+
+            elements.RemoveAt(0);
+            var last = element.Last();
+            if (last == '.')
+            {
+                if (elements.Count == 0)
+                    return (index >= element.Length - 1 && endwithstart) || (i == s.Length && index == element.Length);
+
+                bool flag = false;
+                while (i <= s.Length)
+                {
+                    flag |= Solution_10(s, i, elements.ToList(), endwithstart);
+                    if (flag)
+                        return true;
+                    i++;
+                }
+                return flag;
+            }
+            else
+            {
+                if (elements.Count == 0)
+                {
+                    if (endwithstart)
+                    {
+                        if (index < element.Length - 1)
+                            return false;
+                        while (i < s.Length)
+                        {
+                            if (s[i] != last)
+                            {
+                                return false;
+                            }
+                            i++;
+                        }
+                        return true;
+                    }
+                    else
+                    {
+                        return i == s.Length && index == element.Length;
+                    }
+                }
+
+                bool flag = false;
+                while (i <= s.Length)
+                {
+                    if (i < s.Length && s[i] != last)
+                    {
+                        flag |= Solution_10(s, i, elements.ToList(), endwithstart);
+                        break;
+                    }
+                    flag |= Solution_10(s, i, elements.ToList(), endwithstart);
+                    if (flag)
+                        return true;
+                    i++;
+                }
+                return flag;
+            }
+        }
+
+        public bool Solution_10_DP(string s, string p)
+        {
+            // dp[i,j] = 
+            bool[,] dp = new bool[s.Length + 1, p.Length + 1];
+
+            dp[0, 0] = true;
+            for (int i = 1; i < s.Length + 1; i++)
+            {
+                dp[i, 0] = false;
+            }
+
+            for (int j = 1; j < p.Length + 1; j++)
+            {
+                if (p[j - 1] == '*')
+                {
+                    dp[0, j] = dp[0, j - 1] || dp[0, j - 2];
+                }
+            }
+
+            for (int j = 1; j < p.Length + 1; j++)
+            {
+                switch (p[j - 1])
+                {
+                    case '.':
+                        // 当前字符为 '.' 表示匹配任意字符 只要之前能匹配 那当前就能匹配
+                        for (int k = 1; k < s.Length + 1; k++)
+                        {
+                            if (dp[k - 1, j - 1])
+                            {
+                                dp[k, j] = true;
+                            }
+                        }
+                        break;
+                    case '*':
+                        // 当前字符为 '*' 只要之前能匹配 当前便能匹配
+                        for (int k = 1; k < s.Length + 1; k++)
+                        {
+                            if (dp[k, j - 1] || (j >= 2 && dp[k, j - 2]))
+                            {
+                                dp[k, j] = true;
+                            }
+                            else if (j >= 2 && (s[k - 1] == p[j - 2] || p[j - 2] == '.') && dp[k - 1, j])
+                            {
+                                dp[k, j] = true;
+                            }
+                        }
+                        break;
+                    default:
+                        // 当前字符为特定字符 只要之前能匹配 且当前字符等于特定字符 那当前就能匹配
+                        for (int k = 1; k < s.Length + 1; k++)
+                        {
+                            if (dp[k - 1, j - 1] && s[k - 1] == p[j - 1])
+                            {
+                                dp[k, j] = true;
+                            }
+                        }
+                        break;
+                }
+            }
+
+            return dp[s.Length, p.Length];
+        }
+
+        public bool Solution_0010(string s, string p)
+        {
+            return Solution_10_DP(s, p);
+        }
+        #endregion
+
+        #region   Solution 3003
+
+        public class Partition3003
+        {
+            public int Start { get; set; }
+            public int End { get; set; }
+            public int[] Exist { get; } = Enumerable.Repeat(-1, 26).ToArray();
+            public int DiffCount { get; set; }
+            public int Remain { get; set; }
+            public List<int> CoverNumber { get; } = new List<int>();
+            public List<int> Positions { get; } = new List<int>();
+            public bool FullCover { get; set; }
+            public int LeftMax { get; set; } = -1;
+            public int RightMin { get; set; } = -1;
+            public int RightNewEnd { get; set; }
+            public int Increase { get; set; }
+            public bool HasTwoPart => RightMin - LeftMax > 1;
+        }
+
+        public int CheckPartition(string s, List<Partition3003> parts, int index, HashSet<int> added)
+        {
+            if (index >= parts.Count)
+                return added.Count > 0 ? 1 : 0;
+
+            var current = parts[index];
+            // 前面后移的元素能被吸收
+            if (current.FullCover)
+                return 0;
+
+            added.ExceptWith(current.CoverNumber);
+            // 前面后移的元素能被吸收
+            if (added.Count == 0)
+                return 0;
+
+            // 最后一个分部不满 可以吸收
+            if (current.Remain > 0)
+            {
+                return current.Remain >= added.Count ? 0 : 1;
+            }
+
+            var newend = current.Positions[current.Positions.Count - added.Count];
+            added.Clear();
+            for (int i = newend; i <= current.End; i++)
+            {
+                added.Add(s[i] - 'a');
+            }
+
+            return CheckPartition(s, parts, index + 1, added);
+        }
+
+        public int Solution_3003(string s, int k)
+        {
+            if (k == 26)
+                return 1;
+            // 子串中 最小划分 最多的 且余数
+
+            List<Partition3003> partitions = new List<Partition3003>();
+            Partition3003 current = new Partition3003();
+            HashSet<int> tempset = new HashSet<int>();
+            List<int> hastwopart = new List<int>();
+            int lastfullcover = 0;
+            bool overtwo = false;
+            for (int i = 0; i <= s.Length; i++)
+            {
+                if (i == s.Length || current.Exist[s[i] - 'a'] < 0)
+                {
+                    if (current.DiffCount == k || i == s.Length)
+                    {
+                        tempset.Clear();
+                        if (partitions.Count > 0)
+                        {
+                            for (int j = 0; j < 26; j++)
+                            {
+                                if (current.Exist[j] >= 0 && partitions.Last().Exist[j] >= 0)
+                                {
+                                    current.CoverNumber.Add(j);
+                                }
+                            }
+                            if (current.CoverNumber.Count == k)
+                            {
+                                current.FullCover = true;
+                                lastfullcover = partitions.Count;
+                            }
+                        }
+                        current.End = i - 1;
+                        if (current.LeftMax < 0)
+                        {
+                            current.LeftMax = i - 1;
+                        }
+
+                        for (int kk = i - 1; kk >= current.LeftMax && kk >= 0; kk--)
+                        {
+                            tempset.Add(s[kk] - 'a');
+                            if (tempset.Count == 2)
+                            {
+                                current.RightNewEnd = kk +1;
+                            }
+                            if (tempset.Count == k)
+                            {
+                                current.RightMin = kk;
+                                break;
+                            }
+                        }
+                        if (current.RightMin < 0)
+                        {
+                            current.RightMin = current.Start;
+                        }
+                        if (current.HasTwoPart)
+                        {
+                            hastwopart.Add(partitions.Count);
+                            tempset.Clear();
+                            int times = 0;
+                            for (int u = current.Start; u <= current.End; u++)
+                            {
+                                tempset.Add(s[u]);
+                                if (tempset.Count == k)
+                                {
+                                    tempset.Clear();
+                                    times++;
+                                }
+                                if (times > 2)
+                                {
+                                    current.Increase = 1;
+                                    break;
+                                }
+                            }
+                        }
+                        current.Remain = k - current.DiffCount;
+                        if (current.End - current.Start >= 1)
+                        {
+                            overtwo = true;
+                        }
+                        partitions.Add(current);
+                        current = new Partition3003();
+                        current.Start = i;
+                    }
+
+                    if (i < s.Length)
+                    {
+                        current.Exist[s[i] - 'a'] = i;
+                        current.Positions.Add(i);
+                        current.DiffCount++;
+                        if (current.DiffCount == k)
+                        {
+                            current.LeftMax = i;
+                        }
+                    }
+                }
+            }
+
+            if (partitions.Count == 1 && partitions[0].DiffCount < k)
+            {
+                return 1;
+            }
+
+            HashSet<int> toadd = new HashSet<int>();
+            int count = partitions.Count;
+            if (hastwopart.Count > 0)
+            {
+                if (k == 1)
+                    return partitions.Count + 2;
+
+                count += 1;
+                foreach (var pos in hastwopart)
+                {
+                    toadd.Clear();
+                    var currentpart = partitions[pos];
+                    for (int j = currentpart.RightNewEnd; j <= currentpart.End; j++)
+                    {
+                        toadd.Add(s[j] - 'a');
+                    }
+                    int temp = currentpart.Increase;
+                    if (CheckPartition(s, partitions, pos + 1, toadd) > 0)
+                    {
+                        temp = 1;
+                    }
+                    count = Math.Max(count ,count + temp);
+                }
+            }
+            else
+            {
+                if (k == 1)
+                    return overtwo ? partitions.Count + 1 : partitions.Count;
+
+                for (int i = lastfullcover; i < partitions.Count; i++)
+                {
+                    var currentpart = partitions[i];
+                    if (currentpart.End - currentpart.Start + 1 <= k)
+                        continue;
+
+                    if (i == partitions.Count - 1)
+                    {
+                        return partitions[i].Remain > 0 ? count : count + 1;
+                    }
+
+                    toadd.Clear();
+                    if (currentpart.Positions[currentpart.Positions.Count - 1] != currentpart.Positions.Count - 1 + currentpart.Start)
+                    {
+                        bool flag = true;
+                        if (currentpart.Positions[currentpart.Positions.Count - 2] == currentpart.Positions.Count - 2 + currentpart.Start)
+                        {
+                            for (int j = currentpart.Positions[currentpart.Positions.Count - 2] + 2; j <= currentpart.End; j++)
+                            {
+                                toadd.Add(s[j] - 'a');
+                            }
+                        }
+                        else
+                        {
+                            for (int j = currentpart.Positions[currentpart.Positions.Count - 2] + 1; j <= currentpart.End; j++)
+                            {
+                                if (currentpart.Exist[s[j] - 'a'] >= 0 && s[j] != s[currentpart.Positions.Last()])
+                                {
+                                    if (flag)
+                                        continue;
+                                }
+                                else
+                                {
+                                    flag = false;
+                                }
+                                toadd.Add(s[j] - 'a');
+                            }
+                        }
+                    }
+                    else
+                    {
+                        for (int u = 0; u < partitions[i + 1].Exist.Length; u++)
+                        {
+                            if (partitions[i + 1].Exist[u] == -1 && !toadd.Contains(u) && currentpart.Exist[u] == -1)
+                            {
+                                toadd.Add(u);
+                                break;
+                            }
+                        }
+                        if (toadd.Count == 0)
+                        {
+                            for (int j = currentpart.Positions.Last() + 1; j <= currentpart.End; j++)
+                            {
+                                toadd.Add(s[j] - 'a');
+                            }
+                        }
+                        else
+                        {
+                            for (int j = currentpart.Positions.Last() + 2; j <= currentpart.End; j++)
+                            {
+                                toadd.Add(s[j] - 'a');
+                            }
+                        }
+                    }
+
+                    if (toadd.Count == k)
+                        return count + 1;
+
+                    if (CheckPartition(s, partitions, i + 1, toadd) > 0)
+                    {
+                        count += 1;
+                        break;
+                    }
+                }
+            }
+
+            return count;
+        }
+
+        #endregion
     }
 }

@@ -14,12 +14,15 @@
     <ItemGroup>
       <Compile Remove="build\**" />
       <Compile Remove="cppResolve\**" />
+      <Compile Remove="csharpoutput\**" />
       <Compile Remove="test\**" />
       <EmbeddedResource Remove="build\**" />
       <EmbeddedResource Remove="cppResolve\**" />
+      <EmbeddedResource Remove="csharpoutput\**" />
       <EmbeddedResource Remove="test\**" />
       <None Remove="build\**" />
       <None Remove="cppResolve\**" />
+      <None Remove="csharpoutput\**" />
       <None Remove="test\**" />
     </ItemGroup>
 
