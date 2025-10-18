@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace main.csharpResolve
 {
@@ -1480,6 +1475,58 @@ namespace main.csharpResolve
             return count;
         }
 
+        #endregion
+
+        #region   Solution 125
+        public bool Solution_125(string s)
+        {
+            var strnew = System.Text.RegularExpressions.Regex.Replace(s.ToLower(), "[^0-9A-Za-z]", "");
+            int start = 0, end = strnew.Length - 1;
+            while (start < end)
+            {
+                if (strnew[start] != strnew[end])
+                {
+                    return false;
+                }
+                start++;
+                end--;
+            }
+
+            return true;
+        }
+        #endregion
+
+        #region   Solution 3397
+        public int Solution_3397(int[] nums, int k)
+        {
+            List<(long low, long high)> numsrange = new List<(long low, long high)>();
+            long offset = k > 0 ? k : -k;
+            for (int i = 0; i < nums.Length; i++)
+            {
+                numsrange.Add((nums[i] - offset, nums[i] + offset));
+            }
+
+            numsrange.Sort((a, b) => (int)(a.low - b.low));
+            long current = numsrange[0].low;
+            int sum = 1;
+            for (int i = 1; i < numsrange.Count; i++)
+            {
+                if (numsrange[i].high > current)
+                {
+                    sum += 1;
+                    if (current < numsrange[i].low)
+                    {
+                        current = numsrange[i].low;
+                    }
+                    else
+                    {
+                        current++;
+                    }
+                }
+            }
+
+            return sum;
+        }
         #endregion
     }
 }
