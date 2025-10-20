@@ -1307,7 +1307,7 @@ namespace main.csharpResolve
                             tempset.Add(s[kk] - 'a');
                             if (tempset.Count == 2)
                             {
-                                current.RightNewEnd = kk +1;
+                                current.RightNewEnd = kk + 1;
                             }
                             if (tempset.Count == k)
                             {
@@ -1388,7 +1388,7 @@ namespace main.csharpResolve
                     {
                         temp = 1;
                     }
-                    count = Math.Max(count ,count + temp);
+                    count = Math.Max(count, count + temp);
                 }
             }
             else
@@ -1616,7 +1616,7 @@ namespace main.csharpResolve
 
                     if (thismin)
                     {
-                        smin.Clear(); 
+                        smin.Clear();
                         smin.AddRange(newsmin);
                     }
                 }
@@ -1642,6 +1642,296 @@ namespace main.csharpResolve
                 }
             }
             return sum;
+        }
+        #endregion
+
+        #region   Solution 13
+        private int GetRomanValue(char c)
+        {
+            return c switch
+            {
+                'I' => 1,
+                'V' => 5,
+                'X' => 10,
+                'L' => 50,
+                'C' => 100,
+                'D' => 500,
+                'M' => 1000,
+                _ => 0
+            };
+        }
+
+        public int Solution_13(string s)
+        {
+            char currentlarge = s.Last();
+            int sum = GetRomanValue(currentlarge);
+            if (s.Length == 1)
+                return sum;
+
+            for (int i = s.Length - 2; i >= 0; i--)
+            {
+                var current = s[i];
+                if (GetRomanValue(currentlarge) > GetRomanValue(current))
+                {
+                    sum -= GetRomanValue(current);
+                }
+                else
+                {
+                    currentlarge = current;
+                    sum += GetRomanValue(current);
+                }
+            }
+
+            return sum;
+        }
+        #endregion
+
+        #region   Solution 21
+        public ListNode Solution_21(ListNode list1, ListNode list2)
+        {
+            ListNode newp = null;
+            ListNode current = null;
+            ListNode firstp = list1;
+            ListNode secondp = list2;
+
+            while (firstp != null || secondp != null)
+            {
+                if (firstp != null && secondp != null)
+                {
+                    ListNode selectp = secondp;
+                    if (firstp.val < secondp.val)
+                    {
+                        selectp = firstp;
+                    }
+
+                    if (current == null)
+                    {
+                        current = selectp;
+                        newp = selectp;
+                    }
+                    else
+                    {
+                        current.next = selectp;
+                        current = selectp;
+                    }
+
+                    if (firstp.val < secondp.val)
+                    {
+                        firstp = firstp.next;
+                    }
+                    else
+                    {
+                        secondp = secondp.next;
+                    }
+                }
+                else if (firstp == null)
+                {
+                    if (current == null)
+                    {
+                        newp = secondp;
+                        break;
+                    }
+                    current.next = secondp;
+                    break;
+                }
+                else if (secondp == null)
+                {
+                    if (current == null)
+                    {
+                        newp = firstp;
+                        break;
+                    }
+                    current.next = firstp;
+                    break;
+                }
+            }
+
+            return newp;
+        }
+        #endregion
+
+        #region   Solution 27
+        public int Solution_27(int[] nums, int val)
+        {
+            int start = 0, end = nums.Length - 1;
+            int k = 0;
+            while (start <= end)
+            {
+                if (nums[start] == val)
+                {
+                    k++;
+                    var c = nums[end];
+                    nums[end] = nums[start];
+                    nums[start] = c;
+                    end--;
+                }
+                else
+                {
+                    start++;
+                }
+            }
+
+            return nums.Length - k;
+        }
+        #endregion
+
+        #region   Solution 28
+        public int Solution_28(string haystack, string needle)
+        {
+            //int[] k = new int[26];
+            //var newstr = needle + haystack;
+
+            int[] next = new int[needle.Length];
+            for (int i = 0; i < needle.Length; i++)
+            {
+
+            }
+
+            return default;
+        }
+        #endregion
+
+
+        #region   Solution 66
+        public int[] Solution_66(int[] digits)
+        {
+            int i = digits.Length - 1;
+            int over10 = 1;
+            while (i >= 0)
+            {
+                var newdigit = digits[i] + over10;
+                digits[i] = (newdigit) % 10;
+                over10 = newdigit / 10;
+
+                i--;
+            }
+
+            if (over10 > 0)
+            {
+                var newdigits = new int[digits.Length + 1];
+                Array.Copy(digits, 0, newdigits, 1, digits.Length);
+                newdigits[0] = 1;
+                return newdigits;
+            }
+            return digits;
+        }
+        #endregion
+
+        #region   Solution 67
+        public string Solution_67(string a, string b)
+        {
+            int ap = a.Length - 1;
+            int bp = b.Length - 1;
+            System.Text.StringBuilder sb = new System.Text.StringBuilder();
+            int over2 = 0;
+            while (ap >= 0 || bp >= 0)
+            {
+                var newd = over2;
+                if (ap >= 0)
+                {
+                    newd += a[ap] - '0';
+                }
+                if (bp >= 0)
+                {
+                    newd += b[bp] - '0';
+                }
+                over2 = newd / 2;
+                newd = newd % 2;
+                sb.Insert(0, (char)(newd + '0'));
+                ap--;
+                bp--;
+            }
+
+            if (over2 > 0)
+            {
+                sb.Insert(0, '1');
+            }
+
+            return sb.ToString();
+        }
+        #endregion
+
+        #region   Solution 83
+        public ListNode Solution_83(ListNode head)
+        {
+            var newhead = head;
+            var current = head;
+            while (current != null)
+            {
+                if (current.next != null && current.val == current.next.val)
+                {
+                    while (current.next != null && current.val == current.next.val)
+                    {
+                        current.next = current.next.next;
+                    }
+                }
+                else
+                {
+                    current = current.next;
+                }
+            }
+
+            return newhead;
+        }
+        #endregion
+
+        #region   Solution 88
+        public void Solution_88(int[] nums1, int m, int[] nums2, int n)
+        {
+            int start = m - 1;
+            int startb = n - 1;
+            int current = m + n - 1;
+
+            if (start < 0)
+            {
+                Array.Copy(nums2, nums1, nums2.Length);
+                return;
+            }
+
+            if (startb < 0)
+            {
+                return;
+            }
+
+            while (current >= 0)
+            {
+                if (startb >= 0 && start >= 0)
+                {
+                    if (nums1[start] <= nums2[startb])
+                    {
+                        nums1[current] = nums2[startb];
+                        startb--;
+                        current--;
+                    }
+                    else
+                    {
+                        nums1[current] = nums1[start];
+                        start--;
+                        current--;
+                    }
+                }
+                else if (startb < 0)
+                {
+                    return;
+                }
+                else if (start < 0)
+                {
+                    nums1[current] = nums2[startb];
+                    startb--;
+                    current--;
+                }
+            }
+        }
+        #endregion
+
+        #region   Solution 104
+
+
+        public int Solution_104(TreeNode root)
+        {
+            if (root is null)
+                return 0;
+            return 1 + Math.Max(Solution_104(root.left), Solution_104(root.right));
         }
         #endregion
     }
