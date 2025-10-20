@@ -1528,5 +1528,121 @@ namespace main.csharpResolve
             return sum;
         }
         #endregion
+
+        #region Solution 1625
+
+        public int GCD(int a, int b)
+        {
+            if (b == 0)
+                return a;
+            if (a > b)
+            {
+                return GCD(b, a % b);
+            }
+            else
+            {
+                return GCD(a, b % a);
+            }
+        }
+
+        public string Solution_1625(string s, int a, int b)
+        {
+            List<int> smin = Enumerable.Repeat(9, s.Length).ToList();
+            int k = s.Length / b;
+            if (s.Length % b != 0)
+            {
+                k = s.Length / GCD(s.Length, b);
+            }
+
+            int[] minmap = new int[10];
+            for (int i = 1; i < 10; i++)
+            {
+                int mintemp = i;
+                int mintime = 10;
+                for (int j = 0; j < 10; j++)
+                {
+                    if ((i + a * j) % 10 < mintemp)
+                    {
+                        mintemp = (i + a * j) % 10;
+                        mintime = j;
+                    }
+                }
+                minmap[i] = mintime;
+            }
+
+            bool canoddchange = false;
+            HashSet<int> start = new HashSet<int>();
+            for (int i = 0; i < k; i++)
+            {
+                var index = (i * b) % s.Length;
+                if (index % 2 == 1)
+                {
+                    canoddchange = true;
+                }
+                start.Add(index);
+            }
+
+            List<int> newsmin = new List<int>();
+            for (int i = 0; i < s.Length; i++)
+            {
+                if (start.Contains(i))
+                {
+                    var kv = minmap[s[i] - '0'];
+                    var kv1 = minmap[s[(i + 1) % s.Length] - '0'];
+                    bool thismin = false;
+                    newsmin.Clear();
+                    int startoffset = i % 2;
+                    for (int u = 0; u < smin.Count; u++)
+                    {
+                        var newindex = (i + u) % s.Length;
+                        var mins = (s[newindex] - '0');
+                        if ((newindex % 2) != startoffset)
+                        {
+                            mins = ((s[newindex] - '0') + a * kv1) % 10;
+                        }
+                        else if (canoddchange)
+                        {
+                            mins = ((s[newindex] - '0') + a * kv) % 10;
+                        }
+
+                        if (smin[u] > mins)
+                        {
+                            thismin = true;
+                        }
+                        if (!thismin && mins > smin[u])
+                            break;
+                        newsmin.Add(mins);
+                    }
+
+                    if (thismin)
+                    {
+                        smin.Clear(); 
+                        smin.AddRange(newsmin);
+                    }
+                }
+            }
+
+            return String.Join("", smin);
+        }
+        #endregion
+
+        #region   Solution 2011
+        public int Solution_2011(string[] operations)
+        {
+            int sum = 0;
+            for (int i = 0; i < operations.Length; i++)
+            {
+                if (operations[i][1] == '+')
+                {
+                    sum++;
+                }
+                else
+                {
+                    sum--;
+                }
+            }
+            return sum;
+        }
+        #endregion
     }
 }

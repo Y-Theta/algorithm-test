@@ -10,9 +10,10 @@ namespace leetcode
         public static void Main(string[] args)
         {
             ResolveClass1 clas = new ResolveClass1();
-            string solution = "3397";
+            string solution = "1625";
             typeof(ResolveClass1).GetMethod($"Solution_{solution}")
-                .Invoke(clas, new object[] { new int[] {4 ,4 ,4 ,4 }, 1 });
+                .Invoke(clas, new object[] { "863376891476", 4, 9 });
+            int s = clas.GCD(14,21);
         }
     }
 }
