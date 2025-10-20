@@ -1776,6 +1776,7 @@ namespace main.csharpResolve
         #endregion
 
         #region   Solution 28
+        // TODO::KMP
         public int Solution_28(string haystack, string needle)
         {
             //int[] k = new int[26];
