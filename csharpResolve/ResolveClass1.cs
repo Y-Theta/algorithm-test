@@ -1926,13 +1926,28 @@ namespace main.csharpResolve
         #endregion
 
         #region   Solution 104
-
-
         public int Solution_104(TreeNode root)
         {
             if (root is null)
                 return 0;
             return 1 + Math.Max(Solution_104(root.left), Solution_104(root.right));
+        }
+        #endregion
+
+        #region   Solution 111
+        public int Solution_111(TreeNode root)
+        {
+            if (root is null)
+                return 0;
+            if (root.left == null && root.right == null)
+                return 1;
+            int min = int.MaxValue;
+            if (root.left != null)
+                min = Math.Min(min, Solution_111(root.left));
+            if (root.right != null)
+                min = Math.Min(min, Solution_111(root.right));
+
+            return min + 1;
         }
         #endregion
     }
