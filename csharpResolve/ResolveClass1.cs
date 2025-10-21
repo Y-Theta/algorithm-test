@@ -1792,7 +1792,6 @@ namespace main.csharpResolve
         }
         #endregion
 
-
         #region   Solution 66
         public int[] Solution_66(int[] digits)
         {
@@ -1948,6 +1947,116 @@ namespace main.csharpResolve
                 min = Math.Min(min, Solution_111(root.right));
 
             return min + 1;
+        }
+        #endregion
+
+        #region   Solution 3346
+
+        /// <summary>
+        /// 向后查找第一个大于等于查找元素的元素 index
+        /// </summary>
+        /// <returns></returns>
+        public int QucikSearchForward(IList<int> nums, int k, int start, int end)
+        {
+            while (start < end)
+            {
+                int mid = (end + start) / 2;
+                if (nums[mid] >= k)
+                {
+                    end = mid;
+                }
+                else
+                {
+                    start = mid + 1;
+                }
+            }
+
+            if (start == nums.Count - 1)
+            {
+                //如果所有元素都小于指定元素则返回 nums.count
+                return nums[start] >= k ? start : nums.Count;
+            }
+
+            return start;
+        }
+
+        /// <summary>
+        /// 向前查找最后一个小于等于查找元素的元素 index
+        /// </summary>
+        /// <returns></returns>
+        public int QuickSearchBackward(IList<int> nums, int k, int start, int end)
+        {
+            while (start < end)
+            {
+                int mid = (end + start) / 2;
+                if (nums[mid] <= k)
+                {
+                    start = mid;
+                }
+                else
+                {
+                    end = mid - 1;
+                }
+                if (end - start == 1)
+                {
+                    if (nums[end] <= k)
+                        return end;
+                    return start;
+                }
+            }
+
+            if (start == 0)
+            {
+                //如果所有元素都大于指定元素
+                return nums[start] <= k ? 0 : -1;
+            }
+
+            return start;
+        }
+
+        public int Solution_3346(int[] nums, int k, int numOperations)
+        {
+            int max = 1;
+            var numssorted = nums.ToList();
+            numssorted.Sort();
+
+            Dictionary<int, int> numsmap = new Dictionary<int, int>();
+            for (int i = 0; i < numssorted.Count; i++)
+            {
+                if (!numsmap.ContainsKey(nums[i]))
+                {
+                    numsmap[nums[i]] = 0;
+                }
+                numsmap[nums[i]]++;
+            }
+
+            //List<(int h, int l)> collection = new List<(int, int)>();
+            //Dictionary<int, Range> optionsMap = new Dictionary<int, Range>(numssorted[numssorted.Count - 1] - numssorted[0] + 1);
+            for (int j = numssorted[0]; j <= numssorted[numssorted.Count - 1]; j++)
+            {
+                int start = QucikSearchForward(numssorted, Math.Max(j - k, numssorted[0]), 0, numssorted.Count - 1);
+                int end = QuickSearchBackward(numssorted, Math.Min(j + k, numssorted[numssorted.Count - 1]), 0, numssorted.Count - 1);
+                int count = end - start + 1;
+                if (count > numOperations)
+                {
+                    if (numsmap.ContainsKey(j))
+                    {
+                        if (count - numsmap[j] > numOperations)
+                        {
+                            count = numOperations + numsmap[j];
+                        }
+                    }
+                    else
+                    {
+                        count = numOperations;
+                    }
+                }
+                max = Math.Max(count, max);
+            }
+
+            //collection.Sort((a, b) => a.l > b.l ? 1 : a.l < b.l ? -1 : 0);
+
+            return max;
         }
         #endregion
     }

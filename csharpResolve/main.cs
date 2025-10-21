@@ -2,6 +2,7 @@ using main.csharpResolve;
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace leetcode
 {
@@ -10,10 +11,15 @@ namespace leetcode
         public static void Main(string[] args)
         {
             ResolveClass1 clas = new ResolveClass1();
-            string solution = "88";
+            string solution = "3346";
             typeof(ResolveClass1).GetMethod($"Solution_{solution}")
-                .Invoke(clas, new object[] { new int[] { 1, 0 }, 1, new int[] { 2 }, 1 });
-            int s = clas.GCD(14,21);
+                .Invoke(clas, new object[] { new int[] { 23, 54 }, 77, 1 });
+            //int s = clas.GCD(14,21);
+            //var list = new List<int> { 1, 5, 5, 5, 7, 9, 20, 32, 44 };
+            //int aim = 4;
+            //int aim1 = 0;
+            //Debug.WriteLine(clas.QucikSearchForward(list, aim, 0, list.Count - 1));
+            //Debug.WriteLine(clas.QuickSearchBackward(list, aim1, 0, list.Count - 1));
         }
     }
 }
