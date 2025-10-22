@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Text;
 using static main.csharpResolve.CommonUtils;
 
 namespace main.csharpResolve
@@ -2021,7 +2021,7 @@ namespace main.csharpResolve
                 }
                 else
                 {
-                    currentRow.Add(pre[i-1] + pre[i]);
+                    currentRow.Add(pre[i - 1] + pre[i]);
                 }
             }
 
@@ -2078,48 +2078,28 @@ namespace main.csharpResolve
         // TODO:: find start
         public ListNode Solution_160(ListNode headA, ListNode headB)
         {
-            ListNode end = null;
-            ListNode start = headA;
-            int n = 1;
-            while (headA.next != null)
-            {
-                headA = headA.next;
-                n++;
-            }
-            end = headA;
-            headA.next = start;
+            ListNode startA = headA;
+            ListNode startB = headB;
 
-            ListNode oriheadB = headB;
-            ListNode fast = headB;
-            ListNode slow = headB;
-            while (true)
+            bool flag = false, flag1 = false;
+            while (headA != null && headB != null && headA != headB)
             {
-                slow = slow?.next;
-                fast = fast?.next?.next;
-                if (fast is null)
+                headA = headA?.next;
+                headB = headB?.next;
+
+                if (headA == null && !flag)
                 {
-                    end.next = null;
-                    return null;
+                    flag = true;
+                    headA = startB;
                 }
-
-                if (fast == slow)
+                if (headB == null && !flag1)
                 {
-                    break;
+                    flag1 = true;
+                    headB = startA;
                 }
             }
 
-            while (fast.next != null && headB.next != null)
-            {
-                fast = fast.next;
-                headB = headB.next;
-                if (fast == headB)
-                {
-                    end.next = null;
-                    return fast;
-                }
-            }
-
-            return null;
+            return headA;
         }
         #endregion
 
@@ -2151,7 +2131,8 @@ namespace main.csharpResolve
                     numsmap[nums[i]] = 0;
                 }
                 numsmap[nums[i]]++;
-                numsRange[i] = new Range {
+                numsRange[i] = new Range
+                {
                     Index = i,
                     Start = Math.Max(numssorted[i] - k, numssorted[0]),
                     End = Math.Min(numssorted[i] + k, numssorted[numssorted.Count - 1])
@@ -2206,7 +2187,7 @@ namespace main.csharpResolve
                 if (currentRange.Index > 0)
                 {
                     var tocheck = new int[] { numssorted[currentRange.Index], numssorted[currentRange.Index - 1] - k, numssorted[currentRange.Index - 1] + k };
-                    foreach(var j in tocheck)
+                    foreach (var j in tocheck)
                     {
                         if (visited.Contains(j))
                             continue;
@@ -2238,6 +2219,134 @@ namespace main.csharpResolve
             }
 
             return max;
+        }
+        #endregion
+
+        #region   Solution 163
+        public IList<IList<int>> Solution_163(int[] nums, int lower, int upper)
+        {
+            List<IList<int>> result = new List<IList<int>>();
+            int start = 0, end = 0;
+            for (int i = 0; i < nums.Length; i++)
+            {
+                if (i == 0)
+                {
+                    if (nums[i] - lower > 0)
+                    {
+                        start = lower;
+                        end = nums[i] - 1;
+                        if (start <= end)
+                        {
+                            result.Add(new List<int> { start, end });
+                        }
+                    }
+                }
+
+                if (i - 1 >= 0 && nums[i] - nums[i - 1] > 1)
+                {
+                    end = nums[i] - 1;
+                    if (start <= end)
+                    {
+                        result.Add(new List<int> { start, end });
+                    }
+                }
+                start = nums[i] + 1;
+                if (i == nums.Length - 1)
+                {
+                    if (upper - nums[i] > 0)
+                    {
+                        end = upper;
+                        if (start <= end)
+                        {
+                            result.Add(new List<int> { start, end });
+                        }
+                    }
+                }
+
+            }
+
+            if (nums.Length == 0)
+            {
+                result.Add(new List<int> { lower, upper });
+            }
+            return result;
+        }
+        #endregion
+
+        #region   Solution 168
+        public string Solution_168(int columnNumber)
+        {
+            StringBuilder sb = new StringBuilder();
+            while (columnNumber > 0)
+            {
+                var current = columnNumber / 26;
+                var left = columnNumber % 26;
+                if (left - 1 < 0)
+                {
+                    left = 26;
+                    current--;
+                }
+                sb.Insert(0, (char)(left - 1 + 'A'));
+                columnNumber = current;
+            }
+
+            return sb.ToString();
+        }
+        #endregion
+
+        #region   Solution 170
+        public class TwoSum
+        {
+            Dictionary<int, int> _set = new Dictionary<int, int>();
+            public TwoSum()
+            {
+
+            }
+
+            public void Add(int number)
+            {
+                if (_set.ContainsKey(number))
+                {
+                    _set[number]++;
+                }
+                else
+                {
+                    _set[number] = 1;
+                }
+            }
+
+            public bool Find(int value)
+            {
+                foreach (var item in _set)
+                {
+                    if (_set.ContainsKey(value - item.Key))
+                    {
+                        if (value - item.Key == item.Key)
+                        {
+                            var finded = _set[value - item.Key];
+                            if (finded > 1)
+                                return true;
+                            else
+                                continue;
+                        }
+                        return true;
+                    }
+                }
+                return false;
+            }
+        }
+        #endregion
+
+        #region   Solution 171
+        public int Solution_171(string columnTitle)
+        {
+            int index = 0, pow = 1;
+            for (int i = columnTitle.Length - 1; i >= 0; i--)
+            {
+                index += (columnTitle[i] - 'A' + 1) * pow;
+                pow *= 26;
+            }
+            return index;
         }
         #endregion
     }
