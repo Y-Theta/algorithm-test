@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using static main.csharpResolve.CommonUtils;
+
 namespace main.csharpResolve
 {
     internal class ResolveClass1
@@ -1951,69 +1953,6 @@ namespace main.csharpResolve
         #endregion
 
         #region   Solution 3346
-
-        /// <summary>
-        /// 向后查找第一个大于等于查找元素的元素 index
-        /// </summary>
-        /// <returns></returns>
-        public int QucikSearchForward(IList<int> nums, int k, int start, int end)
-        {
-            while (start < end)
-            {
-                int mid = (end + start) / 2;
-                if (nums[mid] >= k)
-                {
-                    end = mid;
-                }
-                else
-                {
-                    start = mid + 1;
-                }
-            }
-
-            if (start == nums.Count - 1)
-            {
-                //如果所有元素都小于指定元素则返回 nums.count
-                return nums[start] >= k ? start : nums.Count;
-            }
-
-            return start;
-        }
-
-        /// <summary>
-        /// 向前查找最后一个小于等于查找元素的元素 index
-        /// </summary>
-        /// <returns></returns>
-        public int QuickSearchBackward(IList<int> nums, int k, int start, int end)
-        {
-            while (start < end)
-            {
-                int mid = (end + start) / 2;
-                if (nums[mid] <= k)
-                {
-                    start = mid;
-                }
-                else
-                {
-                    end = mid - 1;
-                }
-                if (end - start == 1)
-                {
-                    if (nums[end] <= k)
-                        return end;
-                    return start;
-                }
-            }
-
-            if (start == 0)
-            {
-                //如果所有元素都大于指定元素
-                return nums[start] <= k ? 0 : -1;
-            }
-
-            return start;
-        }
-
         public int Solution_3346(int[] nums, int k, int numOperations)
         {
             int max = 1;
@@ -2034,8 +1973,8 @@ namespace main.csharpResolve
             //Dictionary<int, Range> optionsMap = new Dictionary<int, Range>(numssorted[numssorted.Count - 1] - numssorted[0] + 1);
             for (int j = numssorted[0]; j <= numssorted[numssorted.Count - 1]; j++)
             {
-                int start = QucikSearchForward(numssorted, Math.Max(j - k, numssorted[0]), 0, numssorted.Count - 1);
-                int end = QuickSearchBackward(numssorted, Math.Min(j + k, numssorted[numssorted.Count - 1]), 0, numssorted.Count - 1);
+                int start = CommonUtils.QucikSearchForward(numssorted, Math.Max(j - k, numssorted[0]), 0, numssorted.Count - 1);
+                int end = CommonUtils.QuickSearchBackward(numssorted, Math.Min(j + k, numssorted[numssorted.Count - 1]), 0, numssorted.Count - 1);
                 int count = end - start + 1;
                 if (count > numOperations)
                 {
@@ -2055,6 +1994,248 @@ namespace main.csharpResolve
             }
 
             //collection.Sort((a, b) => a.l > b.l ? 1 : a.l < b.l ? -1 : 0);
+
+            return max;
+        }
+        #endregion
+
+        #region   Solution 118
+
+        public IList<IList<int>> Generate_118(IList<IList<int>> already, int current, int numRows)
+        {
+            if (current == numRows)
+                return already;
+
+            current = current + 1;
+            var pre = already.Last();
+            List<int> currentRow = new List<int>();
+            for (int i = 0; i < current; i++)
+            {
+                if (i == 0)
+                {
+                    currentRow.Add(1);
+                }
+                else if (i == current - 1)
+                {
+                    currentRow.Add(1);
+                }
+                else
+                {
+                    currentRow.Add(pre[i-1] + pre[i]);
+                }
+            }
+
+            already.Add(currentRow);
+            return Generate_118(already, current, numRows);
+        }
+
+        public IList<IList<int>> Solution_118(int numRows)
+        {
+            return Generate_118(new List<IList<int>> { new List<int> { 1 } }, 1, numRows);
+        }
+        #endregion
+
+        #region   Solution 144
+
+        public void Solution_144(TreeNode root, IList<int> nodes)
+        {
+            if (root == null)
+                return;
+
+            nodes.Add(root.val);
+            Solution_144(root.left, nodes);
+            Solution_144(root.right, nodes);
+        }
+
+        public IList<int> Solution_144(TreeNode root)
+        {
+            List<int> nodes = new List<int>();
+            Solution_144(root, nodes);
+            return nodes;
+        }
+        #endregion
+
+        #region   Solution 145
+        public void Solution_145(TreeNode root, IList<int> nodes)
+        {
+            if (root == null)
+                return;
+
+            Solution_145(root.left, nodes);
+            Solution_145(root.right, nodes);
+            nodes.Add(root.val);
+        }
+
+        public IList<int> Solution_145(TreeNode root)
+        {
+            List<int> nodes = new List<int>();
+            Solution_145(root, nodes);
+            return nodes;
+        }
+        #endregion
+
+        #region   Solution 160
+        // TODO:: find start
+        public ListNode Solution_160(ListNode headA, ListNode headB)
+        {
+            ListNode end = null;
+            ListNode start = headA;
+            int n = 1;
+            while (headA.next != null)
+            {
+                headA = headA.next;
+                n++;
+            }
+            end = headA;
+            headA.next = start;
+
+            ListNode oriheadB = headB;
+            ListNode fast = headB;
+            ListNode slow = headB;
+            while (true)
+            {
+                slow = slow?.next;
+                fast = fast?.next?.next;
+                if (fast is null)
+                {
+                    end.next = null;
+                    return null;
+                }
+
+                if (fast == slow)
+                {
+                    break;
+                }
+            }
+
+            while (fast.next != null && headB.next != null)
+            {
+                fast = fast.next;
+                headB = headB.next;
+                if (fast == headB)
+                {
+                    end.next = null;
+                    return fast;
+                }
+            }
+
+            return null;
+        }
+        #endregion
+
+        #region   Solution 3347
+
+        public class Range
+        {
+            public int MaxPossible { get; set; }
+            public int MaxPossibleLength { get; set; }
+            public int Offset { get; set; }
+            public int RangeCount { get; set; }
+            public int Index { get; set; }
+            public int Start { get; set; }
+            public int End { get; set; }
+        }
+
+        public int Solution_3347(int[] nums, int k, int numOperations)
+        {
+            int max = 1;
+            var numssorted = nums.ToList();
+            numssorted.Sort();
+
+            Dictionary<int, int> numsmap = new Dictionary<int, int>();
+            Range[] numsRange = new Range[nums.Length];
+            for (int i = 0; i < numssorted.Count; i++)
+            {
+                if (!numsmap.ContainsKey(nums[i]))
+                {
+                    numsmap[nums[i]] = 0;
+                }
+                numsmap[nums[i]]++;
+                numsRange[i] = new Range {
+                    Index = i,
+                    Start = Math.Max(numssorted[i] - k, numssorted[0]),
+                    End = Math.Min(numssorted[i] + k, numssorted[numssorted.Count - 1])
+                };
+            }
+
+            for (int j = 0; j < numsRange.Length; j++)
+            {
+                var currentRange = numsRange[j];
+                var currentnum = numssorted[j];
+                int start = QucikSearchForward(numssorted, Math.Max(currentRange.Start, numssorted[0]), 0, numssorted.Count - 1);
+                int end = QuickSearchBackward(numssorted, Math.Min(currentRange.End, numssorted[numssorted.Count - 1]), 0, numssorted.Count - 1);
+                int count = end - start + 1;
+                if (count > numOperations)
+                {
+                    if (numsmap.ContainsKey(currentnum))
+                    {
+                        if (count - numsmap[currentnum] > numOperations)
+                        {
+                            count = numOperations + numsmap[currentnum];
+                        }
+                    }
+                    else
+                    {
+                        count = numOperations;
+                    }
+                }
+                currentRange.RangeCount = count;
+                currentRange.MaxPossible = count;
+                currentRange.MaxPossibleLength = currentRange.End - currentRange.Start;
+                if (j - 1 >= 0)
+                {
+                    currentRange.MaxPossibleLength = currentRange.End - numsRange[j - 1].Start;
+                    currentRange.MaxPossible = numsRange[j - 1].RangeCount + count;
+                    currentRange.Offset = numssorted[currentRange.Index] - numssorted[numsRange[j - 1].Index];
+                    if (currentRange.MaxPossibleLength >= 2 * k)
+                    {
+                        //currentRange.MaxPossible = Math.Max(numsRange[j - 1].RangeCount,);
+                    }
+                }
+                //max = Math.Max(count, max);
+            }
+
+            var rangeCounts = numsRange.OrderByDescending(r => r.MaxPossible).ToList();
+            HashSet<int> visited = new HashSet<int>();
+            for (int i = 0; i < rangeCounts.Count; i++)
+            {
+                var currentRange = rangeCounts[i];
+                if (currentRange.MaxPossible <= max)
+                    break;
+
+                if (currentRange.Index > 0)
+                {
+                    var tocheck = new int[] { numssorted[currentRange.Index], numssorted[currentRange.Index - 1] - k, numssorted[currentRange.Index - 1] + k };
+                    foreach(var j in tocheck)
+                    {
+                        if (visited.Contains(j))
+                            continue;
+                        visited.Add(j);
+                        int start = QucikSearchForward(numssorted, Math.Max(j - k, numssorted[0]), 0, numssorted.Count - 1);
+                        int end = QuickSearchBackward(numssorted, Math.Min(j + k, numssorted[numssorted.Count - 1]), 0, numssorted.Count - 1);
+                        int count = end - start + 1;
+                        if (count > numOperations)
+                        {
+                            if (numsmap.ContainsKey(j))
+                            {
+                                if (count - numsmap[j] > numOperations)
+                                {
+                                    count = numOperations + numsmap[j];
+                                }
+                            }
+                            else
+                            {
+                                count = numOperations;
+                            }
+                        }
+                        max = Math.Max(count, max);
+                    }
+                }
+                else
+                {
+                    max = Math.Max(currentRange.MaxPossible, max);
+                }
+            }
 
             return max;
         }

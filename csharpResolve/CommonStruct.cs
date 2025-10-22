@@ -35,6 +35,70 @@ namespace main.csharpResolve
             return res;
         }
 
+
+        /// <summary>
+        /// 向后查找第一个大于等于查找元素的元素 index
+        /// </summary>
+        /// <returns></returns>
+        public static int QucikSearchForward(IList<int> nums, int k, int start, int end)
+        {
+            while (start < end)
+            {
+                int mid = (end + start) / 2;
+                if (nums[mid] >= k)
+                {
+                    end = mid;
+                }
+                else
+                {
+                    start = mid + 1;
+                }
+            }
+
+            if (start == nums.Count - 1)
+            {
+                //如果所有元素都小于指定元素则返回 nums.count
+                return nums[start] >= k ? start : nums.Count;
+            }
+
+            return start;
+        }
+
+        /// <summary>
+        /// 向前查找最后一个小于等于查找元素的元素 index
+        /// </summary>
+        /// <returns></returns>
+        public static int QuickSearchBackward(IList<int> nums, int k, int start, int end)
+        {
+            while (start < end)
+            {
+                int mid = (end + start) / 2;
+                if (nums[mid] <= k)
+                {
+                    start = mid;
+                }
+                else
+                {
+                    end = mid - 1;
+                }
+                if (end - start == 1)
+                {
+                    if (nums[end] <= k)
+                        return end;
+                    return start;
+                }
+            }
+
+            if (start == 0)
+            {
+                //如果所有元素都大于指定元素
+                return nums[start] <= k ? 0 : -1;
+            }
+
+            return start;
+        }
+
+
     }
 
     public class Heap<T> where T : class
