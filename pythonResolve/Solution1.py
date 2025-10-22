@@ -45,3 +45,14 @@ class Solution1:
                 sexist.add(sset[s[i]])
             news += sset[s[i]]
         return news == t
+
+    def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        pre = None
+        while head is not None:
+            oldhead = head
+            head = head.next
+            oldhead.next = pre
+            if head is None:
+                return oldhead
+            pre = oldhead
+        return head
