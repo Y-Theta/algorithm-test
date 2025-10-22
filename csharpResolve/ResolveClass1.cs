@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using static main.csharpResolve.CommonUtils;
@@ -2347,6 +2348,33 @@ namespace main.csharpResolve
                 pow *= 26;
             }
             return index;
+        }
+        #endregion
+
+        #region   Solution 202
+
+        public bool IsHappy(int n)
+        {
+            HashSet<int> occured = new HashSet<int>();
+            return Solution_202(n, occured);
+        }
+
+        public bool Solution_202(int n,HashSet<int> occured)
+        {
+            int sum = 0;
+            while (n > 0)
+            {
+                sum += (n % 10) * (n % 10);
+                n = n / 10;
+            }
+
+            if (sum == 1)
+                return true;
+
+            if (occured.Contains(sum))
+                return false;
+            occured.Add(sum);
+            return Solution_202(sum, occured);
         }
         #endregion
     }
