@@ -133,20 +133,24 @@ class Solution1:
     def lengthOfLongestSubstringTwoDistinct(self, s: str) -> int:
         start = 0
         maxrange = 0
-        charlist = dict()
+        charlist:List[int] = [-1] * 128
         top = None
+        count = 0
+        torem = None
         for i in range(len(s)):
-            if s[i] in charlist:
+            if charlist[ord(s[i])] > -1:
                 if s[i] is not top:
-                    charlist[s[i]] = i
+                    charlist[ord(s[i])] = i
+                    torem = top
             else:
-                if len(charlist) >= 2:
+                if count >= 2:
                     maxrange = max(maxrange, i - start)
-                    for key in list(charlist.keys()):
-                        if key is not s[i-1]:
-                            charlist.pop(key)
-                    start = charlist[s[i-1]]
-                charlist[s[i]] = i
+                    charlist[ord(torem)] = -1
+                    start = charlist[ord(s[i-1])]
+                else:
+                    count+=1
+                charlist[ord(s[i])] = i
+                torem = s[i-1]
             top = s[i]
 
         maxrange = max(maxrange, len(s) - start)
