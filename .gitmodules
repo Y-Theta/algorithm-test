@@ -1,0 +1,3 @@
+[submodule "thirdpart/learning-tools"]
+	path = thirdpart/learning-tools
+	url = git@github.com:Y-Theta/learning-tools.git
