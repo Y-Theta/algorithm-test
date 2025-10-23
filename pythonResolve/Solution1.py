@@ -133,7 +133,7 @@ class Solution1:
     def lengthOfLongestSubstringTwoDistinct(self, s: str) -> int:
         start = 0
         maxrange = 0
-        charlist:List[int] = [-1] * 128
+        charlist: List[int] = [-1] * 128
         top = None
         count = 0
         torem = None
@@ -146,15 +146,45 @@ class Solution1:
                 if count >= 2:
                     maxrange = max(maxrange, i - start)
                     charlist[ord(torem)] = -1
-                    start = charlist[ord(s[i-1])]
+                    start = charlist[ord(s[i - 1])]
                 else:
-                    count+=1
+                    count += 1
                 charlist[ord(s[i])] = i
-                torem = s[i-1]
+                torem = s[i - 1]
             top = s[i]
 
         maxrange = max(maxrange, len(s) - start)
         return maxrange
 
+    # endregion
 
-# endregion
+    # region Solution 349
+    def intersection(self, nums1: List[int], nums2: List[int]) -> List[int]:
+        set1 = set(nums1)
+        return list(set1.intersection(nums2))
+
+    # endregion
+
+    # region Solution 350
+    def intersect(self, nums1: List[int], nums2: List[int]) -> List[int]:
+        dict1 = dict()
+        for num in nums1:
+            if num not in dict1:
+                dict1[num] = 0
+            dict1[num] += 1
+
+        dict2 = dict()
+        for num in nums2:
+            if num not in dict2:
+                dict2[num] = 0
+            dict2[num] += 1
+
+        result = []
+        intersect = set(dict1.keys()).intersection(dict2.keys())
+        for i in intersect:
+            count = min(dict1[i], dict2[i])
+            for k in range(count):
+                result.append(i)
+        return result
+
+    # endregion
