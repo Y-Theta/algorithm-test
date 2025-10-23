@@ -1,6 +1,6 @@
-from Common import ListNode
-from typing import Optional
-from typing import List
+from Common import ListNode, TreeNode
+from typing import Optional, List
+
 
 class Solution1:
 
@@ -65,14 +65,64 @@ class Solution1:
                 dataarr[i - 1] = (dataarr[i] + dataarr[i - 1]) % 10
             count -= 1
         return dataarr[0] == dataarr[1]
-    
+
     def containsNearbyDuplicate(self, nums: List[int], k: int) -> bool:
         numdict = dict()
         for i in range(len(nums)):
             num = nums[i]
             if num in numdict:
-                if i - numdict[num] <= k :
+                if i - numdict[num] <= k:
                     return True
             numdict[num] = i
         return False
-    
+
+    # region
+    def countTranversal(self, root: Optional[TreeNode]) -> int:
+        if root == None:
+            return 0
+        return 1 + self.countTranversal(root.left) + self.countTranversal(root.right)
+
+    def countNodes(self, root: Optional[TreeNode]) -> int:
+        return self.countTranversal(root)
+
+    # endregion
+
+#region Solution 226
+    def invertTreeNode(self, root: Optional[TreeNode]):
+        if root is None:
+            return
+        orileft = root.left
+        root.left = root.right
+        self.invertTreeNode(root.left)
+        root.right = orileft
+        self.invertTreeNode(root.right)
+
+    def invertTree(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+        self.invertTreeNode(root)
+        return root
+#endregion
+
+#region Solution 228
+    def summaryRanges(self, nums: List[int]) -> List[str]:
+        result:List[str] = []
+        start = 0
+        for i in range(1,len(nums)):
+            if nums[i] - nums[i-1] > 1:
+                if nums[start] == nums[i-1]:
+                    result.append(f'{nums[start]}')
+                else:
+                    result.append(f'{nums[start]}->{nums[i-1]}')
+                start = i
+        if start < len(nums):
+            if nums[start] == nums[i-1]:
+                result.append(f'{nums[start]}')
+            else:
+                result.append(f'{nums[start]}->{nums[len(nums) - 1]}')
+        return result
+#endregion
+
+#region Solution 231
+    def isPowerOfTwo(self, n: int) -> bool:
+        return n > 0 and (n - 1) & n == 0
+#endregion
+
