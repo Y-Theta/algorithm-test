@@ -87,7 +87,7 @@ class Solution1:
 
     # endregion
 
-#region Solution 226
+    # region Solution 226
     def invertTreeNode(self, root: Optional[TreeNode]):
         if root is None:
             return
@@ -100,29 +100,57 @@ class Solution1:
     def invertTree(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
         self.invertTreeNode(root)
         return root
-#endregion
 
-#region Solution 228
+    # endregion
+
+    # region Solution 228
     def summaryRanges(self, nums: List[int]) -> List[str]:
-        result:List[str] = []
+        result: List[str] = []
         start = 0
-        for i in range(1,len(nums)):
-            if nums[i] - nums[i-1] > 1:
-                if nums[start] == nums[i-1]:
-                    result.append(f'{nums[start]}')
+        for i in range(1, len(nums)):
+            if nums[i] - nums[i - 1] > 1:
+                if nums[start] == nums[i - 1]:
+                    result.append(f"{nums[start]}")
                 else:
-                    result.append(f'{nums[start]}->{nums[i-1]}')
+                    result.append(f"{nums[start]}->{nums[i-1]}")
                 start = i
         if start < len(nums):
-            if nums[start] == nums[i-1]:
-                result.append(f'{nums[start]}')
+            if nums[start] == nums[i - 1]:
+                result.append(f"{nums[start]}")
             else:
-                result.append(f'{nums[start]}->{nums[len(nums) - 1]}')
+                result.append(f"{nums[start]}->{nums[len(nums) - 1]}")
         return result
-#endregion
 
-#region Solution 231
+    # endregion
+
+    # region Solution 231
     def isPowerOfTwo(self, n: int) -> bool:
         return n > 0 and (n - 1) & n == 0
-#endregion
 
+    # endregion
+
+    # region Solution 159
+    def lengthOfLongestSubstringTwoDistinct(self, s: str) -> int:
+        start = 0
+        maxrange = 0
+        charlist = dict()
+        top = None
+        for i in range(len(s)):
+            if s[i] in charlist:
+                if s[i] is not top:
+                    charlist[s[i]] = i
+            else:
+                if len(charlist) >= 2:
+                    maxrange = max(maxrange, i - start)
+                    for key in list(charlist.keys()):
+                        if key is not s[i-1]:
+                            charlist.pop(key)
+                    start = charlist[s[i-1]]
+                charlist[s[i]] = i
+            top = s[i]
+
+        maxrange = max(maxrange, len(s) - start)
+        return maxrange
+
+
+# endregion
