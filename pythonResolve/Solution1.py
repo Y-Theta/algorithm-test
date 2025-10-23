@@ -1,6 +1,6 @@
 from Common import ListNode
 from typing import Optional
-
+from typing import List
 
 class Solution1:
 
@@ -56,3 +56,23 @@ class Solution1:
                 return oldhead
             pre = oldhead
         return head
+
+    def hasSameDigits(self, s: str) -> bool:
+        dataarr = list(map(lambda c: ord(c) - ord("0"), s))
+        count = len(dataarr)
+        while count > 2:
+            for i in range(1, count):
+                dataarr[i - 1] = (dataarr[i] + dataarr[i - 1]) % 10
+            count -= 1
+        return dataarr[0] == dataarr[1]
+    
+    def containsNearbyDuplicate(self, nums: List[int], k: int) -> bool:
+        numdict = dict()
+        for i in range(len(nums)):
+            num = nums[i]
+            if num in numdict:
+                if i - numdict[num] <= k :
+                    return True
+            numdict[num] = i
+        return False
+    
