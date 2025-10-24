@@ -1,5 +1,5 @@
 from Common import ListNode, TreeNode
-from typing import Optional, List
+from typing import Optional, List, Dict
 
 
 class Solution1:
@@ -186,5 +186,102 @@ class Solution1:
             for k in range(count):
                 result.append(i)
         return result
+
+    # endregion
+
+    # region Solution 2048
+    def intersect(self, nums1: List[int], nums2: List[int]) -> List[int]:
+        dict1 = dict()
+        for num in nums1:
+            if num not in dict1:
+                dict1[num] = 0
+            dict1[num] += 1
+
+        dict2 = dict()
+        for num in nums2:
+            if num not in dict2:
+                dict2[num] = 0
+            dict2[num] += 1
+
+        result = []
+        intersect = set(dict1.keys()).intersection(dict2.keys())
+        for i in intersect:
+            count = min(dict1[i], dict2[i])
+            for k in range(count):
+                result.append(i)
+        return result
+
+    # endregion
+
+    # region Solution 2048
+    def getDigit(self, n: int) -> int:
+        if n == 0:
+            return 0
+        return 1 + self.getDigit(n // 10)
+
+    def isSuit(
+        self, aim: int, picked: int, total: int, result: int, nums: List[int], used: List[bool]
+    ) -> bool:
+        # 检查是否所有数字都已被选择
+        if picked == total:
+            return result
+        # 遍历所有可能的选择
+        for i in range(total):
+            # 如果当前数字已使用，或者当前数字与前一个数字相同并且前一个数字未被使用，则跳过
+            if used[i] or (i > 0 and nums[i] == nums[i - 1] and not used[i - 1]):
+                continue
+            # 选择当前数字，并标记为已使用
+            used[i] = True
+            result = result * 10 + nums[i]
+            picked += 1  # selNums 增加
+            # 递归调用，继续选择下一个数字
+            tempresult = self.isSuit(aim, picked, total, result, nums, used)
+            if tempresult > aim:
+                return tempresult
+            # 回溯：撤销选择，并将数字标记为未使用
+            result = (result - nums[i]) // 10
+            picked -= 1  # selNums 减少
+            used[i] = False
+        return -1
+
+    def getBeautifulNumberElement(
+        self, digit: int, sum: int, tempresult: List[int], result: List[List[int]]
+    ):
+        if sum == digit:
+            toappend = True
+            for i in result:
+                if sorted(i) == sorted(tempresult):
+                    toappend = False
+                    break
+            if toappend:
+                result.append(tempresult)
+        for i in range(1, digit + 1):
+            temparr = []
+            temparr += tempresult
+            if i in temparr:
+                continue
+            if i + sum > digit:
+                break
+            temparr.append(i)
+            self.getBeautifulNumberElement(digit, sum + i, temparr, result)
+
+    def nextBeautifulNumber(self, n: int) -> int:
+        oridigit = self.getDigit(n)
+        digit = oridigit
+        results:List[int] = []
+        while digit <= oridigit + 1:
+            tempresult = []
+            self.getBeautifulNumberElement(digit, 0, [], tempresult)
+            for i in tempresult:
+                temparr = []
+                for k in i:
+                    for u in range(k):
+                        temparr.append(k)
+                result = self.isSuit(n, 0, len(temparr), 0, temparr, [False] * len(temparr))
+                if result > n:
+                    results.append(result)
+                    continue
+            digit += 1
+        return min(results)
 
     # endregion
