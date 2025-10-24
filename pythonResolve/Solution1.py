@@ -190,30 +190,6 @@ class Solution1:
     # endregion
 
     # region Solution 2048
-    def intersect(self, nums1: List[int], nums2: List[int]) -> List[int]:
-        dict1 = dict()
-        for num in nums1:
-            if num not in dict1:
-                dict1[num] = 0
-            dict1[num] += 1
-
-        dict2 = dict()
-        for num in nums2:
-            if num not in dict2:
-                dict2[num] = 0
-            dict2[num] += 1
-
-        result = []
-        intersect = set(dict1.keys()).intersection(dict2.keys())
-        for i in intersect:
-            count = min(dict1[i], dict2[i])
-            for k in range(count):
-                result.append(i)
-        return result
-
-    # endregion
-
-    # region Solution 2048
     def getDigit(self, n: int) -> int:
         if n == 0:
             return 0
@@ -391,6 +367,93 @@ class Solution1:
         intervals.sort(key=lambda x: x[0])
         for index in range(1, len(intervals)):
             if intervals[index][0] < intervals[index - 1][1]:
+                return False
+        return True
+
+    # endregion
+
+    # region Solution 257
+    def leftTraversal(self, root: Optional[TreeNode], stack: str, path: List[str]):
+        if root is None:
+            return
+        stack = f"{stack}->{root.val}"
+        self.leftTraversal(root.left, stack, path)
+        self.leftTraversal(root.right, stack, path)
+        if root.left == None and root.right == None:
+            path.append(stack[2:])
+
+    def binaryTreePaths(self, root: Optional[TreeNode]) -> List[str]:
+        result = []
+        self.leftTraversal(root, "", result)
+        return result
+
+    # endregion
+
+    # region Solution 433
+    def offsetG(self, str1: str, str2: str) -> int:
+        k = 0
+        for i in range(len(str1)):
+            if str1[i] != str2[i]:
+                k += 1
+        return k
+
+    def minMutation(self, startGene: str, endGene: str, bank: List[str]) -> int:
+        aim = self.offsetG(startGene, endGene)
+        if aim <= 1:
+            return aim
+        if bank is None or len(bank) == 0:
+            return -1
+        mdict: Dict[int, set[str]] = dict()
+        for g in bank:
+            k = self.offsetG(endGene, g)
+            if k not in mdict:
+                mdict[k] = set()
+            mdict[k].add(g)
+
+        maxkey = max(mdict.keys())
+        if aim > maxkey + 1:
+            return -1
+
+        remain = set()
+        for i in range(len(bank)):
+            pre = None
+            if i - 1 > 0 and i - 1 in mdict:
+                pre = mdict[i - 1]
+            if i in mdict:
+                layer = mdict[i]
+            else:
+                layer = list(remain)
+                remain.clear()
+            if pre is not None:
+                mdict[i] = set()
+                for item in pre:
+                    for g in layer:
+                        if self.offsetG(g, item) == 1:
+                            mdict[i].add(g)
+                        else:
+                            remain.add(g)
+            if i not in mdict:
+                return -1
+            if i + 1 >= aim:
+                for item in mdict[i]:
+                    if self.offsetG(item, startGene) <= 1:
+                        return i + 1
+            if len(mdict[i]) == 0 and i + 1 < aim:
+                return -1
+
+        return -1
+
+    # endregion
+
+    # region Solution 383
+    def canConstruct(self, ransomNote: str, magazine: str) -> bool:
+        dict2 = [0] * 26
+        for i in magazine:
+            dict2[ord(i) - ord("a")] += 1
+
+        for i in ransomNote:
+            dict2[ord(i) - ord("a")] -= 1
+            if dict2[ord(i) - ord("a")] < 0:
                 return False
         return True
 
