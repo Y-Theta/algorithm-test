@@ -220,7 +220,13 @@ class Solution1:
         return 1 + self.getDigit(n // 10)
 
     def isSuit(
-        self, aim: int, picked: int, total: int, result: int, nums: List[int], used: List[bool]
+        self,
+        aim: int,
+        picked: int,
+        total: int,
+        result: int,
+        nums: List[int],
+        used: List[bool],
     ) -> bool:
         # 检查是否所有数字都已被选择
         if picked == total:
@@ -268,7 +274,7 @@ class Solution1:
     def nextBeautifulNumber(self, n: int) -> int:
         oridigit = self.getDigit(n)
         digit = oridigit
-        results:List[int] = []
+        results: List[int] = []
         while digit <= oridigit + 1:
             tempresult = []
             self.getBeautifulNumberElement(digit, 0, [], tempresult)
@@ -277,11 +283,115 @@ class Solution1:
                 for k in i:
                     for u in range(k):
                         temparr.append(k)
-                result = self.isSuit(n, 0, len(temparr), 0, temparr, [False] * len(temparr))
+                result = self.isSuit(
+                    n, 0, len(temparr), 0, temparr, [False] * len(temparr)
+                )
                 if result > n:
                     results.append(result)
                     continue
             digit += 1
         return min(results)
+
+    # endregion
+
+    # region Solution 234
+    def isPalindrome(self, head: Optional[ListNode]) -> bool:
+        stack = []
+        slow = head
+        fast = head
+        middle = False
+        while slow is not None:
+            if not middle:
+                stack.append(slow.val)
+            else:
+                if slow.val != stack.pop():
+                    return False
+            slow = slow.next
+            if not middle:
+                if fast.next is None:
+                    middle = True
+                    stack.pop()
+                    continue
+                elif fast.next.next is None:
+                    middle = True
+                    continue
+                fast = fast.next.next
+        return True
+
+    # endregion
+
+    # region Solution 242
+    def isAnagram(self, s: str, t: str) -> bool:
+        if len(s) != len(t):
+            return False
+        dict1 = [0] * 26
+        for c in s:
+            dict1[ord(c) - ord("a")] += 1
+
+        for c in t:
+            dict1[ord(c) - ord("a")] -= 1
+
+        for k in dict1:
+            if k != 0:
+                return False
+
+        return True
+
+    # endregion
+
+    # region Solution 243
+    def shortestDistance(self, wordsDict: List[str], word1: str, word2: str) -> int:
+        start1 = -1
+        start2 = -1
+        minspan = len(wordsDict)
+        for index in range(len(wordsDict)):
+            word = wordsDict[index]
+            if word == word1:
+                start1 = index
+                if start2 >= 0:
+                    minspan = min(minspan, start1 - start2)
+            elif word == word2:
+                start2 = index
+                if start1 >= 0:
+                    minspan = min(minspan, start2 - start1)
+
+        return minspan
+
+    # endregion
+
+    # region Solution 246
+    def isStrobogrammatic(self, num: str) -> bool:
+        for index in range((len(num) // 2) + 1):
+            match num[index]:
+                case "0":
+                    if num[len(num) - index - 1] != "0":
+                        return False
+                case "1":
+                    if num[len(num) - index - 1] != "1":
+                        return False
+                case "6":
+                    if num[len(num) - index - 1] != "9":
+                        return False
+                case "9":
+                    if num[len(num) - index - 1] != "6":
+                        return False
+                case "8":
+                    if num[len(num) - index - 1] != "8":
+                        return False
+                case _:
+                    return False
+        return True
+
+    # endregion
+
+    # region Solution 252
+    def canAttendMeetings(self, intervals: List[List[int]]) -> bool:
+        if len(intervals) < 2:
+            return True
+        intervals.sort(key=lambda x: x[0])
+        for index in range(1, len(intervals)):
+            if intervals[index][0] < intervals[index - 1][1]:
+                return False
+        return True
 
     # endregion
