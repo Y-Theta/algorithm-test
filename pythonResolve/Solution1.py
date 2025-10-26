@@ -458,3 +458,12 @@ class Solution1:
         return True
 
     # endregion
+    
+    # region Solution 1716
+    def totalMoney(self, n: int) -> int:
+        turn = n // 7 
+        base = ((4 + turn + 3) * turn // 2) * 7
+        remain = n % 7
+        other = ((turn + 1) + (turn + remain)) * remain // 2
+        return base + other
+    # endregion
