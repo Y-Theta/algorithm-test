@@ -2,6 +2,7 @@ from Common import ListNode, TreeNode
 from typing import Optional, List, Dict, Counter
 from math import gcd, sqrt, inf
 
+
 class Solution1:
 
     def hello():
@@ -525,21 +526,70 @@ class Solution1:
         return dp[i - 1]
 
     # endregion
-    
+
     # region Solution 63
     def uniquePathsWithObstacles(self, obstacleGrid: List[List[int]]) -> int:
-        dp = [[0 for _ in range(len(obstacleGrid[0]))] for _ in range(len(obstacleGrid))]
+        dp = [
+            [0 for _ in range(len(obstacleGrid[0]))] for _ in range(len(obstacleGrid))
+        ]
         dp[0][0] = 1 if obstacleGrid[0][0] == 0 else 0
-        for r in range(1,len(obstacleGrid)):
-            dp[r][0] = dp[r-1][0] if obstacleGrid[r][0] == 0 else 0
-        
-        for c in range(1,len(obstacleGrid[0])):
-            dp[0][c] = dp[0][c-1] if obstacleGrid[0][c] == 0 else 0
-            
-        for r in range(1,len(obstacleGrid)):
-            for c in range(1,len(obstacleGrid[0])):
-                dp[r][c] = (dp[r-1][c] + dp[r][c-1]) if obstacleGrid[r][c] == 0 else 0
-        
-        return  dp[len(obstacleGrid)-1][len(obstacleGrid[0])-1]
+        for r in range(1, len(obstacleGrid)):
+            dp[r][0] = dp[r - 1][0] if obstacleGrid[r][0] == 0 else 0
+
+        for c in range(1, len(obstacleGrid[0])):
+            dp[0][c] = dp[0][c - 1] if obstacleGrid[0][c] == 0 else 0
+
+        for r in range(1, len(obstacleGrid)):
+            for c in range(1, len(obstacleGrid[0])):
+                dp[r][c] = (
+                    (dp[r - 1][c] + dp[r][c - 1]) if obstacleGrid[r][c] == 0 else 0
+                )
+
+        return dp[len(obstacleGrid) - 1][len(obstacleGrid[0]) - 1]
+
+    # endregion
+
+    # region Solution 72
+    def minDistance(self, word1: str, word2: str) -> int:
+        dp = [[0 for _ in range(len(word1) + 1)] for _ in range(len(word2) + 1)]
+        dp[0][0] = 0
+
+        # 从 word 变成 0 要删除的字符数
+        for i in range(1, len(word1) + 1):
+            dp[0][i] = i
+        for i in range(1, len(word2) + 1):
+            dp[i][0] = i
+
+        for w1 in range(1, len(word1) + 1):
+            for w2 in range(1, len(word2) + 1):
+                dp[w2][w1] = (
+                    dp[w2 - 1][w1 - 1]
+                    if word1[w1 - 1] == word2[w2 - 1]
+                    else min(dp[w2][w1 - 1], dp[w2 - 1][w1 - 1], dp[w2 - 1][w1]) + 1
+                )
+
+        return dp[len(word2)][len(word1)]
+
+    # endregion
+
+    # region Solution 91
+    def numDecodings(self, s: str) -> int:
+        dp = [0] * (len(s) + 1)
+        dp[0] = 1
+        for i in range(1, len(s) + 1):
+            if s[i - 1] != "0":
+                dp[i] = dp[i - 1]
+            if i - 2 >= 0 and s[i - 2] != "0" :
+                num = int(s[i - 2:i])
+                if num >= 1 and num <= 26:
+                    dp[i] += dp[i - 2]
+
+        return dp[len(s)]
+
+    # endregion
     
+    # region Solution 97
+    def isInterleave(self, s1: str, s2: str, s3: str) -> bool:
+        
+        return
     # endregion
