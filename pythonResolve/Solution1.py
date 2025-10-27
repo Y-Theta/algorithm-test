@@ -1,6 +1,6 @@
 from Common import ListNode, TreeNode
-from typing import Optional, List, Dict
-from math import gcd
+from typing import Optional, List, Dict, Counter
+from math import gcd, sqrt, inf
 
 
 class Solution1:
@@ -459,34 +459,40 @@ class Solution1:
         return True
 
     # endregion
-    
+
     # region Solution 1716
     def totalMoney(self, n: int) -> int:
-        turn = n // 7 
+        turn = n // 7
         base = ((4 + turn + 3) * turn // 2) * 7
         remain = n % 7
         other = ((turn + 1) + (turn + remain)) * remain // 2
         return base + other
+
     # endregion
-    
+
     # region Solution 2464
+
     def validSubarraySplit(self, nums: List[int]) -> int:
-        gcd()
-        return     
-    
+        n = len(nums)
+        dp = [1001] * (n + 1)
+        dp[0] = 0
+        for i in range(1, n + 1):
+            for j in range(1, i + 1):
+                if gcd(nums[i - 1], nums[j - 1]) > 1:
+                    dp[i] = min(dp[i], dp[j - 1] + 1)
+        return -1 if dp[n] == 1001 else dp[n]
+
     # endregion
-    
+
     # region Solution 2125
     def numberOfBeams(self, bank: List[str]) -> int:
         preline = 0
         sum = 0
         for line in bank:
-            currentline = 0
-            for c in line:
-                if c == '1':
-                    currentline += 1
+            currentline = line.count("1")
             sum += preline * currentline
             if currentline > 0:
                 preline = currentline
         return sum
+
     # endregion
