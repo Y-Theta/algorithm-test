@@ -496,3 +496,33 @@ class Solution1:
         return sum
 
     # endregion
+
+    # region Solution 22
+    def generateParenthesis(self, n: int) -> List[str]:
+        return
+
+    # endregion
+
+    # region Solution 45
+    def jump(self, nums: List[int]) -> int:
+        # dp[i] = min ( if nums[i-k] >= i-k dp[i-k] + 1 )
+        dp = [10000] * len(nums)
+        dp[0] = 0
+
+        for i in range(0, len(nums)):
+            num = nums[i]
+            maxrange = min(i + num + 1, len(nums))
+            maxrangeleft = min(i + 1, len(nums))
+            if maxrange >= len(nums):
+                return dp[i] + 1
+            for k in range(maxrangeleft, maxrange):
+                dp[k] = min(dp[k], dp[i] + 1)
+                if k == len(nums) - 1:
+                    return dp[k]
+            # for j in range(0, i):
+            #     if nums[j] >= i - j:
+            #         dp[i] = min(dp[i], dp[j] + 1)
+
+        return dp[i - 1]
+
+    # endregion
