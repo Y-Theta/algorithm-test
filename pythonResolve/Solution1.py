@@ -1,5 +1,6 @@
 from Common import ListNode, TreeNode
 from typing import Optional, List, Dict
+from math import gcd
 
 
 class Solution1:
@@ -466,4 +467,26 @@ class Solution1:
         remain = n % 7
         other = ((turn + 1) + (turn + remain)) * remain // 2
         return base + other
+    # endregion
+    
+    # region Solution 2464
+    def validSubarraySplit(self, nums: List[int]) -> int:
+        gcd()
+        return     
+    
+    # endregion
+    
+    # region Solution 2125
+    def numberOfBeams(self, bank: List[str]) -> int:
+        preline = 0
+        sum = 0
+        for line in bank:
+            currentline = 0
+            for c in line:
+                if c == '1':
+                    currentline += 1
+            sum += preline * currentline
+            if currentline > 0:
+                preline = currentline
+        return sum
     # endregion
