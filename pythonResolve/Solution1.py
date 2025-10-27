@@ -2,7 +2,6 @@ from Common import ListNode, TreeNode
 from typing import Optional, List, Dict, Counter
 from math import gcd, sqrt, inf
 
-
 class Solution1:
 
     def hello():
@@ -525,4 +524,22 @@ class Solution1:
 
         return dp[i - 1]
 
+    # endregion
+    
+    # region Solution 63
+    def uniquePathsWithObstacles(self, obstacleGrid: List[List[int]]) -> int:
+        dp = [[0 for _ in range(len(obstacleGrid[0]))] for _ in range(len(obstacleGrid))]
+        dp[0][0] = 1 if obstacleGrid[0][0] == 0 else 0
+        for r in range(1,len(obstacleGrid)):
+            dp[r][0] = dp[r-1][0] if obstacleGrid[r][0] == 0 else 0
+        
+        for c in range(1,len(obstacleGrid[0])):
+            dp[0][c] = dp[0][c-1] if obstacleGrid[0][c] == 0 else 0
+            
+        for r in range(1,len(obstacleGrid)):
+            for c in range(1,len(obstacleGrid[0])):
+                dp[r][c] = (dp[r-1][c] + dp[r][c-1]) if obstacleGrid[r][c] == 0 else 0
+        
+        return  dp[len(obstacleGrid)-1][len(obstacleGrid[0])-1]
+    
     # endregion
