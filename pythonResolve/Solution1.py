@@ -608,6 +608,7 @@ class Solution1:
                     dp[j][i] = dp[j - 1][i]
 
         return dp[len(s2)][len(s1)] > 0
+
     # endregion
 
     # region Solution 3354
@@ -624,5 +625,20 @@ class Solution1:
                 elif abs(temptotal - left) == 1:
                     count += 1
         return count
+
+    # endregion
+
+    # region Solution 120
+    def minimumTotal(self, triangle: List[List[int]]) -> int:
+        layer = triangle[len(triangle) - 1]
+        for i in range(len(triangle) - 2, -1, -1):
+            currentlayer = triangle[i]
+            currentlength = len(currentlayer)
+            for j in range(currentlength):
+                layer[j] = min(
+                    layer[j] + currentlayer[j], layer[j + 1] + currentlayer[j]
+                )
+            layer[j + 1] = inf
+        return min(layer)
 
     # endregion
