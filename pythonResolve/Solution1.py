@@ -593,3 +593,19 @@ class Solution1:
         
         return
     # endregion
+    
+    # region Solution 3354
+    def countValidSelections(self, nums: List[int]) -> int:
+        total = sum(nums)
+        temptotal = 0
+        count = 0
+        for i in range(len(nums)):
+            temptotal += nums[i]
+            if nums[i] == 0:
+                left = total - temptotal
+                if temptotal == left:
+                    count += 2
+                elif abs(temptotal - left) == 1:
+                    count += 1
+        return count
+    # endregion
