@@ -579,21 +579,37 @@ class Solution1:
         for i in range(1, len(s) + 1):
             if s[i - 1] != "0":
                 dp[i] = dp[i - 1]
-            if i - 2 >= 0 and s[i - 2] != "0" :
-                num = int(s[i - 2:i])
+            if i - 2 >= 0 and s[i - 2] != "0":
+                num = int(s[i - 2 : i])
                 if num >= 1 and num <= 26:
                     dp[i] += dp[i - 2]
 
         return dp[len(s)]
 
     # endregion
-    
+
     # region Solution 97
     def isInterleave(self, s1: str, s2: str, s3: str) -> bool:
-        
-        return
+        if len(s1) + len(s2) != len(s3):
+            return False
+        # dp[i][j] =  s1[i] = s3[i+j] dp[i-1][j]  s2[j] = s3[i+j] dp[i][j-1]
+        dp = [[0 for _ in range(len(s1) + 1)] for _ in range(len(s2) + 1)]
+        dp[0][0] = 1
+        for i in range(1, len(s2) + 1):
+            dp[i][0] = dp[i - 1][0] if s2[i - 1] == s3[i - 1] else 0
+        for i in range(1, len(s1) + 1):
+            dp[0][i] = dp[0][i - 1] if s1[i - 1] == s3[i - 1] else 0
+
+        for i in range(1, len(s1) + 1):
+            for j in range(1, len(s2) + 1):
+                if s1[i - 1] == s3[i + j - 1] and dp[j][i - 1] == 1:
+                    dp[j][i] = dp[j][i - 1]
+                if s2[j - 1] == s3[i + j - 1] and dp[j - 1][i] == 1:
+                    dp[j][i] = dp[j - 1][i]
+
+        return dp[len(s2)][len(s1)] > 0
     # endregion
-    
+
     # region Solution 3354
     def countValidSelections(self, nums: List[int]) -> int:
         total = sum(nums)
@@ -608,4 +624,5 @@ class Solution1:
                 elif abs(temptotal - left) == 1:
                     count += 1
         return count
+
     # endregion
