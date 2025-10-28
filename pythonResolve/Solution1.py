@@ -1,6 +1,7 @@
 from Common import ListNode, TreeNode
 from typing import Optional, List, Dict, Counter
 from math import gcd, sqrt, inf
+from dataclasses import dataclass
 
 
 class Solution1:
@@ -653,13 +654,64 @@ class Solution1:
             if num >= ls[-1]:
                 ls.append(num)
             else:
-                profit += (ls[-1] - ls[0])
+                profit += ls[-1] - ls[0]
                 ls.clear()
                 ls.append(num)
-        
+
         if len(ls) > 0:
-            profit += (ls[-1] - ls[0])
-        
+            profit += ls[-1] - ls[0]
+
         return profit
+
+    # endregion
+
+    # region Solution 131
+    def is_pri(self, s: str, start: int, end: int) -> bool:
+        if start <= end:
+            return s[start] == s[end] and self.is_pri(s, start + 1, end - 1)
+        else:
+            return True
+
+    def dfs_131(self, s: str, tempresult: List[str], result: List[List[str]]):
+        for i in range(len(s)):
+            subs = s[0 : i + 1]
+            if self.is_pri(subs, 0, len(subs) - 1):
+                tempresult.append(subs)
+                if i < len(s) - 1:
+                    self.dfs_131(s[i + 1 : len(s) + 1], list(tempresult), result)
+                else:
+                    result.append(tempresult)
+                tempresult.pop()
+
+    def partition(self, s: str) -> List[List[str]]:
+        result = []
+        self.dfs_131(s, [], result)
+        return result
+
+    # endregion
+
+    # region Solution 213
+    class struct_213:
+        def __init__(self, sum: int, sumstart: int):
+            self.sum = sum
+            self.sumstart = sumstart
+
+    def rob(self, nums: List[int]) -> int:
+        dp: List["Solution1.struct_213"] = [
+            Solution1.struct_213(0, 0) for _ in range(len(nums))
+        ]
+        dp[0].sum = 0
+        dp[0].sumstart = nums[0]
+        for i in range(1, len(nums)):
+            dp[i].sum = max(dp[i - 1].sum, nums[i])
+            dp[i].sumstart = max(dp[i - 1].sumstart, nums[i])
+            if i - 2 >= 0:
+                dp[i].sum = max(dp[i].sum, dp[i - 2].sum + nums[i])
+                if i == len(nums) - 1:
+                    dp[i].sumstart = max(dp[i].sumstart ,dp[i - 2].sumstart)
+                else:
+                    dp[i].sumstart = max(dp[i].sumstart ,dp[i - 2].sumstart + nums[i])
+                    
+        return max(dp[len(nums) - 1].sum,dp[len(nums) - 1].sumstart)
 
     # endregion
