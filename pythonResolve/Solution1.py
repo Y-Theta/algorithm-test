@@ -642,3 +642,24 @@ class Solution1:
         return min(layer)
 
     # endregion
+
+    # region Solution 122
+    def maxProfit(self, prices: List[int]) -> int:
+        ls = list()
+        ls.append(prices[0])
+        profit = 0
+        for i in range(1, len(prices)):
+            num = prices[i]
+            if num >= ls[-1]:
+                ls.append(num)
+            else:
+                profit += (ls[-1] - ls[0])
+                ls.clear()
+                ls.append(num)
+        
+        if len(ls) > 0:
+            profit += (ls[-1] - ls[0])
+        
+        return profit
+
+    # endregion
