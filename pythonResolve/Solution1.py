@@ -874,22 +874,22 @@ class Solution1:
                 start = mid + 1
             else:
                 end = mid
-        
+
         return start
 
     def firstBadVersion(self, n: int) -> int:
         return self.firstBadVersionSearch(0, n)
 
     # endregion
-    
+
     # region Solution 290
     def wordPattern(self, pattern: str, s: str) -> bool:
-        seles = s.split(' ')
+        seles = s.split(" ")
         plength = len(pattern)
         slength = len(seles)
         if plength != slength:
             return False
-        
+
         pdict = dict()
         up = set()
         for i in range(plength):
@@ -901,22 +901,24 @@ class Solution1:
                     return False
                 pdict[pattern[i]] = seles[i]
                 up.add(seles[i])
-        
+
         return True
+
     # endregion
-    
+
     # region Solution 434
     def countSegments(self, s: str) -> int:
         return len(s.split())
+
     # endregion
-    
+
     # region Solution 509
     def fib(self, n: int) -> int:
         if n == 1:
             return 1
         if n == 0:
             return 0
-        
+
         pre = 1
         sum = 1
         index = 2
@@ -924,19 +926,29 @@ class Solution1:
             sum += pre
             pre = sum
             index += 1
-        
+
         return sum
+
     # endregion
-    
+
     # region Solution 495
     def findPoisonedDuration(self, timeSeries: List[int], duration: int) -> int:
         sumdur = 0
-        
-        for i in range(1 ,len(timeSeries)):
-            if timeSeries[i] - timeSeries[i-1] >= duration:
+
+        for i in range(1, len(timeSeries)):
+            if timeSeries[i] - timeSeries[i - 1] >= duration:
                 sumdur += duration
             else:
-                sumdur += timeSeries[i] - timeSeries[i-1]
-        
+                sumdur += timeSeries[i] - timeSeries[i - 1]
+
         return sumdur + duration
+    # endregion
+
+    # region Solution 628
+    def maximumProduct(self, nums: List[int]) -> int:
+        nums.sort()
+        maxnum = nums[len(nums) - 1] * nums[len(nums) - 2] * nums[len(nums) - 3]
+        maxnum = max(maxnum,nums[0] * nums[1] * nums[-1])
+        return maxnum
+
     # endregion
