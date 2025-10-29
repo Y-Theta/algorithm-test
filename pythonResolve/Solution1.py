@@ -708,23 +708,24 @@ class Solution1:
             if i - 2 >= 0:
                 dp[i].sum = max(dp[i].sum, dp[i - 2].sum + nums[i])
                 if i == len(nums) - 1:
-                    dp[i].sumstart = max(dp[i].sumstart ,dp[i - 2].sumstart)
+                    dp[i].sumstart = max(dp[i].sumstart, dp[i - 2].sumstart)
                 else:
-                    dp[i].sumstart = max(dp[i].sumstart ,dp[i - 2].sumstart + nums[i])
-                    
-        return max(dp[len(nums) - 1].sum,dp[len(nums) - 1].sumstart)
+                    dp[i].sumstart = max(dp[i].sumstart, dp[i - 2].sumstart + nums[i])
+
+        return max(dp[len(nums) - 1].sum, dp[len(nums) - 1].sumstart)
 
     # endregion
 
-    # region Solution 
+    # region Solution
     def countBits(self, n: int) -> List[int]:
         dp = [0] * (n + 1)
         dp[0] = 0
-        for i in range(1,n + 1):
+        for i in range(1, n + 1):
             dp[i] = dp[i >> 1] + (i & 1)
         return dp
+
     # endregion
-    
+
     # region Solution 3370
     def smallestNumber(self, n: int) -> int:
         num = n
@@ -732,7 +733,67 @@ class Solution1:
         while num > 0:
             digit += 1
             num = num >> 1
-        
+
         return (2 ** (digit)) - 1
+
+    # endregion
+
+    # region Solution 187
+
+    def findRepeatedDnaSequences(self, s: str) -> List[str]:
+        length = len(s)
+        if length <= 10:
+            return []
+        result = set()
+        keyset = set()
+        for i in range(11, length + 1):
+            key = s[i - 10, i]
+            if key in keyset:
+                result.add(key)
+            else:
+                keyset.add(key)
+                
+        return list(result)
+
     # endregion
     
+    # region Solution 718
+    def findLength(self, nums1: List[int], nums2: List[int]) -> int:
+        dp = [[0 for _ in range(len(nums1))] for _ in range(len(nums2))]
+        dp[0][0] = 1 if nums1[0] == nums2[0] else 0
+        resultmax = dp[0][0]
+        for i in range(1, len(nums1)):
+            dp[0][i] = 1 if nums1[i] == nums2[0] else 0
+            resultmax = max(resultmax, dp[0][i]) 
+        for i in range(1, len(nums2)):
+            dp[i][0] = 1 if nums2[i] == nums1[0] else 0
+            resultmax = max(resultmax, dp[i][0]) 
+            
+        for i in range(1,len(nums1)):
+            for j in range(1,len(nums2)):
+                if nums1[i] == nums2[j]:
+                    dp[j][i] = dp[j-1][i-1] + 1
+                    resultmax = max(resultmax, dp[j][i]) 
+                # else:
+                #     prematch = dp[j-1][i]
+                #     flag1 = True
+                #     for k in range(j, j - prematch - 1,-1):
+                #         if nums2[k] != nums2[k - 1]:
+                #             flag1 = False
+                #             break
+                #     if flag1:
+                #         dp[j][i] = dp[j-1][i]
+                #         continue
+                    
+                #     prematch = dp[j][i - 1]
+                #     flag1 = True
+                #     for k in range(i, i - prematch - 1, -1):
+                #         if nums1[k] != nums1[k - 1]:
+                #             flag1 = False
+                #             break
+                #     if flag1:
+                #         dp[j][i] = dp[j][i - 1]
+                #         continue
+                    
+        return resultmax
+    # endregion
