@@ -752,11 +752,11 @@ class Solution1:
                 result.add(key)
             else:
                 keyset.add(key)
-                
+
         return list(result)
 
     # endregion
-    
+
     # region Solution 718
     def findLength(self, nums1: List[int], nums2: List[int]) -> int:
         dp = [[0 for _ in range(len(nums1))] for _ in range(len(nums2))]
@@ -764,16 +764,16 @@ class Solution1:
         resultmax = dp[0][0]
         for i in range(1, len(nums1)):
             dp[0][i] = 1 if nums1[i] == nums2[0] else 0
-            resultmax = max(resultmax, dp[0][i]) 
+            resultmax = max(resultmax, dp[0][i])
         for i in range(1, len(nums2)):
             dp[i][0] = 1 if nums2[i] == nums1[0] else 0
-            resultmax = max(resultmax, dp[i][0]) 
-            
-        for i in range(1,len(nums1)):
-            for j in range(1,len(nums2)):
+            resultmax = max(resultmax, dp[i][0])
+
+        for i in range(1, len(nums1)):
+            for j in range(1, len(nums2)):
                 if nums1[i] == nums2[j]:
-                    dp[j][i] = dp[j-1][i-1] + 1
-                    resultmax = max(resultmax, dp[j][i]) 
+                    dp[j][i] = dp[j - 1][i - 1] + 1
+                    resultmax = max(resultmax, dp[j][i])
                 # else:
                 #     prematch = dp[j-1][i]
                 #     flag1 = True
@@ -784,7 +784,7 @@ class Solution1:
                 #     if flag1:
                 #         dp[j][i] = dp[j-1][i]
                 #         continue
-                    
+
                 #     prematch = dp[j][i - 1]
                 #     flag1 = True
                 #     for k in range(i, i - prematch - 1, -1):
@@ -794,6 +794,27 @@ class Solution1:
                 #     if flag1:
                 #         dp[j][i] = dp[j][i - 1]
                 #         continue
-                    
+
         return resultmax
+
+    # endregion
+
+    # region Solution 238
+    def productExceptSelf(self, nums: List[int]) -> List[int]:
+        pretimes = [0] * len(nums)
+        posttimes = [0] * len(nums)
+        result = [0] * len(nums)
+
+        pretimes[0] = 1
+        posttimes[len(nums) - 1] = 1
+        for i in range(1, len(nums)):
+            pretimes[i] = pretimes[i - 1] * nums[i - 1]
+
+        result[len(nums) - 1] = pretimes[len(nums) - 1]
+        for i in range(len(nums) - 2, -1, -1):
+            posttimes[i] = posttimes[i + 1] * nums[i + 1]
+            result[i] = pretimes[i] * posttimes[i]
+            
+        return result
+
     # endregion
