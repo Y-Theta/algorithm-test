@@ -716,7 +716,7 @@ class Solution1:
 
     # endregion
 
-    # region Solution
+    # region Solution 338
     def countBits(self, n: int) -> List[int]:
         dp = [0] * (n + 1)
         dp[0] = 0
@@ -814,7 +814,93 @@ class Solution1:
         for i in range(len(nums) - 2, -1, -1):
             posttimes[i] = posttimes[i + 1] * nums[i + 1]
             result[i] = pretimes[i] * posttimes[i]
-            
+
         return result
 
+    # endregion
+
+    # region Solution 258
+    def addDigits(self, num: int) -> int:
+        if num == 0:
+            return 0
+        return (num - 1) % 9 + 1
+
+    # endregion
+
+    # region Solution 263
+    def isUgly(self, n: int) -> bool:
+        if n <= 0:
+            return False
+        if n == 1 or n == -1:
+            return True
+        for i in range(1, int(sqrt(abs(n))) + 1):
+            if n % i == 0:
+                left = n // i
+                if left % 2 != 0 and left % 3 != 0 and left % 5 != 0:
+                    return False
+                if i > 1 and i % 2 != 0 and i % 3 != 0 and i % 5 != 0:
+                    return False
+        return True
+
+    # endregion
+
+    # region Solution 266
+    def canPermutePalindrome(self, s: str) -> bool:
+        chardict = [0] * 26
+
+        for i in range(len(s)):
+            chardict[ord(s[i]) - ord("a")] += 1
+
+        flag = True
+        for kv in chardict:
+            if kv % 2 != 0:
+                if not flag:
+                    return False
+                flag = False
+
+        return True
+
+    # endregion
+
+    # region Solution 278
+    def isBadVersion(version: int) -> bool:
+        return
+
+    def firstBadVersionSearch(self, start: int, end: int) -> int:
+        while start < end:
+            mid = (start + end) // 2
+            flag = self.isBadVersion(mid)
+            if not flag:
+                start = mid + 1
+            else:
+                end = mid
+        
+        return start
+
+    def firstBadVersion(self, n: int) -> int:
+        return self.firstBadVersionSearch(0, n)
+
+    # endregion
+    
+    # region Solution 290
+    def wordPattern(self, pattern: str, s: str) -> bool:
+        seles = s.split(' ')
+        plength = len(pattern)
+        slength = len(seles)
+        if plength != slength:
+            return False
+        
+        pdict = dict()
+        up = set()
+        for i in range(plength):
+            if pattern[i] in pdict:
+                if seles[i] != pdict[pattern[i]]:
+                    return False
+            else:
+                if seles[i] in up:
+                    return False
+                pdict[pattern[i]] = seles[i]
+                up.add(seles[i])
+        
+        return True
     # endregion
