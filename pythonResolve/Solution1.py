@@ -927,3 +927,16 @@ class Solution1:
         
         return sum
     # endregion
+    
+    # region Solution 495
+    def findPoisonedDuration(self, timeSeries: List[int], duration: int) -> int:
+        sumdur = 0
+        
+        for i in range(1 ,len(timeSeries)):
+            if timeSeries[i] - timeSeries[i-1] >= duration:
+                sumdur += duration
+            else:
+                sumdur += timeSeries[i] - timeSeries[i-1]
+        
+        return sumdur + duration
+    # endregion
