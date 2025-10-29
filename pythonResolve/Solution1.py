@@ -904,3 +904,26 @@ class Solution1:
         
         return True
     # endregion
+    
+    # region Solution 434
+    def countSegments(self, s: str) -> int:
+        return len(s.split())
+    # endregion
+    
+    # region Solution 509
+    def fib(self, n: int) -> int:
+        if n == 1:
+            return 1
+        if n == 0:
+            return 0
+        
+        pre = 1
+        sum = 1
+        index = 2
+        while index < n:
+            sum += pre
+            pre = sum
+            index += 1
+        
+        return sum
+    # endregion
