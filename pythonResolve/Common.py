@@ -97,7 +97,13 @@ class SegmentTreeNode:
         )
         return min(left_sum, right_sum)  # 示例：求和，根据需要调整合并逻辑
 
-
+class Pos:
+    def __init__(self, l: int, t: int, r: int, b: int):
+        self.l = l
+        self.t = t
+        self.r = r
+        self.b = b
+            
 class Bank:
 
     def __init__(self, balance: List[int]):

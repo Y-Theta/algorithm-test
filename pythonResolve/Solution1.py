@@ -1,4 +1,4 @@
-from Common import ListNode, TreeNode, SegmentTreeNode
+from Common import ListNode, TreeNode, SegmentTreeNode, Pos
 from typing import Optional, List, Dict, Counter
 from math import gcd, sqrt, inf
 from dataclasses import dataclass
@@ -971,7 +971,9 @@ class Solution1:
         tempsum = val - premin
         for i in range(len(nextpos)):
             if nextpos[i] - 1 >= start and nextpos[i] <= end:
-                tempsum += self.calcSumRange(root, posdict, tempstart, nextpos[i] - 1, val)
+                tempsum += self.calcSumRange(
+                    root, posdict, tempstart, nextpos[i] - 1, val
+                )
             if nextpos[i] >= start and nextpos[i] <= end:
                 tempstart = nextpos[i] + 1
         if tempstart <= end:
@@ -998,4 +1000,53 @@ class Solution1:
         # totalsum = self.calcSumRange(root, posdict, 0, len(target) - 1, 0)
         # return totalsum
 
+    # endregion
+
+    # region Solution 361
+    def maxKilledEnemies(self, grid: List[List[str]]) -> int:
+        # dp[i][j] = dp[i-1][j] + dp[i+1][j] + dp[i][j-1] + dp[i][j+1]
+        dp: List[List[Pos]] = [
+            [Pos(0, 0, 0, 0) for _ in range(len(grid[0]))] for _ in range(len(grid))
+        ]
+
+        for r in range(len(grid)):
+            for c in range(len(grid[0])):
+                if grid[r][c] == '0' or grid[r][c] == 'E':
+                    if r - 1 >= 0:
+                        if grid[r - 1][c] == "E":
+                            dp[r][c].t = dp[r - 1][c].t + 1
+                        elif grid[r-1][c] == "W":
+                            dp[r][c].t = 0
+                        else:
+                            dp[r][c].t = dp[r-1][c].t
+                    if c - 1 >= 0:
+                        if grid[r][c - 1] == "E":
+                            dp[r][c].l = dp[r][c - 1].l + 1
+                        elif grid[r][c - 1] == "W":
+                            dp[r][c].l = 0
+                        else:
+                            dp[r][c].l = dp[r][c - 1].l
+                        
+        maxsum = 0
+        for rr in range(len(grid) - 1, -1, -1):                 
+            for rc in range(len(grid[0]) - 1, -1, -1):
+                if grid[rr][rc] == '0' or grid[rr][rc] == 'E':
+                    if rr + 1 < len(grid):
+                        if grid[rr + 1][rc] == "E":
+                            dp[rr][rc].b = dp[rr + 1][rc].b + 1
+                        elif grid[rr + 1][rc] == "W":
+                            dp[rr][rc].b = 0
+                        else:
+                            dp[rr][rc].b = dp[rr + 1][rc].b
+                    if rc + 1 < len(grid[0]):
+                        if grid[rr][rc + 1] == "E":
+                            dp[rr][rc].r = dp[rr][rc + 1].r + 1
+                        elif grid[rr][rc + 1] == "W":
+                            dp[rr][rc].r = 0
+                        else:
+                            dp[rr][rc].r = dp[rr][rc + 1].r
+                    if grid[rr][rc] == '0':
+                        maxsum = max(maxsum, dp[rr][rc].l + dp[rr][rc].t + dp[rr][rc].r + dp[rr][rc].b)
+        
+        return maxsum
     # endregion
