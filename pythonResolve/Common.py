@@ -1,4 +1,5 @@
 from typing import Optional, List
+from math import inf
 
 
 class ListNode:
@@ -17,7 +18,7 @@ class TreeNode:
         self.val = val
         self.left = left
         self.right = right
-        
+
 
 class SparseVector:
     def __init__(self, nums: List[int]):
@@ -28,14 +29,75 @@ class SparseVector:
         self._keyset = set(self._dict.keys())
 
     # Return the dotProduct of two sparse vectors
-    def dotProduct(self, vec: 'SparseVector') -> int:
+    def dotProduct(self, vec: "SparseVector") -> int:
         interct = self._keyset.intersection(vec._keyset)
         sum = 0
         for i in interct:
             sum += self._dict[i] * vec._dict[i]
         return sum
-    
-    
+
+
+class SegmentTreeNode:
+    def __init__(self, start:int, end:int):
+        self.start = start
+        self.end = end
+        self.left: Optional["SegmentTreeNode"] = None
+        self.right: Optional["SegmentTreeNode"] = None
+        self.value = inf  # 可以根据需要初始化为其他值或区间合并的结果
+        
+    def __repr__(self):
+        return f"([{self.start}-{self.end}] {self.value}, L:{self.left}, R:{self.right})"
+
+    def build_segment_tree(
+        arr: List[int], node: "SegmentTreeNode", start: int, end: int
+    ):
+        if start == end:
+            node.value = arr[start]
+            return node
+        mid = (start + end) // 2
+        node.left = SegmentTreeNode.build_segment_tree(
+            arr, SegmentTreeNode(start, mid), start, mid
+        )
+        node.right = SegmentTreeNode.build_segment_tree(
+            arr, SegmentTreeNode(mid + 1, end), mid + 1, end
+        )
+        node.value = min(
+            node.left.value, node.right.value
+        )  # 示例：求和，根据需要调整合并逻辑
+        return node
+
+    def update_segment_tree(node, index, value):
+        if node.start == node.end:  # 叶节点
+            node.value = value
+            return node.value
+        mid = (node.start + node.end) // 2
+        if index <= mid:
+            SegmentTreeNode.update_segment_tree(node.left, index, value)
+        else:
+            SegmentTreeNode.update_segment_tree(node.right, index, value)
+        node.value = min(
+            node.left.value, node.right.value
+        )  # 示例：求和，根据需要调整合并逻辑
+        return node.value
+
+    def query_segment_tree(node, start, end) -> int:
+        if node.start >= start and node.end <= end:  # 当前节点完全在查询区间内
+            return node.value
+        if node.end < start or node.start > end:  # 当前节点完全在查询区间外
+            return inf  # 或其他默认值，根据需要调整
+        left_sum = (
+            SegmentTreeNode.query_segment_tree(node.left, start, end)
+            if node.left
+            else inf
+        )
+        right_sum = (
+            SegmentTreeNode.query_segment_tree(node.right, start, end)
+            if node.right
+            else inf
+        )
+        return min(left_sum, right_sum)  # 示例：求和，根据需要调整合并逻辑
+
+
 class Bank:
 
     def __init__(self, balance: List[int]):

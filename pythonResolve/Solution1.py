@@ -1,4 +1,4 @@
-from Common import ListNode, TreeNode
+from Common import ListNode, TreeNode, SegmentTreeNode
 from typing import Optional, List, Dict, Counter
 from math import gcd, sqrt, inf
 from dataclasses import dataclass
@@ -942,13 +942,60 @@ class Solution1:
                 sumdur += timeSeries[i] - timeSeries[i - 1]
 
         return sumdur + duration
+
     # endregion
 
     # region Solution 628
     def maximumProduct(self, nums: List[int]) -> int:
         nums.sort()
         maxnum = nums[len(nums) - 1] * nums[len(nums) - 2] * nums[len(nums) - 3]
-        maxnum = max(maxnum,nums[0] * nums[1] * nums[-1])
+        maxnum = max(maxnum, nums[0] * nums[1] * nums[-1])
         return maxnum
+
+    # endregion
+
+    # region Solution 1526
+    def calcSumRange(
+        self,
+        root: SegmentTreeNode,
+        posdict: Dict[int, List[int]],
+        start: int,
+        end: int,
+        premin: int,
+    ) -> int:
+        val = SegmentTreeNode.query_segment_tree(root, start, end)
+        if val <= premin or val == inf:
+            return 0
+        nextpos = posdict[val]
+        tempstart = start
+        tempsum = val - premin
+        for i in range(len(nextpos)):
+            if nextpos[i] - 1 >= start and nextpos[i] <= end:
+                tempsum += self.calcSumRange(root, posdict, tempstart, nextpos[i] - 1, val)
+            if nextpos[i] >= start and nextpos[i] <= end:
+                tempstart = nextpos[i] + 1
+        if tempstart <= end:
+            tempsum += self.calcSumRange(root, posdict, tempstart, end, val)
+        return tempsum
+
+    def minNumberOperations(self, target: List[int]) -> int:
+        # 差分
+        ans = pre = 0
+        for x in target:
+            if x < pre:
+                ans += pre - x
+            pre = x
+        return ans + pre
+        # totalsum = 0
+        # root = SegmentTreeNode(0, len(target) - 1)
+        # SegmentTreeNode.build_segment_tree(target, root, 0, len(target) - 1)
+        # posdict: Dict[int, List[int]] = dict()
+        # for i in range(len(target)):
+        #     if target[i] not in posdict:
+        #         posdict[target[i]] = list()
+        #     posdict[target[i]].append(i)
+
+        # totalsum = self.calcSumRange(root, posdict, 0, len(target) - 1, 0)
+        # return totalsum
 
     # endregion
