@@ -1011,14 +1011,14 @@ class Solution1:
 
         for r in range(len(grid)):
             for c in range(len(grid[0])):
-                if grid[r][c] == '0' or grid[r][c] == 'E':
+                if grid[r][c] == "0" or grid[r][c] == "E":
                     if r - 1 >= 0:
                         if grid[r - 1][c] == "E":
                             dp[r][c].t = dp[r - 1][c].t + 1
-                        elif grid[r-1][c] == "W":
+                        elif grid[r - 1][c] == "W":
                             dp[r][c].t = 0
                         else:
-                            dp[r][c].t = dp[r-1][c].t
+                            dp[r][c].t = dp[r - 1][c].t
                     if c - 1 >= 0:
                         if grid[r][c - 1] == "E":
                             dp[r][c].l = dp[r][c - 1].l + 1
@@ -1026,11 +1026,11 @@ class Solution1:
                             dp[r][c].l = 0
                         else:
                             dp[r][c].l = dp[r][c - 1].l
-                        
+
         maxsum = 0
-        for rr in range(len(grid) - 1, -1, -1):                 
+        for rr in range(len(grid) - 1, -1, -1):
             for rc in range(len(grid[0]) - 1, -1, -1):
-                if grid[rr][rc] == '0' or grid[rr][rc] == 'E':
+                if grid[rr][rc] == "0" or grid[rr][rc] == "E":
                     if rr + 1 < len(grid):
                         if grid[rr + 1][rc] == "E":
                             dp[rr][rc].b = dp[rr + 1][rc].b + 1
@@ -1045,8 +1045,72 @@ class Solution1:
                             dp[rr][rc].r = 0
                         else:
                             dp[rr][rc].r = dp[rr][rc + 1].r
-                    if grid[rr][rc] == '0':
-                        maxsum = max(maxsum, dp[rr][rc].l + dp[rr][rc].t + dp[rr][rc].r + dp[rr][rc].b)
-        
+                    if grid[rr][rc] == "0":
+                        maxsum = max(
+                            maxsum,
+                            dp[rr][rc].l + dp[rr][rc].t + dp[rr][rc].r + dp[rr][rc].b,
+                        )
+
         return maxsum
+
+    # endregion
+
+    # region Solution 351
+    def is_valid_351(self, current:int, pre:int,picked:list) -> bool:
+        if (pre == 0):
+            return True
+        if ((current + pre) % 2 == 1):
+            return True
+        mid = (current + pre)//2
+        if (mid == 4):
+            return picked[mid]
+        if (((current - 1)%3 != (pre - 1)%3) and ((current - 1)//3 != (pre- 1)//3)) :
+            return True
+        return picked[mid]
+        
+    
+    def dfs_351(self, m: int, n: int, picked: list, result: list, countpicked: int, current: int ,pre: int):
+        if m <= countpicked <= n:
+            if not self.is_valid_351(current,pre,picked):
+                return
+            result[0] += 1
+        if countpicked >= n:
+            return
+        for i in range(1, 10):
+            if picked[i]:
+                continue
+            picked[i] = True
+            countpicked += 1
+            old = pre
+            pre = current
+            current = i
+            self.dfs_351(m, n, picked, result, countpicked, current, pre)
+            current = pre
+            pre = old
+            picked[i] = False
+            countpicked -= 1
+
+    def numberOfPatterns(self, m: int, n: int) -> int:
+        totalsum = 0
+
+        result = [0]
+        picked = [False] * 10
+        picked[1] = True
+        self.dfs_351(m, n, picked, result, 1,1,0)
+        totalsum += 4 * result[0]
+
+        result[0] = 0
+        picked = [False] * 10
+        picked[2] = True
+        self.dfs_351(m, n, picked, result, 1,2,0)
+        totalsum += 4 * result[0]
+
+        result[0] = 0
+        picked = [False] * 10
+        picked[5] = True
+        self.dfs_351(m, n, picked, result, 1,5,0)
+        totalsum += result[0]
+
+        return totalsum
+
     # endregion
