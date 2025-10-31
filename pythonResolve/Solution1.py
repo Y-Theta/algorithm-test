@@ -1,6 +1,6 @@
 from Common import ListNode, TreeNode, SegmentTreeNode, Pos
 from typing import Optional, List, Dict, Counter
-from math import gcd, sqrt, inf
+from math import gcd, sqrt, inf, factorial
 from dataclasses import dataclass
 
 
@@ -1056,22 +1056,32 @@ class Solution1:
     # endregion
 
     # region Solution 351
-    def is_valid_351(self, current:int, pre:int,picked:list) -> bool:
-        if (pre == 0):
+    def is_valid_351(self, current: int, pre: int, picked: list) -> bool:
+        if pre == 0:
             return True
-        if ((current + pre) % 2 == 1):
+        if (current + pre) % 2 == 1:
             return True
-        mid = (current + pre)//2
-        if (mid == 4):
+        mid = (current + pre) // 2
+        if mid == 4:
             return picked[mid]
-        if (((current - 1)%3 != (pre - 1)%3) and ((current - 1)//3 != (pre- 1)//3)) :
+        if ((current - 1) % 3 != (pre - 1) % 3) and (
+            (current - 1) // 3 != (pre - 1) // 3
+        ):
             return True
         return picked[mid]
-        
-    
-    def dfs_351(self, m: int, n: int, picked: list, result: list, countpicked: int, current: int ,pre: int):
+
+    def dfs_351(
+        self,
+        m: int,
+        n: int,
+        picked: list,
+        result: list,
+        countpicked: int,
+        current: int,
+        pre: int,
+    ):
         if m <= countpicked <= n:
-            if not self.is_valid_351(current,pre,picked):
+            if not self.is_valid_351(current, pre, picked):
                 return
             result[0] += 1
         if countpicked >= n:
@@ -1096,21 +1106,146 @@ class Solution1:
         result = [0]
         picked = [False] * 10
         picked[1] = True
-        self.dfs_351(m, n, picked, result, 1,1,0)
+        self.dfs_351(m, n, picked, result, 1, 1, 0)
         totalsum += 4 * result[0]
 
         result[0] = 0
         picked = [False] * 10
         picked[2] = True
-        self.dfs_351(m, n, picked, result, 1,2,0)
+        self.dfs_351(m, n, picked, result, 1, 2, 0)
         totalsum += 4 * result[0]
 
         result[0] = 0
         picked = [False] * 10
         picked[5] = True
-        self.dfs_351(m, n, picked, result, 1,5,0)
+        self.dfs_351(m, n, picked, result, 1, 5, 0)
         totalsum += result[0]
 
         return totalsum
+
+    # endregion
+
+    # region Solution 357
+    def countNumbersWithUniqueDigits(self, n: int) -> int:
+        if n == 0:
+            return 1
+        return (
+            factorial(10) // factorial(10 - n)
+            - factorial(9) // factorial(10 - n)
+            + self.countNumbersWithUniqueDigits(n - 1)
+        )
+
+    # endregion
+
+    # region Solution 368
+    def largestDivisibleSubset(self, nums: List[int]) -> List[int]:
+        nums.sort()
+        maxlength = 0
+        result = None
+        dp: List[List[int]] = [None for _ in range(len(nums))]
+        for i in range(len(nums)):
+            num = nums[i]
+            temmax = -1
+            maxindex = -1
+            for j in range(i - 1, -1, -1):
+                if num % nums[j] == 0:
+                    if len(dp[j]) >= temmax:
+                        maxindex = j
+                        temmax = len(dp[j])
+            if maxindex < 0:
+                dp[i] = list([nums[i]])
+            else:
+                dp[i] = list(dp[maxindex])
+                dp[i].append(num)
+            length = len(dp[i])
+            if length > maxlength:
+                maxlength = length
+                result = dp[i]
+
+        return result
+
+    # endregion
+
+    # region Solution 473
+    ## TODO::重做
+    def makesquare(self, matchsticks: List[int]) -> bool:
+        totalLen = sum(matchsticks)
+        if totalLen % 4:
+            return False
+        matchsticks.sort(reverse=True)
+
+        edges = [0] * 4
+
+        def dfs(idx: int) -> bool:
+            if idx == len(matchsticks):
+                return True
+            for i in range(4):
+                if i > 0 and edges[i] == edges[i - 1]:
+                    continue
+                edges[i] += matchsticks[idx]
+                if edges[i] <= totalLen // 4 and dfs(idx + 1):
+                    return True
+                edges[i] -= matchsticks[idx]
+            return False
+
+        return dfs(0)
+
+    # endregion
+
+    # region Solution 3289
+    def getSneakyNumbers(self, nums: List[int]) -> List[int]:
+        hashset = set()
+        result = []
+        for i in nums:
+            if i in hashset:
+                result.append(i)
+            else:
+                hashset.add(i)
+        return result
+
+    # endregion
+
+    # region Solution 221
+    def maximalSquare(self, matrix: List[List[str]]) -> int:
+        info: List[List[List[int]]] = [
+            [[0] * 2 for _ in range(len(matrix[0]))] for _ in range(len(matrix))
+        ]
+        maxedge = 0
+        for r in range(len(matrix)):
+            for c in range(len(matrix[0])):
+                if matrix[r][c] == "1":
+                    maxedge = max(maxedge, 1)
+                    info[r][c][1] = 1
+                    info[r][c][0] = 1
+                    if c > 0 and matrix[r][c - 1] == "1":
+                        info[r][c][0] = info[r][c - 1][0] + 1
+                    if r > 0 and matrix[r - 1][c] == "1":
+                        minwidth = info[r][c][0]
+                        minedge = maxedge
+                        for i in range(2, info[r][c][0] + 1):
+                            if r - i + 1 >= 0 and matrix[r - i + 1][c] == "1":
+                                if minwidth < info[r - i + 1][c][1]:
+                                    minedge = info[r - i + 1][c][1]
+                                    break
+                                minwidth = min(minwidth, info[r - i + 1][c][0])
+                                if minwidth <= i:
+                                    minedge = minwidth
+                                    break
+                            else:
+                                minedge = min(i - 1, minwidth)
+                                break
+                        maxedge = max(maxedge, minedge)
+                        info[r][c][1] = maxedge
+        return maxedge * maxedge
+
+    # endregion
+
+    # region Solution 256
+    def minCost(self, costs: List[List[int]]) -> int:
+        for i in range(1, len(costs)):
+            costs[i][0] = min(costs[i - 1][1], costs[i - 1][2]) + costs[i][0]
+            costs[i][1] = min(costs[i - 1][0], costs[i - 1][2]) + costs[i][1]
+            costs[i][2] = min(costs[i - 1][0], costs[i - 1][1]) + costs[i][2]
+        return min(costs[len(costs) - 1])
 
     # endregion
