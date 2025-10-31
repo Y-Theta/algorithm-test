@@ -1249,3 +1249,60 @@ class Solution1:
         return min(costs[len(costs) - 1])
 
     # endregion
+
+    # region Solution 264
+    def nthUglyNumber(self, n: int) -> int:
+        dp = [0] * max(3, n)
+        dp[0] = 1
+        dp[1] = 2
+        dp[2] = 3
+
+        hashset = set()
+        hashset.add(1)
+        hashset.add(2)
+        hashset.add(3)
+        for i in range(3, n):
+            minval = dp[i - 1]
+            nextmin = inf
+            for k in range(i):
+                if dp[k] * 5 > minval:
+                    if dp[k] * 3 > minval:
+                        if dp[k] * 2 > minval:
+                            if dp[k] * 2 not in hashset:
+                                nextmin = min(nextmin, dp[k] * 2)
+                            break
+                        else:
+                            if dp[k] * 3 not in hashset:
+                                nextmin = min(nextmin, dp[k] * 3)
+                    else:
+                        if dp[k] * 5 not in hashset:
+                            nextmin = min(nextmin, dp[k] * 5)
+            hashset.add(nextmin)
+            dp[i] = nextmin
+
+        return dp[n - 1]
+
+    # endregion
+    
+    # region Solution 474
+    # TODO::重做
+    def findMaxForm(self, strs: List[str], m: int, n: int) -> int:
+        dp = [[[0 for _ in range(m + 1)] for _ in range(n + 1)] for _ in range(len(strs))]
+        for i in range(len(strs)):
+            counter = Counter(strs[i])
+            count0 = counter['0']
+            count1 = counter['1']
+            for j in range(m + 1):
+                for k in range(n + 1):
+                    u = 0
+                    if i > 0:
+                        u = dp[i-1][k][j]
+                    dp[i][k][j] = u
+                    if j >= count0 and k >= count1:
+                        u = 1
+                        if i > 0:
+                            u = dp[i-1][k - count1][j - count0] + 1
+                        dp[i][k][j] = max(dp[i][k][j], u)
+            
+        return dp[len(strs) - 1][n][m]
+    # endregion
