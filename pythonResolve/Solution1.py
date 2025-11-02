@@ -1283,26 +1283,112 @@ class Solution1:
         return dp[n - 1]
 
     # endregion
-    
+
     # region Solution 474
     # TODO::重做
     def findMaxForm(self, strs: List[str], m: int, n: int) -> int:
-        dp = [[[0 for _ in range(m + 1)] for _ in range(n + 1)] for _ in range(len(strs))]
+        dp = [
+            [[0 for _ in range(m + 1)] for _ in range(n + 1)] for _ in range(len(strs))
+        ]
         for i in range(len(strs)):
             counter = Counter(strs[i])
-            count0 = counter['0']
-            count1 = counter['1']
+            count0 = counter["0"]
+            count1 = counter["1"]
             for j in range(m + 1):
                 for k in range(n + 1):
                     u = 0
                     if i > 0:
-                        u = dp[i-1][k][j]
+                        u = dp[i - 1][k][j]
                     dp[i][k][j] = u
                     if j >= count0 and k >= count1:
                         u = 1
                         if i > 0:
-                            u = dp[i-1][k - count1][j - count0] + 1
+                            u = dp[i - 1][k - count1][j - count0] + 1
                         dp[i][k][j] = max(dp[i][k][j], u)
-            
+
         return dp[len(strs) - 1][n][m]
+
+    # endregion
+
+    # region Solution 3217
+    ## 可以使用头部节点减少数值赋值操作
+    def modifiedList(
+        self, nums: List[int], head: Optional[ListNode]
+    ) -> Optional[ListNode]:
+        exist = set(nums)
+        newhead = head
+        current = head
+
+        pre: Optional[ListNode] = None
+        while current != None:
+            if current.val in exist:
+                if current.next != None:
+                    current.val = current.next.val
+                    current.next = current.next.next
+                elif pre != None:
+                    pre.next = None
+                    current = None
+                else:
+                    return None
+            else:
+                pre = current
+                current = current.next
+
+        return newhead
+
+    # endregion
+
+    # region Solution 2257
+    def countUnguarded(
+        self, m: int, n: int, guards: List[List[int]], walls: List[List[int]]
+    ) -> int:
+        grid = [[0 for _ in range(n)] for _ in range(m)]
+        remain = m * n - len(guards) - len(walls)
+        for g in guards:
+            grid[g[0]][g[1]] = 1
+        for w in walls:
+            grid[w[0]][w[1]] = 2
+
+        for g in guards:
+            if grid[g[0]][g[1]] != 3:
+                for i in range(g[1], n):
+                    if grid[g[0]][i] == 1:
+                        grid[g[0]][i] = 3
+                        continue
+                    elif grid[g[0]][i] == 0:
+                        grid[g[0]][i] = 3
+                        remain -= 1
+                    elif grid[g[0]][i] == 2:
+                        break
+                for i in range(g[1], -1, -1):
+                    if grid[g[0]][i] == 1:
+                        grid[g[0]][i] = 3
+                        continue
+                    elif grid[g[0]][i] == 0:
+                        grid[g[0]][i] = 3
+                        remain -= 1
+                    elif grid[g[0]][i] == 2:
+                        break
+            if grid[g[0]][g[1]] != 4:
+                for i in range(g[0], m):
+                    if grid[i][g[1]] == 1:
+                        grid[i][g[1]] = 4
+                        continue
+                    elif grid[i][g[1]] == 0:
+                        grid[i][g[1]] = 4
+                        remain -= 1
+                    elif grid[i][g[1]] == 2:
+                        break
+                for i in range(g[0], -1, -1):
+                    if grid[i][g[1]] == 1:
+                        grid[i][g[1]] = 4
+                        continue
+                    elif grid[i][g[1]] == 0:
+                        grid[i][g[1]] = 4
+                        remain -= 1
+                    elif grid[i][g[1]] == 2:
+                        break
+
+        return remain
+
     # endregion
