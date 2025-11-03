@@ -1,4 +1,4 @@
-from Common import ListNode, TreeNode, SegmentTreeNode, Pos
+from Common import ListNode, TreeNode, SegmentTreeNode, Pos,MaxSegmentTreeNode
 from typing import Optional, List, Dict, Counter
 from math import gcd, sqrt, inf, factorial
 from dataclasses import dataclass
@@ -1390,5 +1390,31 @@ class Solution1:
                         break
 
         return remain
+
+    # endregion
+
+    # region Solution 1578
+    def minCost(self, colors: str, neededTime: List[int]) -> int:
+        start = 0
+        end = 0
+        tempsum = neededTime[0]
+        tempmax = neededTime[0]
+        totalsum = 0
+        for i in range(1, len(colors)):
+            if colors[i] == colors[i - 1]:
+                end = i
+                tempsum += neededTime[i]
+                tempmax = max(neededTime[i],tempmax)
+            else:
+                if end - start > 0:
+                    totalsum += tempsum - tempmax
+                start = end = i
+                tempsum = neededTime[i]
+                tempmax = neededTime[i]
+        
+        if end - start > 0:
+            totalsum += tempsum - tempmax
+                
+        return totalsum
 
     # endregion
