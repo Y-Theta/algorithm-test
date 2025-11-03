@@ -1,4 +1,4 @@
-from typing import Optional, List
+from typing import Optional, List, Callable
 from math import inf
 
 
@@ -38,12 +38,17 @@ class SparseVector:
 
 
 class SegmentTreeNode:
-    def __init__(self, start: int, end: int):
+    minoperation:Callable[[int,int],int] = lambda a, b: min(a, b)
+    maxoperation:Callable[[int,int],int] = lambda a, b: max(a, b)
+    sumoperation:Callable[[int,int],int] = lambda a, b: a + b
+
+    def __init__(self, start: int, end: int, dataoperation:Callable[[int,int],int]):
         self.start = start
         self.end = end
         self.left: Optional["SegmentTreeNode"] = None
         self.right: Optional["SegmentTreeNode"] = None
         self.value = inf  # 可以根据需要初始化为其他值或区间合并的结果
+        self.dataoperation = dataoperation
 
     def __repr__(self):
         return (
@@ -58,17 +63,17 @@ class SegmentTreeNode:
             return node
         mid = (start + end) // 2
         node.left = SegmentTreeNode.build_segment_tree(
-            arr, SegmentTreeNode(start, mid), start, mid
+            arr, SegmentTreeNode(start, mid, node.dataoperation), start, mid
         )
         node.right = SegmentTreeNode.build_segment_tree(
-            arr, SegmentTreeNode(mid + 1, end), mid + 1, end
+            arr, SegmentTreeNode(mid + 1, end, node.dataoperation), mid + 1, end
         )
-        node.value = min(
+        node.value = node.dataoperation(
             node.left.value, node.right.value
         )  # 示例：求和，根据需要调整合并逻辑
         return node
 
-    def update_segment_tree(node, index, value):
+    def update_segment_tree(node: "SegmentTreeNode", index, value):
         if node.start == node.end:  # 叶节点
             node.value = value
             return node.value
@@ -77,7 +82,7 @@ class SegmentTreeNode:
             SegmentTreeNode.update_segment_tree(node.left, index, value)
         else:
             SegmentTreeNode.update_segment_tree(node.right, index, value)
-        node.value = min(
+        node.value = node.dataoperation(
             node.left.value, node.right.value
         )  # 示例：求和，根据需要调整合并逻辑
         return node.value
@@ -97,70 +102,9 @@ class SegmentTreeNode:
             if node.right
             else inf
         )
-        return min(left_sum, right_sum)  # 示例：求和，根据需要调整合并逻辑
-
-
-class MaxSegmentTreeNode:
-    def __init__(self, start: int, end: int):
-        self.start = start
-        self.end = end
-        self.left: Optional["MaxSegmentTreeNode"] = None
-        self.right: Optional["MaxSegmentTreeNode"] = None
-        self.value = -inf  # 可以根据需要初始化为其他值或区间合并的结果
-
-    def __repr__(self):
-        return (
-            f"([{self.start}-{self.end}] {self.value}, L:{self.left}, R:{self.right})"
-        )
-
-    def build_segment_tree(
-        arr: List[int], node: "MaxSegmentTreeNode", start: int, end: int
-    ):
-        if start == end:
-            node.value = arr[start]
-            return node
-        mid = (start + end) // 2
-        node.left = MaxSegmentTreeNode.build_segment_tree(
-            arr, MaxSegmentTreeNode(start, mid), start, mid
-        )
-        node.right = MaxSegmentTreeNode.build_segment_tree(
-            arr, MaxSegmentTreeNode(mid + 1, end), mid + 1, end
-        )
-        node.value = max(
-            node.left.value, node.right.value
+        return node.dataoperation(
+            left_sum, right_sum
         )  # 示例：求和，根据需要调整合并逻辑
-        return node
-
-    def update_segment_tree(node, index, value):
-        if node.start == node.end:  # 叶节点
-            node.value = value
-            return node.value
-        mid = (node.start + node.end) // 2
-        if index <= mid:
-            MaxSegmentTreeNode.update_segment_tree(node.left, index, value)
-        else:
-            MaxSegmentTreeNode.update_segment_tree(node.right, index, value)
-        node.value = max(
-            node.left.value, node.right.value
-        )  # 示例：求和，根据需要调整合并逻辑
-        return node.value
-
-    def query_segment_tree(node, start, end) -> int:
-        if node.start >= start and node.end <= end:  # 当前节点完全在查询区间内
-            return node.value
-        if node.end < start or node.start > end:  # 当前节点完全在查询区间外
-            return -inf  # 或其他默认值，根据需要调整
-        left_sum = (
-            MaxSegmentTreeNode.query_segment_tree(node.left, start, end)
-            if node.left
-            else -inf
-        )
-        right_sum = (
-            MaxSegmentTreeNode.query_segment_tree(node.right, start, end)
-            if node.right
-            else -inf
-        )
-        return max(left_sum, right_sum)  # 示例：求和，根据需要调整合并逻辑
 
 
 class Pos:

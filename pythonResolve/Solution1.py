@@ -1,4 +1,4 @@
-from Common import ListNode, TreeNode, SegmentTreeNode, Pos,MaxSegmentTreeNode
+from Common import ListNode, TreeNode, SegmentTreeNode, Pos
 from typing import Optional, List, Dict, Counter
 from math import gcd, sqrt, inf, factorial
 from dataclasses import dataclass
