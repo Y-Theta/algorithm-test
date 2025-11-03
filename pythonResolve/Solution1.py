@@ -1404,17 +1404,39 @@ class Solution1:
             if colors[i] == colors[i - 1]:
                 end = i
                 tempsum += neededTime[i]
-                tempmax = max(neededTime[i],tempmax)
+                tempmax = max(neededTime[i], tempmax)
             else:
                 if end - start > 0:
                     totalsum += tempsum - tempmax
                 start = end = i
                 tempsum = neededTime[i]
                 tempmax = neededTime[i]
-        
+
         if end - start > 0:
             totalsum += tempsum - tempmax
-                
+
         return totalsum
 
+    # endregion
+
+    # region Solution 270
+    def search_270(self, root: Optional[TreeNode], target: float, result:list):
+        if root is None:
+            return
+        pad1 = abs(target - root.val)
+        pad3 = abs(target - result[0])
+        if pad1 == pad3:
+            result[0] = min(root.val, result[0])
+        elif pad1 < pad3:
+            result[0] = root.val
+        if target > root.val:
+            return self.search_270(root.right, target, result)
+        else:
+            return self.search_270(root.left, target, result)
+
+    def closestValue(self, root: Optional[TreeNode], target: float) -> int:
+        result = [root.val]
+        self.search_270(root, target, result)
+        return result[0]
+    
     # endregion

@@ -7,7 +7,6 @@ class ListNode:
         self.val = val
         self.next = next
 
-
 class TreeNode:
     def __init__(
         self,
@@ -18,7 +17,6 @@ class TreeNode:
         self.val = val
         self.left = left
         self.right = right
-
 
 class SparseVector:
     def __init__(self, nums: List[int]):
@@ -35,7 +33,6 @@ class SparseVector:
         for i in interct:
             sum += self._dict[i] * vec._dict[i]
         return sum
-
 
 class SegmentTreeNode:
     minoperation:Callable[[int,int],int] = lambda a, b: min(a, b)
@@ -106,14 +103,12 @@ class SegmentTreeNode:
             left_sum, right_sum
         )  # 示例：求和，根据需要调整合并逻辑
 
-
 class Pos:
     def __init__(self, l: int, t: int, r: int, b: int):
         self.l = l
         self.t = t
         self.r = r
         self.b = b
-
 
 class Bank:
 
