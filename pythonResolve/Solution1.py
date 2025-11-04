@@ -1420,7 +1420,7 @@ class Solution1:
     # endregion
 
     # region Solution 270
-    def search_270(self, root: Optional[TreeNode], target: float, result:list):
+    def search_270(self, root: Optional[TreeNode], target: float, result: list):
         if root is None:
             return
         pad1 = abs(target - root.val)
@@ -1438,5 +1438,32 @@ class Solution1:
         result = [root.val]
         self.search_270(root, target, result)
         return result[0]
-    
+
+    # endregion
+
+    # region Solution 292
+    def canWinNim(self, n: int) -> bool:
+        return n % 4 != 0
+    # endregion
+
+    # region Solution 3318
+    def findXSum(self, nums: List[int], k: int, x: int) -> List[int]:
+        occurdict = dict()
+        result = [0] * (len(nums) - k + 1)
+        for i in range(len(nums)):
+            if nums[i] not in occurdict:
+                occurdict[nums[i]] = 0
+            occurdict[nums[i]] += 1
+            if i >= k - 1:
+                if i > k - 1:
+                    occurdict[nums[i - k]] -= 1
+                    if occurdict[nums[i - k]] == 0:
+                        occurdict.pop(nums[i - k])
+                tempresult = sorted(
+                    occurdict.items(), key=lambda x: x[1] * 50 + x[0], reverse=True
+                )
+                for u in range(min(x, len(tempresult))):
+                    result[i - (k - 1)] += tempresult[u][0] * tempresult[u][1]
+        return result
+
     # endregion
