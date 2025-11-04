@@ -1167,28 +1167,9 @@ class Solution1:
     # endregion
 
     # region Solution 473
-    ## TODO::重做
+    # TODO::重做
     def makesquare(self, matchsticks: List[int]) -> bool:
-        totalLen = sum(matchsticks)
-        if totalLen % 4:
-            return False
-        matchsticks.sort(reverse=True)
-
-        edges = [0] * 4
-
-        def dfs(idx: int) -> bool:
-            if idx == len(matchsticks):
-                return True
-            for i in range(4):
-                if i > 0 and edges[i] == edges[i - 1]:
-                    continue
-                edges[i] += matchsticks[idx]
-                if edges[i] <= totalLen // 4 and dfs(idx + 1):
-                    return True
-                edges[i] -= matchsticks[idx]
-            return False
-
-        return dfs(0)
+        return
 
     # endregion
 
@@ -1285,28 +1266,18 @@ class Solution1:
     # endregion
 
     # region Solution 474
-    # TODO::重做
+    # 背包问题
     def findMaxForm(self, strs: List[str], m: int, n: int) -> int:
-        dp = [
-            [[0 for _ in range(m + 1)] for _ in range(n + 1)] for _ in range(len(strs))
-        ]
-        for i in range(len(strs)):
-            counter = Counter(strs[i])
-            count0 = counter["0"]
-            count1 = counter["1"]
-            for j in range(m + 1):
-                for k in range(n + 1):
-                    u = 0
-                    if i > 0:
-                        u = dp[i - 1][k][j]
-                    dp[i][k][j] = u
-                    if j >= count0 and k >= count1:
-                        u = 1
-                        if i > 0:
-                            u = dp[i - 1][k - count1][j - count0] + 1
-                        dp[i][k][j] = max(dp[i][k][j], u)
-
-        return dp[len(strs) - 1][n][m]
+        # dp [i][j] (i 填充 0 的个数) (j 填充 1 的个数)
+        dp = [[0] * (n + 1) for _ in range(m + 1)]
+        for s in strs:
+            count0 = s.count("0")
+            count1 = s.count("1")
+            for c1 in range(n, -1, -1):
+                for c0 in range(m, -1, -1):
+                    if c1 >= count1 and c0 >= count0:
+                        dp[c0][c1] = max(dp[c0][c1], dp[c0 - count1][c1 - count0] + 1)
+        return dp[m][n]
 
     # endregion
 
@@ -1444,6 +1415,7 @@ class Solution1:
     # region Solution 292
     def canWinNim(self, n: int) -> bool:
         return n % 4 != 0
+
     # endregion
 
     # region Solution 3318
@@ -1467,7 +1439,7 @@ class Solution1:
         return result
 
     # endregion
-    
+
     # region Solution 643
     def findMaxAverage(self, nums: List[int], k: int) -> float:
         tempmax = -inf
@@ -1475,12 +1447,13 @@ class Solution1:
         tempsum = current_sum
         lenn = len(nums)
         for i in range(k, lenn):
-            tempsum = tempsum + nums[i] - nums[i-k]
+            tempsum = tempsum + nums[i] - nums[i - k]
             if tempsum > tempmax:
                 tempmax = tempsum
         return tempmax / k
+
     # endregion
-    
+
     # region Solution 645
     def findErrorNums(self, nums: List[int]) -> List[int]:
         nums.sort()
@@ -1490,15 +1463,24 @@ class Solution1:
         if nums[len(nums) - 1] != len(nums):
             result[1] = len(nums)
         for i in range(1, len(nums)):
-            if nums[i] == nums[i-1]:
+            if nums[i] == nums[i - 1]:
                 result[0] = nums[i]
-            if nums[i] - nums[i-1] > 1:
+            if nums[i] - nums[i - 1] > 1:
                 result[1] = nums[i] - 1
         return result
+
     # endregion
-    
+
     # region Solution 657
     def judgeCircle(self, moves: str) -> bool:
-        result:Counter = Counter(moves)
-        return result['L'] == result['R'] and result['U'] == result['D']
+        result: Counter = Counter(moves)
+        return result["L"] == result["R"] and result["U"] == result["D"]
+
+    # endregion
+
+    # region Solution 375
+    # TODO::重做
+    def getMoneyAmount(self, n: int) -> int:
+        return
+
     # endregion
