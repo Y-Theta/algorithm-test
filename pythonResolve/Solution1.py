@@ -1467,3 +1467,38 @@ class Solution1:
         return result
 
     # endregion
+    
+    # region Solution 643
+    def findMaxAverage(self, nums: List[int], k: int) -> float:
+        tempmax = -inf
+        current_sum = sum(nums[:k])
+        tempsum = current_sum
+        lenn = len(nums)
+        for i in range(k, lenn):
+            tempsum = tempsum + nums[i] - nums[i-k]
+            if tempsum > tempmax:
+                tempmax = tempsum
+        return tempmax / k
+    # endregion
+    
+    # region Solution 645
+    def findErrorNums(self, nums: List[int]) -> List[int]:
+        nums.sort()
+        result = [0] * 2
+        if nums[0] != 1:
+            result[1] = 1
+        if nums[len(nums) - 1] != len(nums):
+            result[1] = len(nums)
+        for i in range(1, len(nums)):
+            if nums[i] == nums[i-1]:
+                result[0] = nums[i]
+            if nums[i] - nums[i-1] > 1:
+                result[1] = nums[i] - 1
+        return result
+    # endregion
+    
+    # region Solution 657
+    def judgeCircle(self, moves: str) -> bool:
+        result:Counter = Counter(moves)
+        return result['L'] == result['R'] and result['U'] == result['D']
+    # endregion
