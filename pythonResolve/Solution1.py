@@ -1,5 +1,6 @@
-from Common import ListNode, TreeNode, SegmentTreeNode, Pos
+from Common import ListNode, TreeNode, SegmentTreeNode, Pos, HeapNode
 from typing import Optional, List, Dict, Counter
+from sortedcontainers import SortedList, SortedKeyList
 from math import gcd, sqrt, inf, factorial
 from dataclasses import dataclass
 
@@ -1483,4 +1484,73 @@ class Solution1:
     def getMoneyAmount(self, n: int) -> int:
         return
 
+    # endregion
+
+    # region Solution 276
+    def numWays(self, n: int, k: int) -> int:
+        # dp[n][k] = sum(dp[n-1][!k]) + if dp[n-2][k] > 0 ? 0 : dp[n-1][k]
+        dp = [0] * n
+        dp[0] = k
+        for i in range(1, n):
+            dp[i] = k * dp[i - 1]
+            if i >= 2:
+                dp[i] -= dp[i - 1]
+                dp[i] += dp[i - 2] * (k - 1)
+        return dp[n - 1]
+
+    # endregion
+
+    # region Solution 3321
+    # TODO::
+    def findXSum(self, nums: List[int], k: int, x: int) -> List[int]:
+        return
+
+    # endregion
+    
+    # region Solution 294
+    # TODO::
+    def dfs_294(self, s:List[str]) -> bool:
+        flag = False
+        for i in range(1, len(s)):
+            if s[i] == s[i-1] and s[i] == '+':
+                s[i] = s[i-1] = '-'
+                if not self.dfs_294(s):
+                    flag = True
+                    break
+                s[i] = s[i-1] = '+'
+        return flag
+    
+    def canWin(self, currentState: str) -> bool:
+        return self.dfs_294(list(currentState)) 
+    # endregion
+    
+    # region Solution 309
+    # TODO::
+    def maxProfit(self, prices: List[int]) -> int:
+        ls = list()
+        ls.append(prices[0])
+        profit = 0
+        lastpad = 0
+        for i in range(1, len(prices)):
+            num = prices[i]
+            if num >= ls[-1]:
+                ls.append(num)
+            else:
+                if lastpad > 0 and len(ls) > 1:
+                    profit = max(profit - lastpad + ls[-1] - ls[0], profit + ls[-1] - ls[1])
+                elif len(ls) > 0:
+                    profit += ls[-1] - ls[0]
+                if len(ls) > 1:
+                    lastpad = ls[-1] - ls[-2]
+                else:
+                    lastpad = 0
+                ls.clear()
+                ls.append(num)
+
+        if len(ls) > 1 and lastpad > 0:
+            profit = max(profit - lastpad + ls[-1] - ls[0], profit + ls[-1] - ls[1])
+        elif len(ls) > 0:
+            profit += ls[-1] - ls[0]
+        
+        return profit
     # endregion
