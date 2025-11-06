@@ -119,6 +119,7 @@ class HeapNode:
         else:
             return self.val < other.val
 
+
 class Heap:
     def __init__(self):
         self._heap = []
@@ -168,3 +169,20 @@ class Bank:
             return False
         self.balance[account - 1] -= money
         return True
+
+
+class UniFind:
+    def __init__(self, size: int):
+        self._unifind = [i for i in range(size + 1)]
+    
+    def getparent(self, x:int) -> int:
+        while x != self._unifind[x]:
+            x = self._unifind[x]
+            self._unifind[x] = self._unifind[self._unifind[x]]
+        return x
+    
+    def union(self, x:int ,y:int):
+        px = self.getparent(x)
+        py = self.getparent(y)
+        if px != py:
+            self._unifind[py] = px 

@@ -1,5 +1,6 @@
-from Common import ListNode, TreeNode, SegmentTreeNode, Pos
+from Common import ListNode, TreeNode, SegmentTreeNode, Pos, UniFind
 from typing import Optional, List, Dict, Counter, Tuple
+from sortedcontainers import SortedList
 from math import gcd, sqrt, inf, factorial
 from dataclasses import dataclass
 
@@ -1484,7 +1485,7 @@ class Solution1:
         return
 
     # endregion
- # region Solution 276
+    # region Solution 276
     def numWays(self, n: int, k: int) -> int:
         # dp[n][k] = sum(dp[n-1][!k]) + if dp[n-2][k] > 0 ? 0 : dp[n-1][k]
         dp = [0] * n
@@ -1504,24 +1505,25 @@ class Solution1:
         return
 
     # endregion
-    
+
     # region Solution 294
     # TODO::
-    def dfs_294(self, s:List[str]) -> bool:
+    def dfs_294(self, s: List[str]) -> bool:
         flag = False
         for i in range(1, len(s)):
-            if s[i] == s[i-1] and s[i] == '+':
-                s[i] = s[i-1] = '-'
+            if s[i] == s[i - 1] and s[i] == "+":
+                s[i] = s[i - 1] = "-"
                 if not self.dfs_294(s):
                     flag = True
                     break
-                s[i] = s[i-1] = '+'
+                s[i] = s[i - 1] = "+"
         return flag
-    
+
     def canWin(self, currentState: str) -> bool:
-        return self.dfs_294(list(currentState)) 
+        return self.dfs_294(list(currentState))
+
     # endregion
-    
+
     # region Solution 309
     # TODO::
     def maxProfit(self, prices: List[int]) -> int:
@@ -1535,7 +1537,9 @@ class Solution1:
                 ls.append(num)
             else:
                 if lastpad > 0 and len(ls) > 1:
-                    profit = max(profit - lastpad + ls[-1] - ls[0], profit + ls[-1] - ls[1])
+                    profit = max(
+                        profit - lastpad + ls[-1] - ls[0], profit + ls[-1] - ls[1]
+                    )
                 elif len(ls) > 0:
                     profit += ls[-1] - ls[0]
                 if len(ls) > 1:
@@ -1549,25 +1553,35 @@ class Solution1:
             profit = max(profit - lastpad + ls[-1] - ls[0], profit + ls[-1] - ls[1])
         elif len(ls) > 0:
             profit += ls[-1] - ls[0]
-        
+
         return profit
+
     # endregion
-    
+
     # region Solution 337
-    def rob_337(self, prepicked: bool, root: Optional[TreeNode], tempdict:Dict[Tuple[TreeNode,bool],int]):
+    def rob_337(
+        self,
+        prepicked: bool,
+        root: Optional[TreeNode],
+        tempdict: Dict[Tuple[TreeNode, bool], int],
+    ):
         if root is None:
             return 0
         if prepicked:
             if (root.left, False) not in tempdict:
                 tempdict[(root.left, False)] = self.rob_337(False, root.left, tempdict)
             if (root.right, False) not in tempdict:
-                tempdict[(root.right, False)] = self.rob_337(False, root.right, tempdict)
+                tempdict[(root.right, False)] = self.rob_337(
+                    False, root.right, tempdict
+                )
             return tempdict[(root.left, False)] + tempdict[(root.right, False)]
         else:
             if (root.left, False) not in tempdict:
                 tempdict[(root.left, False)] = self.rob_337(False, root.left, tempdict)
             if (root.right, False) not in tempdict:
-                tempdict[(root.right, False)] = self.rob_337(False, root.right, tempdict)
+                tempdict[(root.right, False)] = self.rob_337(
+                    False, root.right, tempdict
+                )
             if (root.left, True) not in tempdict:
                 tempdict[(root.left, True)] = self.rob_337(True, root.left, tempdict)
             if (root.right, True) not in tempdict:
@@ -1580,6 +1594,47 @@ class Solution1:
     def rob(self, root: Optional[TreeNode]) -> int:
         # max(root + rob(0, root.left) + rob(0, root.right),0 + rob(1,root.left) + rob(1,root.right))
         tempdict = dict()
-        return max(self.rob_337(False,root,tempdict),self.rob_337(True,root,tempdict))
+        return max(
+            self.rob_337(False, root, tempdict), self.rob_337(True, root, tempdict)
+        )
+
+    # endregion
+
+    # region Solution 3607
+    def processQueries(
+        self, c: int, connections: List[List[int]], queries: List[List[int]]
+    ) -> List[int]:
+        # 邻接表转
+        unifind = UniFind(c)
+        for i in connections:
+            if i[0] < i[1]:
+                unifind.union(i[0], i[1])
+            else:
+                unifind.union(i[1], i[0])
+        mapdict: Dict[int, SortedList] = dict()
+        for i in range(1, c + 1):
+            p = unifind.getparent(i)
+            if p not in mapdict:
+                mapdict[p] = SortedList()
+            mapdict[p].add(i)
+
+        result = []
+        closed = set()
+        for i in queries:
+            if i[0] == 1:
+                if i[1] not in closed:
+                    result.append(i[1])
+                else:
+                    p = unifind.getparent(i[1])
+                    if len(mapdict[p]) > 0:
+                        result.append(mapdict[p][0])
+                    else:
+                        result.append(-1)
+            else:
+                closed.add(i[1])
+                p = unifind.getparent(i[1])
+                if len(mapdict[p]) > 0:
+                    mapdict[p].discard(i[1])
+        return result
 
     # endregion
