@@ -1,5 +1,5 @@
 import Solution1;
-
+from Common import TreeNode
 
 sln = Solution1.Solution1()
-sln.minNumberOperations([1,2,3,2,1])
+sln.rob(TreeNode(0))

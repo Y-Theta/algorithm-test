@@ -1,6 +1,5 @@
-from Common import ListNode, TreeNode, SegmentTreeNode, Pos, HeapNode
-from typing import Optional, List, Dict, Counter
-from sortedcontainers import SortedList, SortedKeyList
+from Common import ListNode, TreeNode, SegmentTreeNode, Pos
+from typing import Optional, List, Dict, Counter, Tuple
 from math import gcd, sqrt, inf, factorial
 from dataclasses import dataclass
 
@@ -1485,8 +1484,7 @@ class Solution1:
         return
 
     # endregion
-
-    # region Solution 276
+ # region Solution 276
     def numWays(self, n: int, k: int) -> int:
         # dp[n][k] = sum(dp[n-1][!k]) + if dp[n-2][k] > 0 ? 0 : dp[n-1][k]
         dp = [0] * n
@@ -1553,4 +1551,35 @@ class Solution1:
             profit += ls[-1] - ls[0]
         
         return profit
+    # endregion
+    
+    # region Solution 337
+    def rob_337(self, prepicked: bool, root: Optional[TreeNode], tempdict:Dict[Tuple[TreeNode,bool],int]):
+        if root is None:
+            return 0
+        if prepicked:
+            if (root.left, False) not in tempdict:
+                tempdict[(root.left, False)] = self.rob_337(False, root.left, tempdict)
+            if (root.right, False) not in tempdict:
+                tempdict[(root.right, False)] = self.rob_337(False, root.right, tempdict)
+            return tempdict[(root.left, False)] + tempdict[(root.right, False)]
+        else:
+            if (root.left, False) not in tempdict:
+                tempdict[(root.left, False)] = self.rob_337(False, root.left, tempdict)
+            if (root.right, False) not in tempdict:
+                tempdict[(root.right, False)] = self.rob_337(False, root.right, tempdict)
+            if (root.left, True) not in tempdict:
+                tempdict[(root.left, True)] = self.rob_337(True, root.left, tempdict)
+            if (root.right, True) not in tempdict:
+                tempdict[(root.right, True)] = self.rob_337(True, root.right, tempdict)
+            return max(
+                root.val + tempdict[(root.left, True)] + tempdict[(root.right, True)],
+                tempdict[(root.left, False)] + tempdict[(root.right, False)],
+            )
+
+    def rob(self, root: Optional[TreeNode]) -> int:
+        # max(root + rob(0, root.left) + rob(0, root.right),0 + rob(1,root.left) + rob(1,root.right))
+        tempdict = dict()
+        return max(self.rob_337(False,root,tempdict),self.rob_337(True,root,tempdict))
+
     # endregion
