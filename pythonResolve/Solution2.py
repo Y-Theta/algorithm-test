@@ -30,3 +30,22 @@ class Solution2:
         return dp % (10**9 + 7)
 
     # endregion
+
+    # region Solution 717
+    def isValid_717(self, bits: List[int], index: int):
+        flag = True
+        if index < 0:
+            return flag
+        if index >= 0:
+            flag = bits[index] == 0 and self.isValid_717(bits, index - 1)
+        if index - 1 >= 0:
+            flag = flag or bits[index - 1] == 1 and self.isValid_717(bits, index - 2)
+        return flag
+
+    def isOneBitCharacter(self, bits: List[int]) -> bool:
+        if len(bits) <= 2:
+            return bits[0] == 0
+        flag = bits[len(bits) - 2] == 1 and self.isValid_717(bits, len(bits) - 3)
+        return not flag
+
+    # endregion
