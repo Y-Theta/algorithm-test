@@ -49,3 +49,14 @@ class Solution2:
         return not flag
 
     # endregion
+    
+    # region Solution 2154
+    def findFinalValue(self, nums: List[int], original: int) -> int:
+        numsset = set(nums)
+        
+        while original in numsset:
+            numsset.remove(original)
+            original = 2 * original
+            
+        return original
+    # endregion
