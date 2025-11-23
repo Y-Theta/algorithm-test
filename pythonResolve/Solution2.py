@@ -49,14 +49,52 @@ class Solution2:
         return not flag
 
     # endregion
-    
+
     # region Solution 2154
     def findFinalValue(self, nums: List[int], original: int) -> int:
         numsset = set(nums)
-        
+
         while original in numsset:
             numsset.remove(original)
             original = 2 * original
-            
+
         return original
+
+    # endregion
+
+    # region Solution 3190
+    def minimumOperations(self, nums: List[int]) -> int:
+        opt = 0
+        for i in nums:
+            if i % 3 == 0:
+                continue
+            opt += min(i % 3, 3 - (i % 3))
+        return opt
+
+    # endregion
+
+    # region Solution 1262
+    def maxSumDivThree(self, nums: List[int]) -> int:
+        basesum = 0
+        nv = []
+        for i in range(len(nums)):
+            if nums[i] % 3 == 0:
+                basesum += nums[i]
+            else:
+                nv.append(nums[i])
+
+        dp = [[0] * 3 for _ in range(len(nv))]
+        firstmod3 = nv[0] % 3
+        dp[0][firstmod3] = nv[0]
+
+        for i in range(1, len(nv)):
+            for j in range(3):
+                nnv = nv[i] + dp[i - 1][j]
+                nnvmod3 = nnv % 3
+                dp[i][nnvmod3] = max(dp[i][nnvmod3], dp[i - 1][nnvmod3], nnv)
+            for j in range(3):
+                dp[i][j] = max(dp[i][j], dp[i-1][j])
+
+        return basesum + dp[len(nv) - 1][0]
+
     # endregion
