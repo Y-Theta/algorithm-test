@@ -98,3 +98,13 @@ class Solution2:
         return basesum + dp[len(nv) - 1][0]
 
     # endregion
+    
+    # region Solution 1018
+    def prefixesDivBy5(self, nums: List[int]) -> List[bool]:
+        result = [False] * len(nums)
+        num = 0
+        for i in range(len(nums)):
+            num = nums[i] + (num << 1)
+            result[i] = num % 5 == 0
+        return result
+    # endregion
