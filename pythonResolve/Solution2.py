@@ -172,3 +172,9 @@ class Solution2:
         return  dp[len(grid) - 1][len(grid[0]) - 1][0] % ((10 ** 9) + 7)
 
     # endregion
+    
+    # region Solution 3512
+    def minOperations(self, nums: List[int], k: int) -> int:
+        total = sum(nums)
+        return total % k
+    # endregion
