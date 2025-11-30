@@ -182,18 +182,27 @@ class Solution2:
 
     # region Solution 1590
     def minSubarray(self, nums: List[int], p: int) -> int:
-        presum = [0] * len(nums)
-        mincount = [-1] * p
-        presum[0] = nums[0] % p
-        flag = False
-        
-        for i in range(1, len(nums)):
-            presum[i] = presum[i - 1] + (nums[i] % p)
-            
-        totalmod = presum[len(nums) - 1] % p
+        total =  sum(nums)
+        totalmod = total % p
         if totalmod == 0:
             return 0
         
-        return mincount[totalmod]
+        mindis = len(nums)
+        moddic2 = dict()
+        presum = [0] * len(nums)
+        presum[0] = nums[0]
+        moddic2[0] = -1
+        moddic2[presum[0] % p] = 0
+        for i in range(1, len(nums)):
+            presum[i] = presum[i - 1] + nums[i]
+            presummodp = presum[i] % p
+            key = presummodp - totalmod
+            if key < 0:
+                key += p
+            if key in moddic2:
+                mindis = min(mindis, i - moddic2[key])
+            moddic2[presummodp] = i
+        
+        return -1 if mindis == len(nums) else mindis
 
     # endregion
