@@ -161,20 +161,39 @@ class Solution2:
                 if dp[0][j - 1][m] > 0:
                     modk = (m + grid[0][j]) % k
                     dp[0][j][modk] = 1
-                
-        for i in range(1,len(grid)):
-            for j in range(1,len(grid[0])):
+
+        for i in range(1, len(grid)):
+            for j in range(1, len(grid[0])):
                 for m in range(k):
                     if dp[i - 1][j][m] > 0 or dp[i][j - 1][m] > 0:
                         modk = (m + grid[i][j]) % k
                         dp[i][j][modk] = dp[i - 1][j][m] + dp[i][j - 1][m]
-                    
-        return  dp[len(grid) - 1][len(grid[0]) - 1][0] % ((10 ** 9) + 7)
+
+        return dp[len(grid) - 1][len(grid[0]) - 1][0] % ((10**9) + 7)
 
     # endregion
-    
+
     # region Solution 3512
     def minOperations(self, nums: List[int], k: int) -> int:
         total = sum(nums)
         return total % k
+
+    # endregion
+
+    # region Solution 1590
+    def minSubarray(self, nums: List[int], p: int) -> int:
+        presum = [0] * len(nums)
+        mincount = [-1] * p
+        presum[0] = nums[0] % p
+        flag = False
+        
+        for i in range(1, len(nums)):
+            presum[i] = presum[i - 1] + (nums[i] % p)
+            
+        totalmod = presum[len(nums) - 1] % p
+        if totalmod == 0:
+            return 0
+        
+        return mincount[totalmod]
+
     # endregion
