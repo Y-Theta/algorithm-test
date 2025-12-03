@@ -255,3 +255,13 @@ class Solution2:
         return s & (s - 1) == 0
 
     # endregion
+    
+    # region Solution 367
+    def isPerfectSquare(self, num: int) -> bool:
+        for i in range(num + 1):
+            if i * i == num:
+                return True
+            if i * i > num:
+                return False
+        return False
+    # endregion
