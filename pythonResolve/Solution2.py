@@ -182,11 +182,11 @@ class Solution2:
 
     # region Solution 1590
     def minSubarray(self, nums: List[int], p: int) -> int:
-        total =  sum(nums)
+        total = sum(nums)
         totalmod = total % p
         if totalmod == 0:
             return 0
-        
+
         mindis = len(nums)
         moddic2 = dict()
         presum = [0] * len(nums)
@@ -202,11 +202,11 @@ class Solution2:
             if key in moddic2:
                 mindis = min(mindis, i - moddic2[key])
             moddic2[presummodp] = i
-        
+
         return -1 if mindis == len(nums) else mindis
 
     # endregion
-    
+
     # region Solution 3623
     def countTrapezoids(self, points: List[List[int]]) -> int:
         rowdic = dict()
@@ -219,10 +219,39 @@ class Solution2:
         totalsum = 0
         countlist = list(rowdic.items())
         dp = [0] * len(countlist)
-        dp[0] = countlist[0][1] * (countlist[0][1] - 1) // 2 
+        dp[0] = countlist[0][1] * (countlist[0][1] - 1) // 2
         for i in range(1, len(countlist)):
-            dp[i] = countlist[i][1] * (countlist[i][1] - 1) // 2 
+            dp[i] = countlist[i][1] * (countlist[i][1] - 1) // 2
             for j in range(i):
                 totalsum += dp[i] * dp[j]
-        return totalsum % ((10 ** 9) + 7)
+        return totalsum % ((10**9) + 7)
+
+    # endregion
+
+    # region Solution 326
+    def isPowerOfThree(self, n: int) -> bool:
+        if n == 0:
+            return False
+        if n == 1:
+            return True
+        if n % 3 == 0:
+            return self.isPowerOfThree(n // 3)
+        return False
+
+    # endregion
+
+    # region Solution 342
+    def isPowerOfFour(self, n: int) -> bool:
+        # 10 10000
+        if n == 0:
+            return False
+        if n == 1:
+            return True
+        if n & (n - 1) != 0:
+            return False
+        if n == 2 or n == 8:
+            return False
+        s = int(sqrt(abs(n)))
+        return s & (s - 1) == 0
+
     # endregion
