@@ -206,3 +206,23 @@ class Solution2:
         return -1 if mindis == len(nums) else mindis
 
     # endregion
+    
+    # region Solution 3623
+    def countTrapezoids(self, points: List[List[int]]) -> int:
+        rowdic = dict()
+        for pt in points:
+            if pt[1] not in rowdic:
+                rowdic[pt[1]] = 1
+            else:
+                rowdic[pt[1]] += 1
+
+        totalsum = 0
+        countlist = list(rowdic.items())
+        dp = [0] * len(countlist)
+        dp[0] = countlist[0][1] * (countlist[0][1] - 1) // 2 
+        for i in range(1, len(countlist)):
+            dp[i] = countlist[i][1] * (countlist[i][1] - 1) // 2 
+            for j in range(i):
+                totalsum += dp[i] * dp[j]
+        return totalsum % ((10 ** 9) + 7)
+    # endregion
