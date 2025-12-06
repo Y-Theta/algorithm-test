@@ -255,7 +255,7 @@ class Solution2:
         return s & (s - 1) == 0
 
     # endregion
-    
+
     # region Solution 367
     def isPerfectSquare(self, num: int) -> bool:
         for i in range(num + 1):
@@ -264,4 +264,25 @@ class Solution2:
             if i * i > num:
                 return False
         return False
+
+    # endregion
+
+    # region Solution 3432
+    def countPartitions(self, nums: List[int]) -> int:
+        total = 0
+        for i in range(len(nums) - 1):
+            desc = sum(nums[0:i]) - sum(nums[i + 1 : len(nums)])
+            if desc % 2 == 0:
+                total += 1
+        return total
+
+    # endregion
+
+    # region Solution 3578
+    def countPartitions(self, nums: List[int], k: int) -> int:
+        dp = [0] * len(nums)
+        for i in range(len(nums)):
+            return
+        return
+
     # endregion
