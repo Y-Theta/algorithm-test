@@ -332,3 +332,41 @@ class Solution2:
             countodd += 1
         return countodd
     # endregion
+    
+    # region Solution 344
+    def reverseString(self, s: List[str]) -> None:
+        """
+        Do not return anything, modify s in-place instead.
+        """
+        start = 0
+        end = len(s) - 1
+        while start < end:
+            c = s[end]
+            s[end] = s[start]
+            s[start] = c
+            end -= 1
+            start += 1
+    # endregion
+    
+    # region Solution 345
+    def reverseVowels(self, string: str) -> str:
+        s = list(string)
+        start = 0
+        end = len(s) - 1
+        textset = set({'a','e','i','o','u','A','E','I','O','U'})
+        while start < end:
+            forward = s[start] in textset
+            backward = s[end] in textset
+            if not forward:
+                start += 1
+                continue
+            if not backward:
+                end -= 1
+                continue 
+            c = s[end]
+            s[end] = s[start]
+            s[start] = c
+            end -= 1
+            start += 1
+        return "".join(s)
+    # endregion
