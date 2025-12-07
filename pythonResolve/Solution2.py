@@ -279,10 +279,56 @@ class Solution2:
     # endregion
 
     # region Solution 3578
+    
+        # def countPartitions(self, nums: List[int], k: int) -> int:
+        # dp = [0] * (len(nums))
+        # dp[0] = 1
+        # for i in range(1, len(nums)):
+        #     tempsum = dp[i-1]
+        #     tempmax = tempmin = nums[i]
+        #     for j in range(i - 1 , -1, -1):
+        #         tempmax = max(tempmax, nums[j])
+        #         tempmin = min(tempmin, nums[j])
+        #         if tempmax - tempmin > k:
+        #             break
+        #         tempsum += dp[j - 1]
+        #     if j == 0 and tempmax - tempmin <= k:
+        #         tempsum += 1
+        #     dp[i] = tempsum
+        # return dp[len(nums) - 1] % ((10 ** 9) + 7)
+        
     def countPartitions(self, nums: List[int], k: int) -> int:
-        dp = [0] * len(nums)
-        for i in range(len(nums)):
-            return
-        return
+        dp = [0] * (len(nums))
+        dp[0] = 1
+        qmax = []
+        qmin = []
+        qmax.append(nums[0])
+        qmin.append(nums[0])
+        for i in range(1, len(nums)):
+            tempsum = dp[i - 1]
+            if nums[i] > qmax[-1]:
+                qmax.append(nums[i])
+            if nums[i] < qmin[-1]:
+                qmin.append(nums[i])
+            for j in range(i - 1, -1, -1):
+                tempmax = max(tempmax, nums[j])
+                tempmin = min(tempmin, nums[j])
+                if tempmax - tempmin > k:
+                    break
+                tempsum += dp[j - 1]
+            if j == 0 and tempmax - tempmin <= k:
+                tempsum += 1
+            dp[i] = tempsum
+        return dp[len(nums) - 1] % ((10**9) + 7)
 
+    # endregion
+    
+    # region Solution 1523
+    def countOdds(self, low: int, high: int) -> int:
+        countodd = (high - low) // 2
+        if low % 2 == 1:
+            countodd += 1
+        elif high % 2 == 1:
+            countodd += 1
+        return countodd
     # endregion
