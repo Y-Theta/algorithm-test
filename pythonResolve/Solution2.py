@@ -279,24 +279,24 @@ class Solution2:
     # endregion
 
     # region Solution 3578
-    
-        # def countPartitions(self, nums: List[int], k: int) -> int:
-        # dp = [0] * (len(nums))
-        # dp[0] = 1
-        # for i in range(1, len(nums)):
-        #     tempsum = dp[i-1]
-        #     tempmax = tempmin = nums[i]
-        #     for j in range(i - 1 , -1, -1):
-        #         tempmax = max(tempmax, nums[j])
-        #         tempmin = min(tempmin, nums[j])
-        #         if tempmax - tempmin > k:
-        #             break
-        #         tempsum += dp[j - 1]
-        #     if j == 0 and tempmax - tempmin <= k:
-        #         tempsum += 1
-        #     dp[i] = tempsum
-        # return dp[len(nums) - 1] % ((10 ** 9) + 7)
-        
+
+    # def countPartitions(self, nums: List[int], k: int) -> int:
+    # dp = [0] * (len(nums))
+    # dp[0] = 1
+    # for i in range(1, len(nums)):
+    #     tempsum = dp[i-1]
+    #     tempmax = tempmin = nums[i]
+    #     for j in range(i - 1 , -1, -1):
+    #         tempmax = max(tempmax, nums[j])
+    #         tempmin = min(tempmin, nums[j])
+    #         if tempmax - tempmin > k:
+    #             break
+    #         tempsum += dp[j - 1]
+    #     if j == 0 and tempmax - tempmin <= k:
+    #         tempsum += 1
+    #     dp[i] = tempsum
+    # return dp[len(nums) - 1] % ((10 ** 9) + 7)
+
     def countPartitions(self, nums: List[int], k: int) -> int:
         dp = [0] * (len(nums))
         dp[0] = 1
@@ -322,7 +322,7 @@ class Solution2:
         return dp[len(nums) - 1] % ((10**9) + 7)
 
     # endregion
-    
+
     # region Solution 1523
     def countOdds(self, low: int, high: int) -> int:
         countodd = (high - low) // 2
@@ -331,8 +331,9 @@ class Solution2:
         elif high % 2 == 1:
             countodd += 1
         return countodd
+
     # endregion
-    
+
     # region Solution 344
     def reverseString(self, s: List[str]) -> None:
         """
@@ -346,14 +347,15 @@ class Solution2:
             s[start] = c
             end -= 1
             start += 1
+
     # endregion
-    
+
     # region Solution 345
     def reverseVowels(self, string: str) -> str:
         s = list(string)
         start = 0
         end = len(s) - 1
-        textset = set({'a','e','i','o','u','A','E','I','O','U'})
+        textset = set({"a", "e", "i", "o", "u", "A", "E", "I", "O", "U"})
         while start < end:
             forward = s[start] in textset
             backward = s[end] in textset
@@ -362,11 +364,27 @@ class Solution2:
                 continue
             if not backward:
                 end -= 1
-                continue 
+                continue
             c = s[end]
             s[end] = s[start]
             s[start] = c
             end -= 1
             start += 1
         return "".join(s)
+
+    # endregion
+
+    # region Solution 1925
+    def countTriples(self, n: int) -> int:
+        totalnum = 0
+        powset = set()
+        for i in range(1, n + 1):
+            powset.add(i**2)
+        for i in range(1, n + 1):
+            for j in range(i + 1, n + 1):
+                sqrtnum = sqrt(i**2 + j**2)
+                if sqrtnum in powset:
+                    totalnum += 2
+        return totalnum
+
     # endregion
