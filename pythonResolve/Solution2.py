@@ -1,8 +1,8 @@
 from Common import ListNode, TreeNode, SegmentTreeNode, Pos, UniFind
 from typing import Optional, List, Dict, Counter, Tuple
-from sortedcontainers import SortedList
 from math import gcd, sqrt, inf, factorial
 from dataclasses import dataclass
+import re
 
 
 class Solution2:
@@ -396,19 +396,99 @@ class Solution2:
         currentmax = currentsum
         if root.left != None:
             if root.left.val - root.val == 1:
-                currentmax = max(currentmax ,self.dfs_298(root.left, currentsum + 1))
+                currentmax = max(currentmax, self.dfs_298(root.left, currentsum + 1))
             else:
-                currentmax = max(currentmax,self.dfs_298(root.left, 1))
-        
+                currentmax = max(currentmax, self.dfs_298(root.left, 1))
+
         if root.right != None:
             if root.right.val - root.val == 1:
-                currentmax = max(currentmax ,self.dfs_298(root.right, currentsum + 1))
+                currentmax = max(currentmax, self.dfs_298(root.right, currentsum + 1))
             else:
-                currentmax = max(currentmax,self.dfs_298(root.right, 1))
-                
+                currentmax = max(currentmax, self.dfs_298(root.right, 1))
+
         return currentmax
 
     def longestConsecutive(self, root: Optional[TreeNode]) -> int:
         return self.dfs_298(root, 1)
+
+    # endregion
+    # region Solution 3531
+    def countCoveredBuildings(self, n: int, buildings: List[List[int]]) -> int:
+        totalsum = 0
+        return totalsum
+
+    # endregion
+
+    # region Solution 3606
+    def validateCoupons(
+        self, code: List[str], businessLine: List[str], isActive: List[bool]
+    ) -> List[str]:
+        result1 = []
+        result2 = []
+        result3 = []
+        result4 = []
+        pattern = re.compile(r"^[a-zA-z0-9_]+$")
+        for i in range(len(code)):
+            if pattern.match(code[i]) != None and isActive[i]:
+                if businessLine[i] == "electronics":
+                    result1.append(code[i])
+                if businessLine[i] == "grocery":
+                    result2.append(code[i])
+                if businessLine[i] == "pharmacy":
+                    result3.append(code[i])
+                if businessLine[i] == "restaurant":
+                    result4.append(code[i])
+        result = []
+        result1.sort()
+        result2.sort()
+        result3.sort()
+        result4.sort()
+        result += result1
+        result += result2
+        result += result3
+        result += result4
+        return result
+
+    # endregion
+
+    # region Solution 3583
+
+    def binary_search_index(self, arr: List[int], aim: int, start: int, end: int):
+        while start < end:
+            mid = (start + end) // 2
+            if arr[mid] >= aim:
+                end = mid 
+            else:
+                start = mid + 1
+        mid = (start + end) // 2
+        return mid
+
+    def specialTriplets(self, nums: List[int]) -> int:
+        numsdict: Dict[int, List[int]] = dict()
+        for i in range(len(nums)):
+            num = nums[i]
+            if num not in numsdict:
+                numsdict[num] = []
+            numsdict[num].append(i)
+
+        total = 0
+        keys = sorted(numsdict.keys())
+        for i in range(len(keys)):
+            aimkey = keys[i] * 2
+            if aimkey in numsdict:
+                aimarr = numsdict[aimkey]
+                for j in numsdict[keys[i]]:
+                    if aimarr[0] < j and aimarr[len(aimarr) - 1] > j:
+                        pos = self.binary_search_index(aimarr, j, 0, len(aimarr) - 1)
+                        offset = 0
+                        if aimkey == 0:
+                            offset = 1
+                        left = pos + offset
+                        right = len(aimarr) - (pos + offset)
+                        if aimkey == 0:
+                            left -= 1                            
+                        total += max(0, left * right)
+
+        return total % ((10**9) + 7)
 
     # endregion
