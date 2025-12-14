@@ -388,3 +388,27 @@ class Solution2:
         return totalnum
 
     # endregion
+
+    # region Solution 298
+    def dfs_298(self, root: Optional[TreeNode], currentsum: int) -> int:
+        if root is None:
+            return currentsum
+        currentmax = currentsum
+        if root.left != None:
+            if root.left.val - root.val == 1:
+                currentmax = max(currentmax ,self.dfs_298(root.left, currentsum + 1))
+            else:
+                currentmax = max(currentmax,self.dfs_298(root.left, 1))
+        
+        if root.right != None:
+            if root.right.val - root.val == 1:
+                currentmax = max(currentmax ,self.dfs_298(root.right, currentsum + 1))
+            else:
+                currentmax = max(currentmax,self.dfs_298(root.right, 1))
+                
+        return currentmax
+
+    def longestConsecutive(self, root: Optional[TreeNode]) -> int:
+        return self.dfs_298(root, 1)
+
+    # endregion
