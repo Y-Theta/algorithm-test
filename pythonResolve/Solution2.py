@@ -492,3 +492,35 @@ class Solution2:
         return total % ((10**9) + 7)
 
     # endregion
+    
+    # region Solution 944
+    def minDeletionSize(self, strs: List[str]) -> int:
+        len1 = len(strs[0])
+        lentotal = len(strs)
+        if lentotal == 1:
+            return 0
+        
+        result = 0
+        for j in range(len1):
+            for i in range(1, lentotal):
+                if strs[i][j] < strs[i - 1][j]:
+                    result += 1
+                    break
+        
+        return result
+    # endregion
+    
+    # region Solution 955
+    def minDeletionSize(self, strs: List[str]) -> int:
+        len1 = len(strs[0])
+        lentotal = len(strs)
+        if lentotal == 1:
+            return 0
+        
+        for j in range(len1):
+            for i in range(1, lentotal):
+                if strs[i][j] < strs[i - 1][j]:
+                    break
+        
+        return
+    # endregion
