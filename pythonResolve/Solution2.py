@@ -457,7 +457,7 @@ class Solution2:
         while start < end:
             mid = (start + end) // 2
             if arr[mid] >= aim:
-                end = mid 
+                end = mid
             else:
                 start = mid + 1
         mid = (start + end) // 2
@@ -486,41 +486,114 @@ class Solution2:
                         left = pos + offset
                         right = len(aimarr) - (pos + offset)
                         if aimkey == 0:
-                            left -= 1                            
+                            left -= 1
                         total += max(0, left * right)
 
         return total % ((10**9) + 7)
 
     # endregion
-    
+
     # region Solution 944
     def minDeletionSize(self, strs: List[str]) -> int:
         len1 = len(strs[0])
         lentotal = len(strs)
         if lentotal == 1:
             return 0
-        
+
         result = 0
         for j in range(len1):
             for i in range(1, lentotal):
                 if strs[i][j] < strs[i - 1][j]:
                     result += 1
                     break
-        
+
         return result
+
     # endregion
-    
+
     # region Solution 955
     def minDeletionSize(self, strs: List[str]) -> int:
         len1 = len(strs[0])
         lentotal = len(strs)
         if lentotal == 1:
             return 0
-        
+
         for j in range(len1):
             for i in range(1, lentotal):
                 if strs[i][j] < strs[i - 1][j]:
                     break
-        
+
         return
+
+    # endregion
+
+    # region Solution 3074
+    def minimumBoxes(self, apple: List[int], capacity: List[int]) -> int:
+        totalsum = sum(apple)
+        capacity.sort(reverse=True)
+
+        for i in range(len(capacity)):
+            totalsum -= capacity[i]
+            if totalsum <= 0:
+                return i + 1
+
+        return 0
+
+    # endregion
+
+    # region Solution 3075
+    def maximumHappinessSum(self, happiness: List[int], k: int) -> int:
+        happiness.sort(reverse=True)
+        
+        total = 0
+        tempsum = 0
+        for i in range(k):
+            total += max(0, happiness[i] - tempsum)
+            tempsum += 1
+        
+        return total
+    # endregion
+    
+    # region Solution 2483
+    def bestClosingTime(self, customers: str) -> int:
+        presum = [0] * (len(customers) + 1)
+        presum[0] = 0
+        for i in range(1,len(customers) + 1):
+            if customers[i - 1] == 'N':
+                presum[i] = presum[i - 1] + 1
+            else:
+                presum[i] = presum[i - 1]
+        
+        postsum = 0
+        for i in range(len(customers) - 1, -1, -1):
+            break
+        return
+    # endregion
+    
+    # region Solution 1161
+    def maxLevelSum(self, root: Optional[TreeNode]) -> int:
+        index = 1
+        qlevel:List[TreeNode] = []
+        qlevel.append(root)
+        qnext:List[TreeNode] = []
+        maxlevelsum = root.val
+        maxlevel = index
+        
+        while len(qlevel) > 0 or len(qnext) > 0:
+            levelsum = 0
+            while len(qlevel) > 0:
+                child = qlevel.pop()
+                levelsum += child.val
+                if child.left != None:
+                    qnext.append(child.left)
+                if child.right != None:
+                    qnext.append(child.right)
+            if levelsum > maxlevelsum:
+                maxlevelsum = levelsum
+                maxlevel = index
+            qlevel.clear()
+            qlevel += qnext
+            qnext.clear()
+            index += 1
+        return maxlevel
     # endregion
