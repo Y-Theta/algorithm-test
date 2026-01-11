@@ -544,41 +544,43 @@ class Solution2:
     # region Solution 3075
     def maximumHappinessSum(self, happiness: List[int], k: int) -> int:
         happiness.sort(reverse=True)
-        
+
         total = 0
         tempsum = 0
         for i in range(k):
             total += max(0, happiness[i] - tempsum)
             tempsum += 1
-        
+
         return total
+
     # endregion
-    
+
     # region Solution 2483
     def bestClosingTime(self, customers: str) -> int:
         presum = [0] * (len(customers) + 1)
         presum[0] = 0
-        for i in range(1,len(customers) + 1):
-            if customers[i - 1] == 'N':
+        for i in range(1, len(customers) + 1):
+            if customers[i - 1] == "N":
                 presum[i] = presum[i - 1] + 1
             else:
                 presum[i] = presum[i - 1]
-        
+
         postsum = 0
         for i in range(len(customers) - 1, -1, -1):
             break
         return
+
     # endregion
-    
+
     # region Solution 1161
     def maxLevelSum(self, root: Optional[TreeNode]) -> int:
         index = 1
-        qlevel:List[TreeNode] = []
+        qlevel: List[TreeNode] = []
         qlevel.append(root)
-        qnext:List[TreeNode] = []
+        qnext: List[TreeNode] = []
         maxlevelsum = root.val
         maxlevel = index
-        
+
         while len(qlevel) > 0 or len(qnext) > 0:
             levelsum = 0
             while len(qlevel) > 0:
@@ -596,51 +598,129 @@ class Solution2:
             qnext.clear()
             index += 1
         return maxlevel
+
     # endregion
-    
+
     # region Solution 85
     def maximalRectangle(self, matrix: List[List[str]]) -> int:
-        dp:List[List[List[List[int]]]] = [[[] for _ in range(len(matrix[0]))] for _ in range(len(matrix))]
-        dp[0][0] = [[1,1]] if matrix[0][0] == '1' else [[0,0]]
-        maxarea = 1
-        
+        dp: List[List[List[List[int]]]] = [
+            [[] for _ in range(len(matrix[0]))] for _ in range(len(matrix))
+        ]
+        dp[0][0] = [[1, 1]] if matrix[0][0] == "1" else [[0, 0]]
+        maxarea = 1 if matrix[0][0] == "1" else 0
+
         for r in range(len(matrix)):
             for c in range(len(matrix[0])):
                 if r == 0 and c == 0:
                     continue
-                if matrix[r][c] == '0':
-                    dp[r][c] = [[0,0]]
+                if matrix[r][c] == "0":
+                    dp[r][c] = [[0, 0]]
                 else:
-                    temph = 1
-                    tempw = 1
+                    temph = 0
+                    tempw = 0
                     dp[r][c] = []
                     temparea = 0
                     if r > 0:
-                        for area in dp[r-1][c]:
+                        for area in dp[r - 1][c]:
                             temph = max(temph, area[1])
+                        dp[r][c].append([1, temph + 1])
                         temparea = temph + 1
-                        dp[r][c].append([1,temph + 1])
                     if c > 0:
                         for area in dp[r][c - 1]:
                             tempw = max(tempw, area[0])
+                        dp[r][c].append([tempw + 1, 1])
                         if tempw + 1 >= temparea:
-                            if tempw + 1 > temparea:
-                                dp[r][c].clear()
-                            dp[r][c].append([tempw + 1,1])
                             temparea = tempw + 1
-                    if r > 0 and c > 0 and matrix[r-1][c-1] == '1':
-                        tempw1 = tempw 
+                    if r > 0 and c > 0 and matrix[r - 1][c - 1] == "1":
+                        tempw1 = tempw
                         temph1 = temph
-                        maxareatemp = temparea
+                        maxareatemp = 0
                         for area in dp[r - 1][c - 1]:
                             tempw1 = min(tempw, area[0])
                             temph1 = min(temph, area[1])
-                            maxareatemp = (tempw1 + 1) * (temph1 + 1)
-                            if maxareatemp >= temparea:
+                            temp1 = (tempw1 + 1) * (temph1 + 1)
+                            if temp1 >= maxareatemp:
+                                dp[r][c].append([tempw1 + 1, temph1 + 1])
+                                maxareatemp = temp1
                                 if maxareatemp > temparea:
-                                    dp[r][c].clear()
-                                dp[r][c].append([tempw1 + 1,temph1 + 1])
-                                temparea = maxareatemp
+                                    temparea = maxareatemp
                     maxarea = max(maxarea, temparea)
         return maxarea
+
+    # endregion
+
+    # region Solution 505
+    def dfs_505(
+        self, maze: List[List[int]], start: List[int], visited: List[List[int]], dir: int
+    ):
+        r = start[0]
+        c = start[1]
+        now = visited[r][c]
+        nr = r
+        nc = c 
+        if dir == 0:
+            nr = r - 1
+            while nr >= 0:
+                if maze[nr][nc] == 1:
+                    break
+                nr = nr - 1
+            offset = (r - nr - 1)
+            nr = nr + 1
+            nr = max(0, nr)
+        elif dir == 1:
+            nr = nr + 1
+            while nr < len(maze):
+                if maze[nr][nc] == 1:
+                    break
+                nr = nr + 1
+            offset = (nr - r - 1)
+            nr = nr - 1
+            nr = min(len(maze), nr)
+        elif dir == 2:
+            nc = nc - 1
+            while nc >= 0:
+                if maze[nr][nc] == 1:
+                    break
+                nc = nc - 1
+            offset = (c - nc - 1)
+            nc = nc + 1
+            nc = max(0, nc)
+        elif dir == 3:
+            nc = nc + 1
+            while nc < len(maze[0]):
+                if maze[nr][nc] == 1:
+                    break
+                nc = nc + 1
+            offset = (nc - c - 1)
+            nc = nc - 1
+            nc = min(len(maze[0]),nc)
+            
+        if offset == 0:
+            return
+
+        newstep = now + offset
+
+        if visited[nr][nc] >= newstep:
+            visited[nr][nc] = newstep
+            if dir == 1 or dir == 0:
+                self.dfs_505(maze, [nr,nc], visited, 2)
+                self.dfs_505(maze, [nr,nc], visited, 3)
+            else:
+                self.dfs_505(maze, [nr,nc], visited, 0)
+                self.dfs_505(maze, [nr,nc], visited, 1)
+                
+        return
+
+    def shortestDistance(
+        self, maze: List[List[int]], start: List[int], destination: List[int]
+    ) -> int:
+        visited = [[10000 for _ in range(len(maze[0]))] for _ in range(len(maze))]
+        visited[start[0]][start[1]] = 0
+        self.dfs_505(maze, start ,visited, 0)
+        self.dfs_505(maze, start ,visited, 1)
+        self.dfs_505(maze, start ,visited, 2)
+        self.dfs_505(maze, start ,visited, 3)
+        if visited[destination[0]][destination[1]] == 10000:
+            return - 1
+        return visited[destination[0]][destination[1]]
     # endregion
