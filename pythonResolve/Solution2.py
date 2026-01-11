@@ -597,3 +597,50 @@ class Solution2:
             index += 1
         return maxlevel
     # endregion
+    
+    # region Solution 85
+    def maximalRectangle(self, matrix: List[List[str]]) -> int:
+        dp:List[List[List[List[int]]]] = [[[] for _ in range(len(matrix[0]))] for _ in range(len(matrix))]
+        dp[0][0] = [[1,1]] if matrix[0][0] == '1' else [[0,0]]
+        maxarea = 1
+        
+        for r in range(len(matrix)):
+            for c in range(len(matrix[0])):
+                if r == 0 and c == 0:
+                    continue
+                if matrix[r][c] == '0':
+                    dp[r][c] = [[0,0]]
+                else:
+                    temph = 1
+                    tempw = 1
+                    dp[r][c] = []
+                    temparea = 0
+                    if r > 0:
+                        for area in dp[r-1][c]:
+                            temph = max(temph, area[1])
+                        temparea = temph + 1
+                        dp[r][c].append([1,temph + 1])
+                    if c > 0:
+                        for area in dp[r][c - 1]:
+                            tempw = max(tempw, area[0])
+                        if tempw + 1 >= temparea:
+                            if tempw + 1 > temparea:
+                                dp[r][c].clear()
+                            dp[r][c].append([tempw + 1,1])
+                            temparea = tempw + 1
+                    if r > 0 and c > 0 and matrix[r-1][c-1] == '1':
+                        tempw1 = tempw 
+                        temph1 = temph
+                        maxareatemp = temparea
+                        for area in dp[r - 1][c - 1]:
+                            tempw1 = min(tempw, area[0])
+                            temph1 = min(temph, area[1])
+                            maxareatemp = (tempw1 + 1) * (temph1 + 1)
+                            if maxareatemp >= temparea:
+                                if maxareatemp > temparea:
+                                    dp[r][c].clear()
+                                dp[r][c].append([tempw1 + 1,temph1 + 1])
+                                temparea = maxareatemp
+                    maxarea = max(maxarea, temparea)
+        return maxarea
+    # endregion
