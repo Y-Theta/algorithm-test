@@ -651,20 +651,24 @@ class Solution2:
 
     # region Solution 505
     def dfs_505(
-        self, maze: List[List[int]], start: List[int], visited: List[List[int]], dir: int
+        self,
+        maze: List[List[int]],
+        start: List[int],
+        visited: List[List[int]],
+        dir: int,
     ):
         r = start[0]
         c = start[1]
         now = visited[r][c]
         nr = r
-        nc = c 
+        nc = c
         if dir == 0:
             nr = r - 1
             while nr >= 0:
                 if maze[nr][nc] == 1:
                     break
                 nr = nr - 1
-            offset = (r - nr - 1)
+            offset = r - nr - 1
             nr = nr + 1
             nr = max(0, nr)
         elif dir == 1:
@@ -673,7 +677,7 @@ class Solution2:
                 if maze[nr][nc] == 1:
                     break
                 nr = nr + 1
-            offset = (nr - r - 1)
+            offset = nr - r - 1
             nr = nr - 1
             nr = min(len(maze), nr)
         elif dir == 2:
@@ -682,7 +686,7 @@ class Solution2:
                 if maze[nr][nc] == 1:
                     break
                 nc = nc - 1
-            offset = (c - nc - 1)
+            offset = c - nc - 1
             nc = nc + 1
             nc = max(0, nc)
         elif dir == 3:
@@ -691,10 +695,10 @@ class Solution2:
                 if maze[nr][nc] == 1:
                     break
                 nc = nc + 1
-            offset = (nc - c - 1)
+            offset = nc - c - 1
             nc = nc - 1
-            nc = min(len(maze[0]),nc)
-            
+            nc = min(len(maze[0]), nc)
+
         if offset == 0:
             return
 
@@ -703,12 +707,12 @@ class Solution2:
         if visited[nr][nc] >= newstep:
             visited[nr][nc] = newstep
             if dir == 1 or dir == 0:
-                self.dfs_505(maze, [nr,nc], visited, 2)
-                self.dfs_505(maze, [nr,nc], visited, 3)
+                self.dfs_505(maze, [nr, nc], visited, 2)
+                self.dfs_505(maze, [nr, nc], visited, 3)
             else:
-                self.dfs_505(maze, [nr,nc], visited, 0)
-                self.dfs_505(maze, [nr,nc], visited, 1)
-                
+                self.dfs_505(maze, [nr, nc], visited, 0)
+                self.dfs_505(maze, [nr, nc], visited, 1)
+
         return
 
     def shortestDistance(
@@ -716,11 +720,29 @@ class Solution2:
     ) -> int:
         visited = [[10000 for _ in range(len(maze[0]))] for _ in range(len(maze))]
         visited[start[0]][start[1]] = 0
-        self.dfs_505(maze, start ,visited, 0)
-        self.dfs_505(maze, start ,visited, 1)
-        self.dfs_505(maze, start ,visited, 2)
-        self.dfs_505(maze, start ,visited, 3)
+        self.dfs_505(maze, start, visited, 0)
+        self.dfs_505(maze, start, visited, 1)
+        self.dfs_505(maze, start, visited, 2)
+        self.dfs_505(maze, start, visited, 3)
         if visited[destination[0]][destination[1]] == 10000:
-            return - 1
+            return -1
         return visited[destination[0]][destination[1]]
+
+    # endregion
+
+    # region Solution 1266
+    def calcdistance_1266(self, pt1: List[int], pt2: List[int]) -> int:
+        h = abs(pt1[0] - pt2[0])
+        v = abs(pt1[1] - pt2[1])
+        return max(h,v)
+
+    def minTimeToVisitAllPoints(self, points: List[List[int]]) -> int:
+        total = 0
+        pt1 = points[0]
+        for i in range(1, len(points)):
+            pt2 = points[i]
+            total += self.calcdistance_1266(pt1, pt2)
+            pt1 = pt2
+        return total
+
     # endregion
