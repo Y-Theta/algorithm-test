@@ -746,3 +746,33 @@ class Solution2:
         return total
 
     # endregion
+    
+    # region Solution 961
+    def repeatedNTimes(self, nums: List[int]) -> int:
+        keyset = set()
+        lastcount = 0
+        for i in range(0, len(nums)):
+            keyset.add(nums[i])
+            if lastcount == len(keyset):
+                return nums[i]
+            lastcount = len(keyset)
+
+    # endregion
+    
+    # region Solution 387
+    def firstUniqChar(self, s: str) -> int:
+        charmap = [0] * 26
+        minpos = [0] * 26
+        
+        for i in range(len(s)):
+            cid = ord(s[i]) - ord('a')
+            if charmap[cid] == 0:
+                minpos[cid] = i
+            charmap[cid] += 1
+        
+        minipos = 1000001
+        for i in range(len(charmap)):
+            if charmap[i] == 1:
+                minipos = min(minipos,minpos[i])
+        return minipos if minipos < 1000001 else -1
+    # endregion
