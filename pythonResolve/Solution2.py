@@ -3,7 +3,8 @@ from typing import Optional, List, Dict, Counter, Tuple
 from math import gcd, sqrt, inf, factorial
 from dataclasses import dataclass
 import re
-
+def guess(num:int) -> int:
+    return
 
 class Solution2:
     # region Solution 1513
@@ -775,4 +776,22 @@ class Solution2:
             if charmap[i] == 1:
                 minipos = min(minipos,minpos[i])
         return minipos if minipos < 1000001 else -1
+    # endregion
+    
+    # region Solution 374
+
+    def guessNumber(self, n: int) -> int:
+        start = 0
+        end = n
+        mid = (start + end) // 2
+        flag = guess(mid) 
+        while flag != 0:
+            if flag > 0:
+                start = mid + 1
+            else:
+                end = mid - 1
+            mid = (start + end) // 2
+            flag = guess(mid) 
+            
+        return mid
     # endregion
