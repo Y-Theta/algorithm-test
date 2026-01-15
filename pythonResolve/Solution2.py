@@ -795,3 +795,31 @@ class Solution2:
             
         return mid
     # endregion
+    
+    # region Solution 389
+    def findTheDifference(self, s: str, t: str) -> str:
+        if len(s) == 0:
+            return t
+        origin = sorted(list(s))
+        aim = sorted(list(t))
+        for i in range(len(s)):
+            if aim[i] != origin[i]:
+                return aim[i]
+        
+        return aim[len(s)]
+    # endregion
+    
+    # region Solution 392
+    def isSubsequence(self, s: str, t: str) -> bool:
+        if len(s) == 0:
+            return True
+        index = 0
+        for i in range(len(t)):
+            if s[index] != t[i]:
+                continue
+            else:
+                index += 1
+                if index >= len(s):
+                    return True
+        return False
+    # endregion
