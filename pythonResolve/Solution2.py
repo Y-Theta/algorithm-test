@@ -3,8 +3,11 @@ from typing import Optional, List, Dict, Counter, Tuple
 from math import gcd, sqrt, inf, factorial
 from dataclasses import dataclass
 import re
-def guess(num:int) -> int:
+
+
+def guess(num: int) -> int:
     return
+
 
 class Solution2:
     # region Solution 1513
@@ -735,7 +738,7 @@ class Solution2:
     def calcdistance_1266(self, pt1: List[int], pt2: List[int]) -> int:
         h = abs(pt1[0] - pt2[0])
         v = abs(pt1[1] - pt2[1])
-        return max(h,v)
+        return max(h, v)
 
     def minTimeToVisitAllPoints(self, points: List[List[int]]) -> int:
         total = 0
@@ -747,7 +750,7 @@ class Solution2:
         return total
 
     # endregion
-    
+
     # region Solution 961
     def repeatedNTimes(self, nums: List[int]) -> int:
         keyset = set()
@@ -759,43 +762,45 @@ class Solution2:
             lastcount = len(keyset)
 
     # endregion
-    
+
     # region Solution 387
     def firstUniqChar(self, s: str) -> int:
         charmap = [0] * 26
         minpos = [0] * 26
-        
+
         for i in range(len(s)):
-            cid = ord(s[i]) - ord('a')
+            cid = ord(s[i]) - ord("a")
             if charmap[cid] == 0:
                 minpos[cid] = i
             charmap[cid] += 1
-        
+
         minipos = 1000001
         for i in range(len(charmap)):
             if charmap[i] == 1:
-                minipos = min(minipos,minpos[i])
+                minipos = min(minipos, minpos[i])
         return minipos if minipos < 1000001 else -1
+
     # endregion
-    
+
     # region Solution 374
 
     def guessNumber(self, n: int) -> int:
         start = 0
         end = n
         mid = (start + end) // 2
-        flag = guess(mid) 
+        flag = guess(mid)
         while flag != 0:
             if flag > 0:
                 start = mid + 1
             else:
                 end = mid - 1
             mid = (start + end) // 2
-            flag = guess(mid) 
-            
+            flag = guess(mid)
+
         return mid
+
     # endregion
-    
+
     # region Solution 389
     def findTheDifference(self, s: str, t: str) -> str:
         if len(s) == 0:
@@ -805,10 +810,11 @@ class Solution2:
         for i in range(len(s)):
             if aim[i] != origin[i]:
                 return aim[i]
-        
+
         return aim[len(s)]
+
     # endregion
-    
+
     # region Solution 392
     def isSubsequence(self, s: str, t: str) -> bool:
         if len(s) == 0:
@@ -822,4 +828,17 @@ class Solution2:
                 if index >= len(s):
                     return True
         return False
+
+    # endregion
+
+    # region Solution 1877
+    def minPairSum(self, nums: List[int]) -> int:
+        nums.sort()
+        minval = nums[0] + nums[-1]
+        for i in range(len(nums)):
+            if i > len(nums) // 2:
+                break
+            minval = max(minval, nums[i] + nums[-(i + 1)])
+        return minval
+
     # endregion
