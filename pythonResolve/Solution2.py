@@ -842,3 +842,13 @@ class Solution2:
         return minval
 
     # endregion
+
+    # region Solution 1984
+    def minimumDifference(self, nums: List[int], k: int) -> int:
+        nums.sort()
+        mindis = 1000001
+        for i in range(k - 1, len(nums)):
+            mindis = min(mindis, nums[i] - nums[i-(k-1)])
+        return mindis
+
+    # endregion
