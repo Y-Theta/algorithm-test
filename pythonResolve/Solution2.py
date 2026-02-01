@@ -852,3 +852,11 @@ class Solution2:
         return mindis
 
     # endregion
+    
+    # region Solution 3010
+    def minimumCost(self, nums: List[int]) -> int:
+        first = nums[0]
+        nums[0] = 100
+        nums.sort()
+        return first + nums[0] + nums[1]
+    # endregion
