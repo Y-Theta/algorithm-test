@@ -848,15 +848,37 @@ class Solution2:
         nums.sort()
         mindis = 1000001
         for i in range(k - 1, len(nums)):
-            mindis = min(mindis, nums[i] - nums[i-(k-1)])
+            mindis = min(mindis, nums[i] - nums[i - (k - 1)])
         return mindis
 
     # endregion
-    
+
     # region Solution 3010
     def minimumCost(self, nums: List[int]) -> int:
         first = nums[0]
         nums[0] = 100
         nums.sort()
         return first + nums[0] + nums[1]
+
+    # endregion
+
+    # region Solution
+    def minimumDeletions(self, s: str) -> int:
+        maxsum = 0
+
+        af = [-1] * len(s)
+        bp = [-1] * len(s)
+
+        af[0] = 1 if s[0] == "a" else 0
+        for i in range(1, len(s)):
+            af[i] = af[i - 1] + (1 if s[i] == "a" else 0)
+
+        bp[-1] = 1 if s[-1] == "b" else 0
+        maxsum = max(maxsum, bp[-1] + af[-1])
+        for i in range(len(s) - 2, -1, -1):
+            bp[i] = bp[i + 1] + (1 if s[i] == "b" else 0)
+            maxsum = max(maxsum, bp[i] + af[i])
+
+        return len(s) - maxsum
+
     # endregion
