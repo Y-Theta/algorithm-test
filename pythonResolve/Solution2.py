@@ -882,3 +882,30 @@ class Solution2:
         return len(s) - maxsum
 
     # endregion
+
+    # region Solution 110
+
+    def treeheight110(self, node: Optional[TreeNode], flag: [bool]) -> int:
+        if node is None:
+            return 0
+        if not flag[0]:
+            return 0
+
+        leftheight = 0
+        rightheight = 0
+        if node.left != None:
+            leftheight = self.treeheight110(node.left,flag)
+        if node.right != None:
+            rightheight = self.treeheight110(node.right,flag)
+
+        if abs(leftheight - rightheight) > 1:
+            flag[0] = False
+
+        return 1 + max(leftheight, rightheight)
+
+    def isBalanced(self, root: Optional[TreeNode]) -> bool:
+        flag = [True]
+        self.treeheight110(root, flag)
+        return flag[0]
+
+    # endregion
