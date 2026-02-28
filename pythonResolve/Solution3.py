@@ -73,3 +73,8 @@ class Solution3:
                     return False
         return True
     # endregion
+    
+    # region Solution 1689
+    def minPartitions(self, n: str) -> int:
+        return max(n) - ord('0')
+    # endregion
