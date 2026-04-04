@@ -107,3 +107,28 @@ class Solution3:
 
         return to_kill
     # endregion
+
+    # region Solution 2087
+    def minCost(self, startPos: List[int], homePos: List[int], rowCosts: List[int], colCosts: List[int]) -> int:
+        xoffset = startPos[1] - homePos[1]
+        yoffset = startPos[0] - homePos[0]
+        
+        cost = 0
+        if xoffset != 0:
+            if xoffset < 0:
+                for i in range(startPos[1] + 1, homePos[1] + 1):
+                    cost += colCosts[i]
+            else:
+                for i in range(homePos[1], startPos[1]):
+                    cost += colCosts[i]
+
+        if yoffset != 0:
+            if yoffset < 0:
+                for i in range(startPos[0] + 1, homePos[0] + 1):
+                    cost += rowCosts[i]
+            else:
+                for i in range(homePos[0], startPos[0]):
+                    cost += rowCosts[i]
+
+        return cost
+    # endregion
