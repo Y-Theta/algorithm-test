@@ -78,3 +78,32 @@ class Solution3:
     def minPartitions(self, n: str) -> int:
         return max(n) - ord('0')
     # endregion
+
+    # region Solution 582
+    def killProcess(self, pid: List[int], ppid: List[int], kill: int) -> List[int]:
+        procmap = dict()
+        for i in range(len(pid)):
+            _id = pid[i]
+            p_id = ppid[i]
+            if p_id not in procmap:
+                procmap[p_id] = set()
+            procmap[p_id].add(_id)
+        
+        to_kill = list()
+        to_kill.append(kill)
+        if kill not in procmap:
+            return to_kill
+        
+        to_delete = procmap[kill]
+        new_to_delete = set()
+        while len(to_delete) > 0:
+            for i in to_delete:
+                to_kill.append(i)
+                if i in procmap:
+                    for k in procmap[i]:
+                        new_to_delete.add(k)
+            to_delete = list(new_to_delete)
+            new_to_delete.clear()
+
+        return to_kill
+    # endregion
