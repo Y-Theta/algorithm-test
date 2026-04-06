@@ -1,5 +1,5 @@
-from Common import ListNode, TreeNode, SegmentTreeNode, Pos, UniFind
-from typing import Optional, List, Dict, Counter, Tuple
+from Common import ListNode, TreeNode, SegmentTreeNode, Pos, UniFind,Pt
+from typing import Optional, List, Dict, Counter, Tuple, Set
 from math import gcd, sqrt, inf, factorial
 from dataclasses import dataclass
 import re
@@ -131,4 +131,68 @@ class Solution3:
                     cost += rowCosts[i]
 
         return cost
+    # endregion
+
+    # region Solution 874
+    def robotSim(self, commands: List[int], obstacles: List[List[int]]) -> int:
+        xobmap:Dict[int,List[int]] = dict()
+        yobmap:Dict[int,List[int]] = dict()
+        for i in obstacles:
+            if i[0] not in xobmap:
+                xobmap[i[0]] = list()
+            xobmap[i[0]].append(i[1])
+            if i[1] not in yobmap:
+                yobmap[i[1]] = list()
+            yobmap[i[1]].append(i[0])
+        
+        for item in xobmap.keys():
+            xobmap[item] = sorted(xobmap[item])
+        
+        for item in yobmap.keys():
+            yobmap[item] = sorted(yobmap[item])
+
+        dir = 90
+        yoffset = 0
+        xoffset = 0
+        maxoffset = 0
+        for c in commands:
+            if c == -2:
+                dir = (dir + 90) % 360
+            elif c == -1:
+                dir = (dir - 90) % 360
+            else:
+                if dir == 90:
+                    yoffsettemp = yoffset + c
+                    if xoffset in xobmap:
+                        for i in xobmap[xoffset]:
+                            if i > yoffset and i <= yoffset + c:
+                                yoffsettemp = i - 1
+                                break
+                    yoffset = yoffsettemp
+                elif dir == 0:
+                    xoffsettemp = xoffset + c
+                    if yoffset in yobmap:
+                        for i in yobmap[yoffset]:
+                            if i > xoffset and i <= xoffset + c:
+                                xoffsettemp = i - 1
+                                break
+                    xoffset = xoffsettemp
+                elif dir == 180:
+                    xoffsettemp = xoffset - c
+                    if yoffset in yobmap:
+                        for i in yobmap[yoffset]:
+                            if i >= xoffset - c and i < xoffset:
+                                xoffsettemp = i + 1
+                                break
+                    xoffset = xoffsettemp
+                elif dir == 270:
+                    yoffsettemp = yoffset - c
+                    if xoffset in xobmap:
+                        for i in xobmap[xoffset]:
+                            if i >= yoffset - c and i < yoffset:
+                                yoffsettemp = i + 1
+                                break
+                    yoffset = yoffsettemp
+                maxoffset = max(maxoffset, xoffset * xoffset + yoffset * yoffset)
+        return maxoffset
     # endregion

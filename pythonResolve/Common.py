@@ -20,7 +20,6 @@ class TreeNode:
         self.left = left
         self.right = right
 
-
 class SparseVector:
     def __init__(self, nums: List[int]):
         self._dict = dict()
@@ -36,7 +35,6 @@ class SparseVector:
         for i in interct:
             sum += self._dict[i] * vec._dict[i]
         return sum
-
 
 class SegmentTreeNode:
     minoperation: Callable[[int, int], int] = lambda a, b: min(a, b)
@@ -107,7 +105,6 @@ class SegmentTreeNode:
             left_sum, right_sum
         )  # 示例：求和，根据需要调整合并逻辑
 
-
 class HeapNode:
     def __init__(self, count: int, val: int):
         self.count = count
@@ -119,7 +116,6 @@ class HeapNode:
         else:
             return self.val < other.val
 
-
 class Heap:
     def __init__(self):
         self._heap = []
@@ -130,6 +126,10 @@ class Heap:
     def pop():
         return
 
+class Pt:
+    def __init__(self, x:int ,y:int):
+        self.X = x
+        self.Y = y
 
 class Pos:
     def __init__(self, l: int, t: int, r: int, b: int):
@@ -137,7 +137,6 @@ class Pos:
         self.t = t
         self.r = r
         self.b = b
-
 
 class Bank:
 
@@ -169,7 +168,6 @@ class Bank:
             return False
         self.balance[account - 1] -= money
         return True
-
 
 class UniFind:
     def __init__(self, size: int):
