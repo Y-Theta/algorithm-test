@@ -196,3 +196,19 @@ class Solution3:
                 maxoffset = max(maxoffset, xoffset * xoffset + yoffset * yoffset)
         return maxoffset
     # endregion
+
+    # region Solution 163
+    def findMissingRanges(self, nums: List[int], lower: int, upper: int) -> List[List[int]]:
+        miss = list()
+        if len(nums) == 0:
+            miss.append([lower,upper])
+            return miss
+        if nums[0] > lower:
+            miss.append([lower,nums[0] - 1])
+        for i in range(1, len(nums)):
+            if nums[i] - nums[i-1] > 1:
+                miss.append([nums[i-1] + 1,nums[i] - 1])
+        if nums[-1] < upper:
+            miss.append([nums[-1] + 1,upper])
+        return miss;
+    # endregion
