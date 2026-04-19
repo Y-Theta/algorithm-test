@@ -212,3 +212,27 @@ class Solution3:
             miss.append([nums[-1] + 1,upper])
         return miss;
     # endregion
+    
+    # region Solution 1855
+    def find_1855(self, nums1:List[int], start: int, end:int ,aim:int) -> int:
+        while start < end:
+            mid = (start + end) // 2
+            if nums1[mid] > aim:
+                start = mid + 1
+            elif nums1[mid] <= aim:
+                end = mid
+        return (start + end) // 2
+    
+    def maxDistance(self, nums1: List[int], nums2: List[int])-> int:
+        n2max = len(nums2)
+        
+        lenmax = 0 
+        for i in range(n2max - 1, -1 , -1):
+            aim = nums2[i]
+            maxmatch = self.find_1855(nums1,0,len(nums1) - 1,aim)
+            if aim >= nums1[maxmatch]:
+                lenmax = max(lenmax, i - maxmatch)
+                if lenmax >= n2max - 1:
+                    return lenmax
+        return lenmax
+    # endregion
