@@ -236,3 +236,53 @@ class Solution3:
                     return lenmax
         return lenmax
     # endregion
+    
+    # region 758
+    def boldWords(self, words: List[str], s: str) -> str:
+        wordsdic:Dict[str,List[str]] = dict()
+        words.sort(key=len,reverse= True)
+        
+        for word in words:
+            if word[0] not in wordsdic:
+                wordsdic[word[0]] = []
+            wordsdic[word[0]].append(word)
+            
+        pose = -1
+        laste = -1
+        result = []
+        for i in range(len(s)):
+            if s[i] in wordsdic:
+                for k in wordsdic[s[i]]:
+                    if s[i: i + len(k)] == k:
+                        pose = max(pose, i + len(k))
+                        if i > laste:
+                            result.append("<b>")
+                        break
+            if i == pose:
+                result.append("</b>")
+            result.append(s[i])
+            laste = pose
+        if pose == len(s):
+            result.append("</b>")
+        return "".join(result)
+    # endregion
+    
+    # region Solution 1081
+    def smallestSubsequence(self, s: str) -> str:
+        strdic:Dict[str, int] = dict()
+        for i in range(len(s)):
+            strdic[s[i]] = i
+        stack = [] 
+        
+        stack.append(s[0])
+        for i in range(1, len(s)):
+            if s[i] in stack:
+                continue
+            while len(stack) > 0 and s[i] <= stack[-1]:
+                if strdic[stack[-1]] <= i:
+                    break
+                stack.pop()
+            stack.append(s[i])
+        return "".join(stack)
+                        
+    # endregion
