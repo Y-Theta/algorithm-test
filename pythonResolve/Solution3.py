@@ -286,3 +286,26 @@ class Solution3:
         return "".join(stack)
                         
     # endregion
+    
+    # region Solution 1260
+    def shiftGrid(self, grid: List[List[int]], k: int) -> List[List[int]]:
+        row = len(grid)
+        col = len(grid[0])
+        colturn = k // col
+        coltimes = k % col
+        rowturn = colturn % row
+        
+        result = [None] * row 
+        for i in range(row):
+            result[i] = grid[(row + i - rowturn) % row]
+        
+        newresult = [[0 for _ in range(col)] for _ in range(row)]
+        for c in range(col):
+            for r in range(row):
+                if c < coltimes:
+                    newresult[r][c] = result[r-1][c - coltimes]
+                else:
+                    newresult[r][c] = result[r][c-coltimes]
+        return newresult
+    # endregion
+    
