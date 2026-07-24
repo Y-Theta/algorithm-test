@@ -308,4 +308,37 @@ class Solution3:
                     newresult[r][c] = result[r][c-coltimes]
         return newresult
     # endregion
+    # region Solution 3514
+    def uniqueXorTriplets(self, nums: List[int]) -> int:
+        maxval = max(nums)
+        digit = 0
+        while maxval > 0:
+            maxval //= 2
+            digit += 1        
+        
+        result1 = [False] * (2 ** (digit + 1))
+        for i in range(len(nums)):
+            for j in range(len(nums)):
+                result1[nums[i] ^ nums[j]] = True
+        
+        result2 = [False] * len(result1)
+        for i in range(len(result1)):
+            for j in range(len(nums)):
+                result2[i ^ nums[j]] = True
+        
+        cr2 = Counter(result2)
+        return cr2[True]
+    # endregion
     
+    # region Solution 3536
+    def maxProduct(self, n: int) -> int:
+        digit = n % 10
+        maxreult = digit
+        maxtemp = digit
+        while (n // 10) > 0:
+            n //= 10
+            digit = n % 10
+            maxreult = max(maxreult, maxtemp * digit) 
+            maxtemp = max(digit, maxtemp)
+        return maxreult
+    # endregion
