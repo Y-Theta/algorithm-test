@@ -3,7 +3,7 @@ from typing import Optional, List, Dict, Counter, Tuple, Set
 from math import gcd, sqrt, inf, factorial
 from dataclasses import dataclass
 import re
-
+import numpy as np
 
 class Solution3:
 
@@ -235,4 +235,19 @@ class Solution3:
                 if lenmax >= n2max - 1:
                     return lenmax
         return lenmax
+    # endregion
+    
+    # region Solution 877
+    def stoneGame(self, piles: List[int]) -> bool:
+        lenpiles = len(piles)
+        dp = [[0 for _ in range(lenpiles)] for _ in range(lenpiles)]
+        
+        for i in range(lenpiles):
+            dp[i][i] = piles[i]
+            
+        for i in range(lenpiles - 2 ,-1,-2):
+            for j in range(i, lenpiles):
+                dp[i][j] = max(piles[i] - dp[i+1][j], piles[j] - dp[i][j-1])   
+        
+        return dp[0][lenpiles - 1]
     # endregion
