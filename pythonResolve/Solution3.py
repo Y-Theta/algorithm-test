@@ -251,3 +251,109 @@ class Solution3:
         
         return dp[0][lenpiles - 1]
     # endregion
+    
+    # region 758
+    def boldWords(self, words: List[str], s: str) -> str:
+        wordsdic:Dict[str,List[str]] = dict()
+        words.sort(key=len,reverse= True)
+        
+        for word in words:
+            if word[0] not in wordsdic:
+                wordsdic[word[0]] = []
+            wordsdic[word[0]].append(word)
+            
+        pose = -1
+        laste = -1
+        result = []
+        for i in range(len(s)):
+            if s[i] in wordsdic:
+                for k in wordsdic[s[i]]:
+                    if s[i: i + len(k)] == k:
+                        pose = max(pose, i + len(k))
+                        if i > laste:
+                            result.append("<b>")
+                        break
+            if i == pose:
+                result.append("</b>")
+            result.append(s[i])
+            laste = pose
+        if pose == len(s):
+            result.append("</b>")
+        return "".join(result)
+    # endregion
+    
+    # region Solution 1081
+    def smallestSubsequence(self, s: str) -> str:
+        strdic:Dict[str, int] = dict()
+        for i in range(len(s)):
+            strdic[s[i]] = i
+        stack = [] 
+        
+        stack.append(s[0])
+        for i in range(1, len(s)):
+            if s[i] in stack:
+                continue
+            while len(stack) > 0 and s[i] <= stack[-1]:
+                if strdic[stack[-1]] <= i:
+                    break
+                stack.pop()
+            stack.append(s[i])
+        return "".join(stack)
+                        
+    # endregion
+    
+    # region Solution 1260
+    def shiftGrid(self, grid: List[List[int]], k: int) -> List[List[int]]:
+        row = len(grid)
+        col = len(grid[0])
+        colturn = k // col
+        coltimes = k % col
+        rowturn = colturn % row
+        
+        result = [None] * row 
+        for i in range(row):
+            result[i] = grid[(row + i - rowturn) % row]
+        
+        newresult = [[0 for _ in range(col)] for _ in range(row)]
+        for c in range(col):
+            for r in range(row):
+                if c < coltimes:
+                    newresult[r][c] = result[r-1][c - coltimes]
+                else:
+                    newresult[r][c] = result[r][c-coltimes]
+        return newresult
+    # endregion
+    # region Solution 3514
+    def uniqueXorTriplets(self, nums: List[int]) -> int:
+        maxval = max(nums)
+        digit = 0
+        while maxval > 0:
+            maxval //= 2
+            digit += 1        
+        
+        result1 = [False] * (2 ** (digit + 1))
+        for i in range(len(nums)):
+            for j in range(len(nums)):
+                result1[nums[i] ^ nums[j]] = True
+        
+        result2 = [False] * len(result1)
+        for i in range(len(result1)):
+            for j in range(len(nums)):
+                result2[i ^ nums[j]] = True
+        
+        cr2 = Counter(result2)
+        return cr2[True]
+    # endregion
+    
+    # region Solution 3536
+    def maxProduct(self, n: int) -> int:
+        digit = n % 10
+        maxreult = digit
+        maxtemp = digit
+        while (n // 10) > 0:
+            n //= 10
+            digit = n % 10
+            maxreult = max(maxreult, maxtemp * digit) 
+            maxtemp = max(digit, maxtemp)
+        return maxreult
+    # endregion
