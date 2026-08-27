@@ -1,3 +1,5 @@
+from sortedcontainers import SortedList
+
 class Solution:
     def sumGame(self, num: str) -> bool:
         presum = 0
@@ -76,3 +78,39 @@ class Solution:
             return ""
         result.sort()
         return result[0]
+
+    def similarRGB(self, color: str) -> str:
+        pair = SortedList([i + 16 * i for i in range(16)])
+        result = "#"
+        r = int(color[1:3],16)
+        g = int(color[3:5],16)
+        b = int(color[5:7],16)
+        idx = pair.bisect_left(r)
+        if idx >= len(pair) or pair[idx] == r:
+            result += format(r, '02x')
+        else:
+            num = pair[idx]
+            if idx > 0 and r - pair[idx - 1] < pair[idx] - r:
+                num = pair[idx - 1]
+            result += format(num, '02x')
+        
+        idx = pair.bisect_left(g)
+        if idx >= len(pair) or pair[idx] == g:
+            result += format(g, '02x')
+        else:
+            num = pair[idx]
+            if idx > 0 and g - pair[idx - 1] < pair[idx] - g:
+                num = pair[idx - 1]
+            result += format(num, '02x')
+        
+        idx = pair.bisect_left(b)
+        if idx >= len(pair) or pair[idx] == b:
+            result += format(b, '02x')
+        else:
+            num = pair[idx]
+            if idx > 0 and b - pair[idx - 1] < pair[idx] - b:
+                num = pair[idx - 1]
+            result += format(num, '02x')
+
+        return result
+        

@@ -686,3 +686,4 @@ class Solution:
                 temp.pop(-1)
         pickone()
         return results
+
