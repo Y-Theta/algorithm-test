@@ -1,4 +1,5 @@
 from sortedcontainers import SortedList
+from collections import Counter,defaultdict 
 
 class Solution:
     def sumGame(self, num: str) -> bool:
@@ -113,4 +114,71 @@ class Solution:
             result += format(num, '02x')
 
         return result
+
+    def lexPalindromicPermutation(self, s: str, target: str) -> str:
+        sc = Counter(s)
+        oddcount = 0
+        oddc = ""
+        for i in sc:
+            if sc[i] % 2 == 1:
+                oddcount += 1
+                oddc = i
+                if oddcount > 1:
+                    return ""
+        cdict = SortedList()
+        for i in sc:
+            for j in range(sc[i] // 2):
+                cdict.add(i)
+        
+        halftarget = len(target) // 2
+        if halftarget == 0:
+            if ord(s) > ord(target):
+                return s
+            return ""
+        clen = len(cdict)
+        finalstr = None
+        result = []
+        def dfs(start:int = 0, limit:bool = True) -> bool:
+            nonlocal finalstr
+            if start == clen:
+                if not limit:
+                    finalstr = ''.join(result)
+                    finalstr = finalstr + oddc + finalstr[::-1] 
+                    return True
+                if oddc != "":
+                    if ord(oddc) > ord(target[halftarget]):
+                        finalstr = ''.join(result)
+                        finalstr = finalstr + oddc + finalstr[::-1] 
+                        return True
+                    elif ord(oddc) < ord(target[halftarget]):
+                        return False
+                for i in range(halftarget):
+                    if result[-i - 1] < target[i + halftarget]:
+                        return False
+                    elif result[-i - 1] > target[i + halftarget]:
+                        finalstr = ''.join(result)
+                        finalstr = finalstr + oddc + finalstr[::-1] 
+                        return True
+                return False    
+            if not limit:
+                for i in range(len(cdict)):
+                    result.append(cdict[0])
+                finalstr = ''.join(result)
+                finalstr = finalstr + oddc + finalstr[::-1] 
+                return True
+            for i in range(ord('z') - ord(target[start]) + 1):
+                aimchar = ord(target[start]) + i
+                cid = cdict.bisect_left(chr(aimchar))
+                if cid >= len(cdict):
+                    return False
+                findc = cdict[cid]
+                cdict.pop(cid)
+                result.append(findc)
+                if dfs(start + 1, i == 0):
+                    return True
+                cdict.add(findc)
+                result.pop(-1)
+        if not dfs():
+            return ""
+        return finalstr 
         

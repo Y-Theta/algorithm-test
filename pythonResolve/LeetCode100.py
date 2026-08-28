@@ -687,3 +687,192 @@ class Solution:
         pickone()
         return results
 
+    def flatten(self, root: Optional[TreeNode]) -> None:
+        """
+        Do not return anything, modify root in-place instead.
+        """
+        if root == None:
+            pass
+        def findleft(node:Optional[TreeNode]) -> Optional[TreeNode]:
+            if node == None:
+                return
+            if node.left == None:
+                return node
+            originright = node.right
+            originleft = node.left
+            node.right = originleft
+            lastnode = findleft(originleft)
+            lastnode.right = originright
+            return findleft(originright)
+        findleft(root)
+
+    def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+        predict = dict()
+        freedict = dict()
+        for p in prerequisites:
+            if p[0] not in predict:
+                predict[p[0]] = set()
+            if p[1] not in freedict:
+                freedict[p[1]] = set()
+            freedict[p[1]].add(p[0])
+            predict[p[0]].add(p[1])
+        
+        while True:
+            flag = False
+            for i in list(freedict):
+                if i not in predict:
+                    flag = True
+                    for k in freedict[i]:
+                        predict[k].discard(i)
+                        if len(predict[k]) == 0:
+                            predict.pop(k)
+                    freedict.pop(i)
+            if not flag:
+                break
+        
+        return len(predict) == 0
+    
+    def flatten(self, root: Optional[TreeNode]) -> None:
+        """
+        Do not return anything, modify root in-place instead.
+        """
+        if root == None:
+            pass
+        def findleft(node:Optional[TreeNode]) -> Optional[TreeNode]:
+            if node == None:
+                return
+            if node.left == None:
+                if node.right != None:
+                    return findleft(node.right)
+                return node
+            originright = node.right
+            originleft = node.left
+            node.right = originleft
+            node.left = None
+            lastnode = findleft(originleft)
+            lastnode.right = originright
+            if originright == None:
+                return lastnode
+            return findleft(originright)
+        findleft(root)
+
+    def buildTree(self, preorder: List[int], inorder: List[int]) -> Optional[TreeNode]:
+        def buildTreeRoot(rootid:int, start:int ,end:int) -> Optional[TreeNode]:
+            if start > end:
+                return None
+            root = TreeNode(preorder[rootid])
+            if start == end:
+                return root
+            rootpos = inorder.index(preorder[rootid])
+            leftcount = rootpos - start
+            root.left = buildTreeRoot(rootid + 1, start, rootpos - 1)
+            root.right = buildTreeRoot(rootid + leftcount + 1, rootpos + 1, end)
+            return root
+        return buildTreeRoot(0, 0, len(inorder) - 1)
+
+    def pathSum(self, root: Optional[TreeNode], targetSum: int) -> int:
+        total = 0
+        def dfs(root:Optional[TreeNode], avaliablesums:list[int]):
+            nonlocal total
+            if root == None:
+                return
+            if avaliablesums != None:
+                for i in range(len(avaliablesums)):
+                    avaliablesums[i] += root.val
+                    if avaliablesums[i] == targetSum:
+                        total += 1
+            if root.val == targetSum:
+                total += 1
+            avaliablesums.append(root.val)
+            if root.left != None:
+                dfs(root.left, avaliablesums)
+            if root.right != None:
+                dfs(root.right, avaliablesums)
+            avaliablesums.remove(root.val)
+            for i in range(len(avaliablesums)):
+                avaliablesums[i] -= root.val
+        dfs(root, [])
+        return total
+
+    def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+        aimnode = None
+        def dfs(root:Optional[TreeNode], aim1:TreeNode, aim2:TreeNode) -> tuple[bool,bool]:
+            nonlocal aimnode
+            result = [False, False]
+            if root == None:
+                return result
+            if root == aim1:
+                result = [True, result[1]]
+            if root == aim2:
+                result = [result[0], True]
+            leftval = dfs(root.left, aim1, aim2)
+            rightval = dfs(root.right, aim1, aim2)
+            result = [leftval[0] or rightval[0] or result[0], leftval[1] or rightval[1] or result[1]]
+            if result == [True,True] and aimnode == None:
+                aimnode = root
+            return result
+        dfs(root, p, q)
+        return aimnode
+
+    def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
+        candidates = sorted(candidates)
+        result = []
+
+        def pickone(start:int, current: list[int], currentsum:int):
+            for i in range(len(candidates)):
+                if i < start:
+                    continue
+                if currentsum + candidates[i] > target:
+                    break
+                if currentsum + candidates[i] == target:
+                    current.append(candidates[i])
+                    result.append(current[:])
+                    current.pop(-1)
+                    break
+                current.append(candidates[i])
+                pickone(i ,current, currentsum + candidates[i])
+                current.pop(-1)
+        pickone(0, [], 0)
+        return result
+
+    def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
+        def bisect_left(target:int, row:list[int], start:int ,end:int) -> int:
+            while start <= end:
+                mid = (start + end) // 2
+                if row[mid] > target:
+                    end = mid - 1
+                elif row[mid] == target:
+                    return mid
+                else:
+                    start = mid + 1
+            return (start + end) // 2 + 1
+        def search(target:int , startr:int ,startc:int,endr:int,endc:int) -> bool:
+            if startr >= len(matrix):
+                return False
+            if endc < 0:
+                return False
+            cid = bisect_left(target, matrix[startr], startc, endc)
+            if cid > endc:
+                return search(target, startr + 1, startc, endr, endc)
+            if matrix[startr][cid] == target:
+                return True
+            return search(target, startr, startc, endr, cid - 1)
+        return search(target, 0,0,len(matrix) - 1, len(matrix[0]) - 1)
+
+    def generateParenthesis(self, n: int) -> List[str]:
+        result = []
+        finalresult = []
+        def pickone(start:int = 0, picked:int = 0):
+            if start == n and picked == 0:
+                finalresult.append(''.join(result[:]))
+            
+            if start < n:
+                result.append('(')
+                pickone(start + 1, picked + 1)
+                result.pop(-1)
+            if picked > 0:
+                result.append(')')
+                pickone(start + 1, picked - 1)
+                result.pop(-1)
+        pickone()
+        return finalresult
