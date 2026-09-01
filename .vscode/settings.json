@@ -126,4 +126,5 @@
         "CMAKE_CXX_COMPILER": "g++.exe",
         "CMAKE_C_COMPILER": "gcc.exe"
     },
+    "python-envs.defaultEnvManager": "ms-python.python:system",
 }

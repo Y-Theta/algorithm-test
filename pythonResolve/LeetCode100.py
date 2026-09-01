@@ -1,4 +1,5 @@
 from Common import ListNode,TreeNode
+from sortedcontainers import SortedList
 
 class Solution:
 
@@ -876,3 +877,248 @@ class Solution:
                 result.pop(-1)
         pickone()
         return finalresult
+    
+    def exist(self, board: List[List[str]], word: str) -> bool:
+        visited = [[0 for _ in range(len(board[0]))] for _ in range(len(board))]
+        startpos = []
+        for r in range(len(board)):
+            for c in range(len(board[0])):
+                if board[r][c] == word[0]:
+                    startpos.append((r,c))
+        if len(startpos) == 0:
+            return False
+        def pickone(start:int ,r:int , c:int) -> bool:
+            if start == len(word):
+                return True
+            if r < 0 or r >= len(board) or c < 0 or c > len(board[0]):
+                return False
+            if visited[r][c]:
+                return False
+            if board[r][c] == word[start]:
+                visited[r][c] = True
+                flag = False
+                flag = flag or pickone(start + 1, r-1,c)
+                flag = flag or pickone(start + 1, r+1,c)
+                flag = flag or pickone(start + 1, r,c-1)
+                flag = flag or pickone(start + 1, r,c+1)
+                if flag:
+                    return True
+                visited[r][c] = False
+        
+        for i in range(len(startpos)):
+            if pickone(0, i[0], i[1]):
+                return True
+            
+        return False
+
+    def partition(self, s: str) -> List[List[str]]:
+        result = []
+        finalresult = []
+
+        def ispal(s:str) -> bool:
+            for i in range(len(s) // 2):
+                if s[i] != s[-i-1]:
+                    return False
+            return True
+
+        def pickone(start:int = 0):
+            nonlocal result
+            if start == len(s):
+                finalresult.append(result[:])
+                return
+            
+            for i in range(start, len(s)):
+                if ispal(s[start: i + 1]):
+                    result.append(s[start: i + 1])
+                    pickone(i)
+                    result.pop(-1)
+        pickone()
+        return finalresult
+
+    def isValid(self, s: str) -> bool:
+        stack = []
+        cmap = {')':'(' , ']':'[' , '}':'{'}
+        for c in s:
+            if c == '(' or  c == '[' or c == '{':
+                stack.append(c)
+            elif c == ')' or c == ']' or c == '}':
+                if len(stack) == 0:
+                    return False
+                if stack[-1] == cmap[c]:
+                    stack.pop(-1)
+                else:
+                    return False
+        return len(stack) == 0
+
+    def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
+
+        def biosearchcol(col:int, target:int, startr:int, endr:int) -> int:
+            while startr <= endr:
+                mid = (startr + endr) // 2
+                val = matrix[mid][col]
+                if val > target:
+                    endr = mid - 1
+                elif val == target:
+                    return mid
+                else:
+                    startr = mid + 1
+            return (startr + endr) // 2 + 1
+        def biosearchrow(row:int, target:int, startc:int, endc:int) -> int:
+            while startc <= endc:
+                mid = (startc + endc) // 2
+                val = matrix[row][mid]
+                if val > target:
+                    endc = mid - 1
+                elif val == target:
+                    return mid
+                else:
+                    startc = mid + 1
+            return (startc + endc) // 2 + 1
+        def search(tar:int, startr:int, startc:int, endr:int, endc:int) -> bool:
+            if startr >= len(matrix):
+                return False
+            if endc < 0:
+                return False
+            
+            cidx = biosearchrow(startr, target, startc, endc)
+            if cidx > endc:
+                ridx = biosearchcol(endc, target, startr, endr)
+                if ridx > endr:
+                    return False
+                elif matrix[ridx][endc] == target:
+                    return True
+                return search(tar, startr, startc, ridx - 1, endc)
+            else:
+                if matrix[startr][cidx] == target:
+                    return True
+                return search(tar, startr, startc, endr, cidx - 1)
+
+        return search(target, 0,0,len(matrix) - 1,len(matrix[0]) - 1)
+    
+    def searchRange(self, nums: List[int], target: int) -> List[int]:
+        if nums == None or len(nums) == 0:
+            return [-1,-1]
+        def bisect_left_(target:int, start:int ,end:int):
+            while start < end:
+                mid = (start + end) // 2
+                if nums[mid] > target:
+                    end = mid - 1
+                elif nums[mid] < target:
+                    start = mid + 1
+                else:
+                    end = mid
+            return (start + end) // 2
+        def bisect_right_(target:int, start:int ,end:int):
+            while start <= end:
+                mid = (start + end) // 2
+                if nums[mid] > target:
+                    end = mid - 1
+                else:
+                    start = mid + 1
+            return (start + end) // 2
+        pos = bisect_left_(target,0 ,len(nums) - 1)
+        if nums[pos] != target:
+            return [-1,-1]
+        pos1 = bisect_right_(target,0 ,len(nums) - 1)
+        return [pos,pos1]
+            
+    def search(self, nums: List[int], target: int) -> int:
+        def search_broken(start:int, end:int) -> int:
+            while start <= end:
+                mid = (start + end) // 2
+                if nums[mid] >= nums[0]:
+                    start = mid + 1
+                else:
+                    end = mid - 1
+            return (start + end) // 2
+        def search_item(tar:int, start:int, end:int) -> bool:
+            while start <= end:
+                mid = (start + end) // 2
+                if nums[mid] > tar:
+                    end = mid - 1
+                elif nums[mid] < tar:
+                    start = mid + 1
+                else:
+                    return mid
+            return -1
+        idx = search_broken(0, len(nums) - 1)
+        if idx < 0:
+            return search_item(target, 0, len(nums) - 1)
+        if nums[idx] >= nums[0]:
+            return max(search_item(target, 0, idx), search_item(target, idx + 1, len(nums) - 1))
+        return max(search_item(target, 0, idx - 1), search_item(target, idx, len(nums) - 1))
+    
+    def decodeString(self, s: str) -> str:
+        start = 0
+        plusstack = []
+        ord0 = ord('0')
+        tempstr = ""
+        for i,c in enumerate(s):
+            if c == '[':
+                plusstack.append((tempstr, int(s[start:i])))
+                tempstr = ""
+                continue
+            elif c == ']':
+                laststack = plusstack[-1]
+                laststr = laststack[0]
+                repeattimes = laststack[1]
+                laststack.pop(-1)
+                for i in range(repeattimes):
+                    laststr += tempstr
+                tempstr = laststr
+                continue
+            if i > 0 and ord(s[i]) - ord0 < 10 and (ord(s[i-1]) - ord0 > 10 or ord(s[i-1])  - ord0< 0):
+                start = i
+            if ord(c) - ord('a') >= 0 and ord(c) - ord('a') < 26:
+                tempstr += c 
+        
+        return tempstr
+        
+    def nextPermutation(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        flag = False
+        slist = SortedList()
+        for i in range(len(nums) - 1, -1 ,-1):
+            slist.add(nums[i])
+            idx = slist.bisect_right(nums[i])
+            if idx < len(slist):
+                flag = True
+                nums[i] = slist[idx]
+                slist.pop(idx)
+                for j in range(i + 1,len(nums)):
+                    nums[j] = slist[0]
+                    slist.pop(0)
+                break
+        if not flag:
+            nums[0,len(nums)] = sorted(nums)
+        
+    def minDistance(self, word1: str, word2: str) -> int:
+        lenw1 = len(word1) + 1
+        lenw2 = len(word2) + 1
+        dp = [[0 for _ in range(lenw2)] for _ in range(lenw1)]
+        dp[0][0] = 0
+        for i in range(1, lenw1):
+            dp[i][0] = dp[i - 1][0] + 1
+        for i in range(1, lenw2):
+            dp[0][i] = dp[0][i - 1] + 1
+
+        for i in range(1, lenw1):
+            for j in range(1, lenw2):
+                if word1[i - 1] == word2[j - 1]:
+                    dp[i][j] = dp[i - 1][j - 1]
+                else:
+                    dp[i][j] = min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1]) + 1
+        return dp[lenw1 - 1][lenw2 - 1]
+    
+    def dailyTemperatures(self, temperatures: List[int]) -> List[int]:
+        stack = []
+        answer = [0] * len(temperatures)
+        for i,v in enumerate(temperatures):
+            if len(stack) > 0 and stack[-1][1] < v:
+                while len(stack) > 0 and stack[-1][1] < v:
+                    top = stack.pop(-1)
+                    answer[top[0]] = i - top[0]
+            stack.append((i,v))
+        return answer
