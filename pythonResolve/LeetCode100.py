@@ -1,5 +1,6 @@
 from Common import ListNode,TreeNode
 from sortedcontainers import SortedList
+from collections import deque
 
 class Solution:
 
@@ -1122,3 +1123,126 @@ class Solution:
                     answer[top[0]] = i - top[0]
             stack.append((i,v))
         return answer
+
+    def longestValidParentheses(self, s: str) -> int:
+        n = len(s)
+        if n == 0:
+            return 0
+        dp = [0] * n
+        dp[0] = 0
+        stack = deque()
+        if s[0] == '(':
+            stack.append(0)
+        maxval = 0
+
+        for i in range(1, len(s)):
+            if s[i] == '(':
+                stack.append(i)
+            else:
+                if len(stack) > 0 and s[stack[-1]] == '(':
+                    stack.pop()
+                    if len(stack) == 0:
+                        maxval = max(maxval, i + 1)
+                    else:
+                        maxval = max(maxval, i - stack[-1])
+                else:
+                    stack.append(i)
+        return maxval
+
+    def largestRectangleArea(self, heights: List[int]) -> int:
+        stack = deque()
+        maxval = 0
+        n = len(heights)
+        for i in range(n + 1):
+            while len(stack) > 0 and (i >=n or heights[i] < stack[-1][1]):
+                top = stack.pop()
+                if len(stack) == 0:
+                    maxval = max(maxval, top[1] * i)
+                else:
+                    maxval = max(maxval, top[1] * (i - stack[-1][0] - 1))
+            if i < n:
+                stack.append((i, heights[i]))
+        return maxval
+
+    def climbStairs(self, n: int) -> int:
+        if n == 1:
+            return 1
+        elif n == 2:
+            return 2
+        dp = [0] * n
+        dp[0] = 1
+        dp[1] = 2
+
+        for i in range(2, n):
+            dp[i] = dp[i-1] + dp[i-2]
+        return dp[n -1]
+
+    def rob(self, nums: List[int]) -> int:
+        if len(nums) == 1:
+            return nums[0]
+        elif len(nums) == 2:
+            return max(nums[0],nums[1])
+
+        dp = [0] * len(nums)
+        dp[0] = nums[0]
+        dp[1] = max(nums[1],nums[0])
+        for i in range(2, len(nums)):
+            dp[i] = max(dp[i-2] + nums[i], dp[i-1])
+        
+        return dp[len(nums) - 1]
+
+    def numSquares(self, n: int) -> int:
+        if n == 1:
+            return 1
+
+        dp = [0] * (n + 1)
+        dp[0] = 0
+        dp[1] = 1
+
+        nums = [i * i for i in range(1, 101)]
+        
+        for i in range(2, n + 1):
+            dp[i] = 10 ** 4
+            for j in range(len(nums)):
+                if nums[j] > i:
+                    break
+                dp[i] = min(dp[i], 1 + dp[i - nums[j]])
+        
+        return dp[n]
+
+    def coinChange(self, coins: List[int], amount: int) -> int:
+        if amount == 0:
+            return 0
+
+        maxlen = amount+1
+        dp = [-1] * maxlen
+        dp[0] = 0
+
+        for i in coins:
+            if i > len(dp):
+                break
+            dp[i] = 1
+
+        for i in range(min(coins) + 1, maxlen):
+            minval = maxlen
+            for j in coins:
+                if i - j >= 0 and dp[i - j] > 0: 
+                    minval = min(minval, dp[i - j] + 1)
+            if minval >= 0 and minval != maxlen:
+                dp[i] = minval
+        
+        return dp[amount]
+
+    def canPartition(self, nums: List[int]) -> bool:
+        half = sum(nums) // 2
+        sumset = set()
+
+        for i in range(len(nums)):
+            for j in list(sumset):
+                if j + nums[i] not in sumset:
+                    sumset.add(j + nums[i])
+            if nums[i] not in sumset:
+                sumset.add(nums[i])
+            if half in sumset:
+                return True
+        return False
